@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Porfolio Maciej Ratajewski</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .top {
+    background-image: url("tlo2.png");
+    height: 80vh;
+    color: white;
+    position: relative;
+  }
+
+  .toper {
+    position: absolute;
+    height: 40px;
+    width: 100%;
+    top: 10px
+  }
+
+  .logo {
+    position: absolute;
+    height: 36px;
+    width: 36px;
+    top: 5vh;
+    left: 10vw;
+    background-image: url("logo.png");
+    background-size: 35px 35px;
+  }
+
+  .logo:hover {
+    background-size: 37px 37px;
+    cursor: pointer;
+  }
+
+  .socialMedia {
+    position: absolute;
+    top: 5vh;
+    left: 70vw;
+    display: flex;
+    width: 150px;
+  }
+
+  .socialMedia div {
+    height: 5vh;
+    width: 5vw;
+  }
+
+  .bott {
+    position: absolute;
+    width: 70vw;
+    font-size: 3rem;
+    left: 15vw;
+    bottom: 20vh;
+    transform: translate();
+  }
+
+  .bott2 {
+    font-size: 2rem;
+  }
+
+  .socialFb {
+    background-image: url(contact3.png);
+    background-size: 35px 35px;
+    background-repeat: no-repeat;
+  }
+
+  .socialFb:hover {
+    background-size: 37px 37px;
+    cursor: pointer;
+  }
+
+  .socialTw:hover {
+    background-size: 37px 37px;
+    cursor: pointer;
+  }
+
+  .socialIn:hover {
+    background-size: 37px 37px;
+    cursor: pointer;
+  }
+
+
+  .socialTw {
+    background-image: url(contact4.png);
+    background-size: 35px 35px;
+    background-repeat: no-repeat;
+  }
+
+  .socialIn {
+    background-image: url(contact5.png);
+    background-size: 35px 35px;
+    background-repeat: no-repeat;
+  }
+
+  .middle {
+    position: relative;
+    color: black;
+    background-image: url("tlo.png");
+    height: 140vh;
+  }
+
+  .Porfolio {
+    box-sizing: border-box;
+    height: 25vh;
+    width: 70vw;
+    left: 15vw;
+    background-color: whitesmoke;
+    position: absolute;
+    box-shadow: 0 0 2em black;
+    display: flex;
+    padding: 10px;
+  }
+
+  .bottom {
+    color: black;
+    background-image: url("tlo2.png");
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .contact {
+    height: 50px;
+    width: 200px;
+    background-color: whitesmoke;
+    line-height: 50px;
+    text-align: center;
+  }
+
+  .contact:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+
+  }
+
+  .flex {
+    margin-top: 20px;
+    width: 60vw;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .portf {
+    height: 50px;
+    width: 200px;
+    background-color: whitesmoke;
+    line-height: 50px;
+    text-align: center;
+    color: black;
+    font-size: 1.5rem;
+  }
+
+  .portf:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+
+  }
+
+  .cont {
+    height: 50px;
+    width: 200px;
+    background-color: whitesmoke;
+    line-height: 50px;
+    text-align: center;
+    color: black;
+    font-size: 1.5rem;
+  }
+
+  .cont:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+
+  .icon {
+    display: flex;
+  }
+
+  .descri {
+    width: 70%;
+  }
+
+  .github {
+    height: 30px;
+    width: 100px;
+    background-color: black;
+    line-height: 30px;
+    text-align: center;
+    color: whitesmoke;
+    margin: 8px
+  }
+
+  .online {
+    height: 30px;
+    width: 100px;
+    background-color: black;
+    line-height: 30px;
+    text-align: center;
+    color: whitesmoke;
+    margin: 8px
+  }
+
+  .online:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    box-shadow: 0 0 1em gray;
+
+  }
+
+  .github:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    box-shadow: 0 0 1em gray;
+
+  }
+
+  .title {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .photo {
+    background-image: url("project.jpeg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 20vw;
+
+  }
+
+  @media (min-width:200px) {
+    .bott {
+      font-size: 2rem;
+    }
+
+    .bott2 {
+      font-size: 1rem;
+    }
+
+    .socialMedia {
+      left: 50vw
+    }
+
+    .socialMedia div {
+      height: 10vh;
+      width: 10vw;
+    }
+
+    .socialFb {
+      background-size: 20px 20px;
+    }
+
+    .socialFb:hover {
+      background-size: 27px 27px;
+      cursor: pointer;
+    }
+
+    .socialIn {
+      background-size: 20px 20px;
+    }
+
+    .socialIn:hover {
+      background-size: 27px 27px;
+      cursor: pointer;
+    }
+
+    .socialTw {
+      background-size: 20px 20px;
+    }
+
+    .socialTw:hover {
+      background-size: 27px 27px;
+      cursor: pointer;
+    }
+
+    .portf {
+      height: 30px;
+      width: 80px;
+      background-color: whitesmoke;
+      line-height: 30px;
+      text-align: center;
+      color: black;
+      font-size: 0.6rem;
+      margin: 10px auto;
+
+    }
+
+    .portf:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+    }
+
+    .cont {
+      height: 30px;
+      width: 80px;
+      background-color: whitesmoke;
+      line-height: 30px;
+      text-align: center;
+      color: black;
+      font-size: 0.6rem;
+      margin: 10px auto;
+    }
+
+    .cont:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+    }
+
+    .flex {
+      margin: 20px auto;
+      display: block;
+    }
+
+    .middle {
+      position: relative;
+      color: black;
+      background-image: url("tlo.png");
+      height: 150vh;
+    }
+
+    .Porfolio {
+      box-sizing: border-box;
+      height: 35vh;
+      width: 70vw;
+      left: 15vw;
+      background-color: whitesmoke;
+      position: absolute;
+      box-shadow: 0 0 2em black;
+      padding: 10px;
+    }
+
+    .icon {
+      display: flex;
+    }
+
+    .descri {
+      width: 70%;
+    }
+
+    .github {
+      height: 30px;
+      width: 80px;
+      background-color: black;
+      line-height: 30px;
+      text-align: center;
+      color: whitesmoke;
+      margin: 8px
+    }
+
+    .online {
+      height: 30px;
+      width: 80px;
+      background-color: black;
+      line-height: 30px;
+      text-align: center;
+      color: whitesmoke;
+      margin: 8px
+    }
+
+    .online:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+      box-shadow: 0 0 1em gray;
+
+    }
+
+    .github:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+      box-shadow: 0 0 1em gray;
+
+    }
+
+    .title {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .photo {
+      display: none;
+    }
+
+    .desc {
+      font-size: 0.7rem;
+    }
+  }
+
+  @media (min-width:400px) {
+    .bott {
+      font-size: 2rem;
+    }
+
+    .bott2 {
+      font-size: 1rem;
+    }
+
+    .socialMedia {
+      left: 60vw
+    }
+
+    .socialMedia div {
+      height: 10vh;
+      width: 10vw;
+    }
+
+    .socialFb {
+      background-size: 30px 30px;
+    }
+
+    .socialFb:hover {
+      background-size: 32px 32px;
+      cursor: pointer;
+    }
+
+    .socialIn {
+      background-size: 30px 30px;
+    }
+
+    .socialIn:hover {
+      background-size: 32px 32px;
+      cursor: pointer;
+    }
+
+    .socialTw {
+      background-size: 30px 30px;
+    }
+
+    .socialTw:hover {
+      background-size: 32px 32px;
+      cursor: pointer;
+    }
+
+    .portf {
+      height: 50px;
+      width: 100px;
+      background-color: whitesmoke;
+      line-height: 50px;
+      text-align: center;
+      color: black;
+      font-size: 0.6rem;
+      margin: 10px auto;
+
+    }
+
+    .portf:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+    }
+
+    .cont {
+      height: 50px;
+      width: 100px;
+      background-color: whitesmoke;
+      line-height: 50px;
+      text-align: center;
+      color: black;
+      font-size: 0.6rem;
+      margin: 10px auto;
+    }
+
+    .cont:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+    }
+
+    .flex {
+      margin: 20px auto;
+      display: block;
+    }
+
+    .middle {
+      position: relative;
+      color: black;
+      background-image: url("tlo.png");
+      height: 150vh;
+    }
+
+    .Porfolio {
+      box-sizing: border-box;
+      height: 35vh;
+      width: 70vw;
+      left: 15vw;
+      background-color: whitesmoke;
+      position: absolute;
+      box-shadow: 0 0 2em black;
+      padding: 10px;
+    }
+
+    .icon {
+      display: flex;
+    }
+
+    .descri {
+      width: 70%;
+    }
+
+    .github {
+      height: 30px;
+      width: 80px;
+      background-color: black;
+      line-height: 30px;
+      text-align: center;
+      color: whitesmoke;
+      margin: 8px
+    }
+
+    .online {
+      height: 30px;
+      width: 80px;
+      background-color: black;
+      line-height: 30px;
+      text-align: center;
+      color: whitesmoke;
+      margin: 8px
+    }
+
+    .online:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+      box-shadow: 0 0 1em gray;
+
+    }
+
+    .github:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+      box-shadow: 0 0 1em gray;
+
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .photo {
+      display: none;
+    }
+
+    .desc {
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (min-width:724px) {
+    .bott {
+      font-size: 3rem;
+    }
+
+    .bott2 {
+      font-size: 2rem;
+    }
+
+    .socialMedia {
+      left: 60vw
+    }
+
+    .socialMedia div {
+      height: 10vh;
+      width: 10vw;
+    }
+
+    .socialFb {
+      background-size: 30px 30px;
+    }
+
+    .socialFb:hover {
+      background-size: 32px 32px;
+      cursor: pointer;
+    }
+
+    .socialIn {
+      background-size: 30px 30px;
+    }
+
+    .socialIn:hover {
+      background-size: 32px 32px;
+      cursor: pointer;
+    }
+
+    .socialTw {
+      background-size: 30px 30px;
+    }
+
+    .socialTw:hover {
+      background-size: 32px 32px;
+      cursor: pointer;
+    }
+
+    .portf {
+      height: 50px;
+      width: 100px;
+      background-color: whitesmoke;
+      line-height: 50px;
+      text-align: center;
+      color: black;
+      font-size: 0.6rem;
+      margin: 10px auto;
+
+    }
+
+    .portf:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+    }
+
+    .cont {
+      height: 50px;
+      width: 100px;
+      background-color: whitesmoke;
+      line-height: 50px;
+      text-align: center;
+      color: black;
+      font-size: 0.6rem;
+      margin: 10px auto;
+    }
+
+    .cont:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+    }
+
+    .flex {
+      margin: 20px auto;
+      display: flex;
+    }
+
+    .middle {
+      position: relative;
+      color: black;
+      background-image: url("tlo.png");
+      height: 150vh;
+    }
+
+    .Porfolio {
+      box-sizing: border-box;
+      height: 35vh;
+      width: 70vw;
+      left: 15vw;
+      background-color: whitesmoke;
+      position: absolute;
+      box-shadow: 0 0 2em black;
+      padding: 10px;
+    }
+
+    .icon {
+      display: flex;
+    }
+
+    .descri {
+      width: 70%;
+    }
+
+    .github {
+      height: 30px;
+      width: 80px;
+      background-color: black;
+      line-height: 30px;
+      text-align: center;
+      color: whitesmoke;
+      margin: 8px
+    }
+
+    .online {
+      height: 30px;
+      width: 80px;
+      background-color: black;
+      line-height: 30px;
+      text-align: center;
+      color: whitesmoke;
+      margin: 8px
+    }
+
+    .online:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+      box-shadow: 0 0 1em gray;
+
+    }
+
+    .github:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+      box-shadow: 0 0 1em gray;
+
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .photo {
+      display: none;
+    }
+
+    .desc {
+      font-size: 1rem;
+    }
+  }
+
+  @media (min-width:1024px) {
+    .bott {
+      font-size: 3rem;
+    }
+
+    .bott2 {
+      font-size: 2rem;
+    }
+
+    .socialMedia {
+      left: 60vw
+    }
+
+    .socialMedia div {
+      height: 10vh;
+      width: 10vw;
+    }
+
+    .socialFb {
+      background-size: 30px 30px;
+    }
+
+    .socialFb:hover {
+      background-size: 32px 32px;
+      cursor: pointer;
+    }
+
+    .socialIn {
+      background-size: 30px 30px;
+    }
+
+    .socialIn:hover {
+      background-size: 32px 32px;
+      cursor: pointer;
+    }
+
+    .socialTw {
+      background-size: 30px 30px;
+    }
+
+    .socialTw:hover {
+      background-size: 32px 32px;
+      cursor: pointer;
+    }
+
+    .portf {
+      height: 50px;
+      width: 100px;
+      background-color: whitesmoke;
+      line-height: 50px;
+      text-align: center;
+      color: black;
+      font-size: 0.6rem;
+      margin: 10px auto;
+
+    }
+
+    .portf:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+    }
+
+    .cont {
+      height: 50px;
+      width: 100px;
+      background-color: whitesmoke;
+      line-height: 50px;
+      text-align: center;
+      color: black;
+      font-size: 0.6rem;
+      margin: 10px auto;
+    }
+
+    .cont:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+    }
+
+    .flex {
+      margin: 20px auto;
+      display: flex;
+    }
+
+    .middle {
+      position: relative;
+      color: black;
+      background-image: url("tlo.png");
+      height: 150vh;
+    }
+
+    .Porfolio {
+      box-sizing: border-box;
+      height: 35vh;
+      width: 70vw;
+      left: 15vw;
+      background-color: whitesmoke;
+      position: absolute;
+      box-shadow: 0 0 2em black;
+      padding: 10px;
+    }
+
+    .icon {
+      display: flex;
+    }
+
+    .descri {
+      width: 70%;
+    }
+
+    .github {
+      height: 30px;
+      width: 80px;
+      background-color: black;
+      line-height: 30px;
+      text-align: center;
+      color: whitesmoke;
+      margin: 8px
+    }
+
+    .online {
+      height: 30px;
+      width: 80px;
+      background-color: black;
+      line-height: 30px;
+      text-align: center;
+      color: whitesmoke;
+      margin: 8px
+    }
+
+    .online:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+      box-shadow: 0 0 1em gray;
+
+    }
+
+    .github:hover {
+      cursor: pointer;
+      transform: scale(1.1);
+      box-shadow: 0 0 1em gray;
+
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .photo {
+      display: block;
+    }
+
+    .desc {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<body>
+  <div class="container">
+    <div class="top">
+      <div class="toper">
+        <div class="logo"></div>
+        <div class="socialMedia">
+          <div class="socialFb"></div>
+          <div class="socialTw"></div>
+          <div class="socialIn"></div>
+        </div>
+      </div>
+      <div class="bott">Hi! I’m Maciej and this is my portfolio!</br>
+        <span class="bott2">Junior frontend developer with <span style="color: #68A063">Node.js</span> and
+          <span style="color: #61DBFB">React.js</span> basics.</span>
+        <div class="flex">
+          <div class="portf">PORTFOLIO</div>
+          <div class="cont">CONTACT ME</div>
+        </div>
+
+      </div>
+    </div>
+    <div class="middle">
+
+      <div class="Porfolio">
+        <div class="descri">
+          <div class="title">PROJECT TITLE</div>
+          <div class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et autem doloribus aspernatur iusto
+            quos illo saepe temporibus tempore explicabo pariatur accusamus iure sed odit quod, qui, eius, perferendis
+            possimus accusantium.</div>
+          <div class="icon">
+            <div class="github">GITHUB</div>
+            <div class="online">ONLINE</div>
+          </div>
+        </div>
+        <div class="photo"></div>
+      </div>
+      <div class="Porfolio">
+        <div class="descri">
+          <div class="title">PROJECT TITLE</div>
+          <div class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et autem doloribus aspernatur iusto
+            quos illo saepe temporibus tempore explicabo pariatur accusamus iure sed odit quod, qui, eius, perferendis
+            possimus accusantium.</div>
+          <div class="icon">
+            <div class="github">GITHUB</div>
+            <div class="online">ONLINE</div>
+          </div>
+        </div>
+        <div class="photo"></div>
+      </div>
+      <div class="Porfolio">
+        <div class="descri">
+          <div class="title">PROJECT TITLE</div>
+          <div class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et autem doloribus aspernatur iusto
+            quos illo saepe temporibus tempore explicabo pariatur accusamus iure sed odit quod, qui, eius, perferendis
+            possimus accusantium.</div>
+          <div class="icon">
+            <div class="github">GITHUB</div>
+            <div class="online">ONLINE</div>
+          </div>
+        </div>
+        <div class="photo"></div>
+      </div>
+      <div class="Porfolio">
+        <div class="descri">
+          <div class="title">PROJECT TITLE</div>
+          <div class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et autem doloribus aspernatur iusto
+            quos illo saepe temporibus tempore explicabo pariatur accusamus iure sed odit quod, qui, eius, perferendis
+            possimus accusantium.</div>
+          <div class="icon">
+            <div class="github">GITHUB</div>
+            <div class="online">ONLINE</div>
+          </div>
+        </div>
+        <div class="photo"></div>
+      </div>
+      <div class="Porfolio">
+        <div class="descri">
+          <div class="title">PROJECT TITLE</div>
+          <div class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et autem doloribus aspernatur iusto
+            quos illo saepe temporibus tempore explicabo pariatur accusamus iure sed odit quod, qui, eius, perferendis
+            possimus accusantium.</div>
+          <div class="icon">
+            <div class="github">GITHUB</div>
+            <div class="online">ONLINE</div>
+          </div>
+        </div>
+        <div class="photo"></div>
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="contact">CONTACT ME</div>
+    </div>
+  </div>
+
+  <script>
+    const Porfolio = document.querySelectorAll("div.Porfolio")
+    let num = 30;
+    let num2 = -10
+    for (let i = 0; i < Porfolio.length; i++) {
+      Porfolio[i].style.top = num2 + i * num + "vh"
+    }
+    const portf = document.querySelector(".portf")
+    const cont = document.querySelector(".cont")
+    const to = document.querySelector(".middle").getBoundingClientRect();
+    const co = document.querySelector(".contact").getBoundingClientRect();
+    console.log(to.y)
+    console.log(co.y)
+
+    portf.addEventListener("click", function () {
+      window.scrollTo({
+        top: to.y,
+        behavior: 'smooth'
+      })
+    })
+    cont.addEventListener("click", function () {
+      window.scrollTo({
+        top: co.y,
+        behavior: 'smooth'
+      })
+    })
+
+
+  </script>
+</body>
+
+</html>
