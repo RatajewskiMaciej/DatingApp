@@ -5,7 +5,7 @@ const Users = require('../models/Users')
 const router = express.Router()
 
 
-router.post('/register', [
+router.post('/', [
   check("first_name", "First Name is require!")
     .not()
     .notEmpty(),
