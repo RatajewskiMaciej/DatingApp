@@ -1,6 +1,6 @@
 import React from 'react';
-import Logged from './Navbar/Logged';
-import Logout from './Navbar/Logout';
+import Tologout from './Navbar/toLogOut';
+import Tologin from './Navbar/toLogIn';
 import { useSelector } from "react-redux";
 
 
@@ -9,7 +9,7 @@ const Navbar = () => {
   console.log(isLogged)
   return (
     <div>
-      {isLogged ? <Logged /> : <Logout />}
+      {isLogged ? <Tologout /> : <Tologin />}
     </div>
   )
 }
