@@ -12,8 +12,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
-import { getLogs } from '../../redux/actions/logActions'
+import { useDispatch } from 'react-redux'
+import { toLogIn } from '../../redux/actions/logActions'
 
 
 const useStyles = makeStyles(theme => ({
@@ -76,20 +76,35 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
+  loginError: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginRight: "20px",
+    color: "red"
+  }
 }));
 
 export default function PrimarySearchAppBar() {
   //login user
   const dispatch = useDispatch();
-  const isLogged = useSelector(state => state.log.isLogged)
   const [data, setData] = useState({
     email: '',
     password: ''
   });
-  const onClick = (e) => {
-    e.preventDefault();
-    axios.post('http://localhost:5000/register', data)
-    dispatch(getLogs(isLogged))
+  const [loginError, setLoginError] = useState('')
+  const onClick = async (e) => {
+    try {
+      const res = await axios.post('http://localhost:5000/login', data)
+      if (res.data.token) {
+        localStorage.setItem('usertoken', (res.data.token));
+        dispatch(toLogIn())
+      }
+      else {
+        setLoginError(res.data.msg)
+      }
+    } catch (error) {
+      setLoginError("Please write correct email or password")
+    }
   };
 
 
@@ -190,15 +205,17 @@ export default function PrimarySearchAppBar() {
             />
             <label htmlFor="email">   Password: </label>
             <input
-              type="text"
+              type="password"
               name="password"
+              autoComplete="on"
               value={data.password}
               onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
             />
             <span>    </span>
             <Button variant="contained" color="primary" onClick={onClick}>Login</Button>
-          </form>
+          </form><br />
         </Toolbar>
+        <div className={classes.loginError}>{loginError}</div>
       </AppBar>
       {renderMobileMenu}
       {renderMenu}

@@ -1,7 +1,13 @@
-import { IS_LOGGED, SET_ALERT } from '../types';
+import { LOG_OUT, LOG_IN } from '../types';
 
-export const getLogs = (data) => dispatch => {
+export const toLogIn = () => dispatch => {
   dispatch({
-    type: IS_LOGGED, isLogged: !data
+    type: LOG_IN, tokenLogin: localStorage.getItem('usertoken')
+  })
+};
+
+export const toLogOut = () => dispatch => {
+  dispatch({
+    type: LOG_OUT, tokenLogin: localStorage.removeItem('usertoken')
   })
 };

@@ -11,6 +11,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { useDispatch } from 'react-redux'
+import { toLogOut } from '../../redux/actions/logActions'
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -75,6 +77,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  const dispatch = useDispatch()
+  const LogOut = (e) => {
+    dispatch(toLogOut())
+  }
+
+
+
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -112,6 +121,8 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={LogOut}>Log Out</MenuItem>
+
     </Menu>
   );
 
@@ -152,6 +163,17 @@ export default function PrimarySearchAppBar() {
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
+      </MenuItem>
+      <MenuItem onClick={LogOut}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        <p>Log Out</p>
       </MenuItem>
     </Menu>
   );

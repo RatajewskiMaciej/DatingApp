@@ -1,2 +1,2 @@
-export const IS_LOGGED = "IS_LOGGED"
-export const SET_ALERT = "SET_ALERT"
+export const LOG_IN = "LOG_IN"
+export const LOG_OUT = "LOG_OUT"

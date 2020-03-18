@@ -5,11 +5,12 @@ import { useSelector } from "react-redux";
 
 
 const Navbar = () => {
-  const isLogged = useSelector(state => state.log.isLogged)
-  console.log(isLogged)
+
+  const tokenLogin = useSelector(state => state.log.tokenLogin)
+
   return (
     <div>
-      {isLogged ? <Tologout /> : <Tologin />}
+      {tokenLogin ? <Tologout /> : <Tologin />}
     </div>
   )
 }

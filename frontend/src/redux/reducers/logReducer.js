@@ -1,16 +1,21 @@
-import { IS_LOGGED, SET_ALERT } from '../types';
+import { LOG_IN, LOG_OUT } from '../types';
 
 
 const initialState = {
-  isLogged: false
+  tokenLogin: localStorage.getItem("usertoken")
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case IS_LOGGED:
+    case LOG_IN:
       return {
         ...state,
-        isLogged: !state.isLogged
+        tokenLogin: localStorage.getItem("usertoken")
+      };
+    case LOG_OUT:
+      return {
+        ...state,
+        tokenLogin: localStorage.removeItem("usertoken")
       };
     default:
       return state;
