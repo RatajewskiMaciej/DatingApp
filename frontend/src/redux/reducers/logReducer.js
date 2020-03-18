@@ -1,20 +1,16 @@
-import { } from '../types';
+import { IS_LOGGED, SET_ALERT } from '../types';
 
 
 const initialState = {
-  logs: null,
-  current: null,
-  loading: false,
-  error: null
+  isLogged: false
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_LOGS:
+    case IS_LOGGED:
       return {
         ...state,
-        logs: action.payload,
-        loading: false
+        isLogged: !state.isLogged
       };
     default:
       return state;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axios from 'axios';
 
 function Copyright() {
   return (
@@ -46,6 +47,22 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp() {
   const classes = useStyles();
+  const [data, setData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    password2: ""
+  })
+  const onClick = (e) => {
+    e.preventDefault()
+    if (data.password === data.password2) {
+      axios.post('http://localhost:5000/register', data)
+    }
+    else {
+      console.log(data)
+    }
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -62,13 +79,15 @@ export default function SignUp() {
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="first_name"
                 variant="outlined"
                 required
                 fullWidth
                 id="firstName"
                 label="First Name"
                 autoFocus
+                value={data.first_name}
+                onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -78,8 +97,10 @@ export default function SignUp() {
                 fullWidth
                 id="lastName"
                 label="Last Name"
-                name="lastName"
+                name="last_name"
                 autoComplete="lname"
+                value={data.last_name}
+                onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -91,6 +112,8 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={data.email}
+                onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -103,6 +126,8 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={data.password}
+                onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -115,6 +140,7 @@ export default function SignUp() {
                 type="password2"
                 id="password"
                 autoComplete="current-password"
+                onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
               />
             </Grid>
           </Grid>
@@ -124,16 +150,10 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={onClick}
           >
             Sign Up
           </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       <Box mt={5}>
