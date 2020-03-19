@@ -183,7 +183,7 @@ export default function PrimarySearchAppBar() {
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            When someone logged (logo)
+            (logo)
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

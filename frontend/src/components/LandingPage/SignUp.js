@@ -55,20 +55,28 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const [data, setData] = useState({
+  const [registerError, setRegisterError] = useState('')
+  let [data, setData] = useState({
     first_name: "",
     last_name: "",
     email: "",
     password: "",
     password2: ""
   })
-  const onClick = (e) => {
+  const onClick = async (e) => {
     e.preventDefault()
-    if (data.password === data.password2) {
-      axios.post('http://localhost:5000/register', data)
-    }
-    else {
+
+    const res = await axios.post('http://localhost:5000/register', data);
+    setRegisterError(res.data.msg)
+    if (res.data.msg === "You have registered") {
       console.log(data)
+      setData({
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        password2: ""
+      })
     }
   }
 
@@ -82,8 +90,9 @@ export default function SignUp() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign Up
-        </Typography>
+
+            <div>{registerError ? registerError : "Sign Up"}</div>
+          </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -143,7 +152,7 @@ export default function SignUp() {
                   fullWidth
                   name="password2"
                   label="Confirm Password"
-                  type="password2"
+                  type="password"
                   id="password"
                   autoComplete="current-password"
                   onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
