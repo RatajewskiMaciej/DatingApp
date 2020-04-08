@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import axios from 'axios';
+import React, { useState } from 'react'
+
+import {
+  Avatar,
+  Button,
+  TextField,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Paper
+} from '@material-ui/core'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import { makeStyles } from '@material-ui/core/styles'
+
+import axios from 'axios'
 
 function Copyright() {
   return (
@@ -22,67 +25,69 @@ function Copyright() {
       {new Date().getFullYear()}
       {'.'}
     </Typography>
-  );
+  )
 }
 
 const useStyles = makeStyles(theme => ({
   image: {
-    backgroundImage: 'url(https://isorepublic.com/wp-content/uploads/2018/11/couple-in-love-1100x733.jpg)',
+    backgroundImage:
+      'url(https://isorepublic.com/wp-content/uploads/2018/11/couple-in-love-1100x733.jpg)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+      theme.palette.type === 'light'
+        ? theme.palette.grey[50]
+        : theme.palette.grey[900],
     backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundPosition: 'center'
   },
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(3)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+    margin: theme.spacing(3, 0, 2)
+  }
+}))
 
 export default function SignUp() {
-  const classes = useStyles();
+  const classes = useStyles()
   const [registerError, setRegisterError] = useState('')
   let [data, setData] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    password2: ""
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+    password2: ''
   })
-  const onClick = async (e) => {
+  const onClick = async e => {
     e.preventDefault()
 
-    const res = await axios.post('http://localhost:5000/register', data);
+    const res = await axios.post('http://localhost:5000/register', data)
     setRegisterError(res.data.msg)
-    if (res.data.msg === "You have registered") {
+    if (res.data.msg === 'You have registered') {
       console.log(data)
       setData({
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-        password2: ""
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        password2: ''
       })
     }
   }
 
   return (
     <Grid container component="main" className={classes.root}>
-      <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
@@ -90,8 +95,7 @@ export default function SignUp() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-
-            <div>{registerError ? registerError : "Sign Up"}</div>
+            <div>{registerError ? registerError : 'Sign Up'}</div>
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
@@ -106,8 +110,11 @@ export default function SignUp() {
                   label="First Name"
                   autoFocus
                   value={data.first_name}
-                  onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
-                /> </Grid>
+                  onChange={e => {
+                    setData({ ...data, [e.target.name]: e.target.value })
+                  }}
+                />{' '}
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -118,8 +125,11 @@ export default function SignUp() {
                   name="last_name"
                   autoComplete="lname"
                   value={data.last_name}
-                  onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
-                /> </Grid>
+                  onChange={e => {
+                    setData({ ...data, [e.target.name]: e.target.value })
+                  }}
+                />{' '}
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -130,8 +140,11 @@ export default function SignUp() {
                   name="email"
                   autoComplete="email"
                   value={data.email}
-                  onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
-                /> </Grid>
+                  onChange={e => {
+                    setData({ ...data, [e.target.name]: e.target.value })
+                  }}
+                />{' '}
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -143,8 +156,11 @@ export default function SignUp() {
                   id="password"
                   autoComplete="current-password"
                   value={data.password}
-                  onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
-                /> </Grid>
+                  onChange={e => {
+                    setData({ ...data, [e.target.name]: e.target.value })
+                  }}
+                />{' '}
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -155,7 +171,9 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
-                  onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
+                  onChange={e => {
+                    setData({ ...data, [e.target.name]: e.target.value })
+                  }}
                 />
               </Grid>
             </Grid>
@@ -168,13 +186,13 @@ export default function SignUp() {
               onClick={onClick}
             >
               Sign Up
-          </Button>
+            </Button>
             <Box mt={5}>
               <Copyright />
             </Box>
           </form>
         </div>
       </Grid>
-    </Grid >
-  );
+    </Grid>
+  )
 }
