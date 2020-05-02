@@ -1,6 +1,6 @@
 import React from 'react'
 import SignUp from './LandingPage/SignUp'
-import FirstPage from './LandingPage/FirstPage'
+import ProfilePage from './LandingPage/ProfilePage'
 import { useSelector } from 'react-redux'
 
 const LandingPage = () => {
@@ -8,7 +8,7 @@ const LandingPage = () => {
   console.log(tokenLogin)
   return (
     <>
-      {tokenLogin ? <FirstPage /> : <SignUp />
+      {tokenLogin ? <ProfilePage /> : <SignUp style={{height: '200px'}}/>
       }
     </>
   )

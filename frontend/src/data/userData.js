@@ -4,7 +4,7 @@ export const userData = {
   gender: 'male',
   age: '21',
   city: 'Wrocław',
-  match: '90%',
+  match: 80,
 
   about:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum integer enim neque volutpat ac tincidunt. Proin nibhnisl condimentum id venenatis a condimentum vitae sapien. Scelerisque viverra mauris in aliquam sem fringilla ut',

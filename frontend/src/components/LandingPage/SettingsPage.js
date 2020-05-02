@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import {
   Typography,
-  Grid,
   Paper,
   Table,
   TableBody,
@@ -17,17 +16,26 @@ import {
   FormGroup,
   Link,
   TextField,
+  Grid,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import userData from '../data/userData'
+import userData from '../../data/userData'
+
+import SearchIcon from '@material-ui/icons/Search'
+import SettingsIcon from '@material-ui/icons/Settings'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-    minHeight: '800px',
+  paper: {
+    margin: theme.spacing(1),
+    padding: theme.spacing(5),
   },
-  buttonContainer: {
-    marginTop: '30px',
+  title: {
+    padding: theme.spacing(2),
+  },
+  button: {
+    marginTop: 30,
+    marginBottom: 10,
+    width: '50%'
   },
   clickableTableRow: {
     '&:hover': {
@@ -74,19 +82,14 @@ const SettingsPage = () => {
   }
 
   return (
-    <Paper>
-      <Grid
-        container
-        direction="column"
-        justify="space-around"
-        alignItems="stretch"
-        className={classes.root}
-      >
-        <Grid item>
-          <Typography variant="h4">Ustawienia konta</Typography>
-        </Grid>
+    <Grid container>
+      <Grid item xs={12} md={6}>
+        <Paper className={classes.paper}>
+          <Typography variant="h4" className={classes.title}>
+            <SettingsIcon />
+            Ustawienia konta
+          </Typography>
 
-        <Grid item>
           <TableContainer>
             <Table>
               <TableBody>
@@ -146,7 +149,7 @@ const SettingsPage = () => {
                     </Link>
                   </TableCell>
                 </TableRow>
-                <TableRow>
+                <TableRow className={classes.clickableTableRow}>
                   <TableCell>
                     <Typography>Konto</Typography>
                   </TableCell>
@@ -162,12 +165,26 @@ const SettingsPage = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        </Grid>
+          <Button
+            className={classes.button}
+            onClick={() => alert('save changes button')}
+            variant="contained"
+            color="primary"
+            size="large"
+            
+          >
+            Zapisz zmiany
+          </Button>
+        </Paper>
+      </Grid>
 
-        <Grid item>
-          <Typography variant="h4">Preferencje</Typography>
-        </Grid>
-        <Grid item>
+      <Grid item xs={12} md={6}>
+        <Paper className={classes.paper}>
+          <Typography variant="h4" gutterBottom className={classes.title}>
+            <SearchIcon />
+            Preferencje
+          </Typography>
+
           <TableContainer>
             <Table>
               <TableBody>
@@ -187,7 +204,7 @@ const SettingsPage = () => {
                           />
                         }
                         label="Kobiety"
-                        style={{ margin: '0 40px 0 0' }}
+                        style={{ marginRight: '20px' }}
                       />
                       <FormControlLabel
                         control={
@@ -239,21 +256,20 @@ const SettingsPage = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        </Grid>
 
-        <Grid item className={classes.buttonContainer}>
           <Button
+            className={classes.button}
             onClick={() => alert('save changes button')}
             variant="contained"
             color="primary"
             size="large"
-            fullWidth
+           
           >
             Zapisz zmiany
           </Button>
-        </Grid>
+        </Paper>
       </Grid>
-    </Paper>
+    </Grid>
   )
 }
 

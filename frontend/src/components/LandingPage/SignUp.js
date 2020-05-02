@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
         ? theme.palette.grey[50]
         : theme.palette.grey[900],
     backgroundSize: 'cover',
-    backgroundPosition: 'center'
+    backgroundPosition: 'center',
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -55,7 +55,8 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: theme.spacing(4, 0, 2),
+    height: theme.spacing(6)
   }
 }))
 
@@ -88,8 +89,8 @@ export default function SignUp() {
 
   return (
     <Grid container component="main" className={classes.root}>
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={false} sm={6} md={7} className={classes.image} />
+      <Grid item xs={12} sm={6} md={5} component={Paper} elevation={6} square style={{padding: 20}}>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -179,6 +180,7 @@ export default function SignUp() {
             </Grid>
             <Button
               type="submit"
+              size="large"
               fullWidth
               variant="contained"
               color="primary"
