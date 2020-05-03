@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import logo from '../../data/logo.png'
+import logotextWhite from '../../data/logotext_white.png'
 
 import {
   AppBar,
@@ -47,7 +49,8 @@ export default function Navigation() {
       <AppBar>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Logo
+            <img src={logo} height="50px" alt="Loveli logo" onClick={() => setPage(<MeetPage />)} className="logo"/>
+            <img src={logotextWhite} height="42px" alt="Loveli" onClick={() => setPage(<MeetPage />)} className="logo"/>
           </Typography>
 
           {/* Profile creation page (testing) */}

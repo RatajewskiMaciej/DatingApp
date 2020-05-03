@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
+import logotextBlack from '../../data/logotext_black.png'
 
 import {
   Avatar,
   Button,
   TextField,
-  Link,
   Grid,
   Box,
   Typography,
@@ -19,9 +19,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="#">
-        Dating Application
-      </Link>{' '}
+      <img src={logotextBlack} alt="Loveli" style={{height: '1.2em'}}/>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
