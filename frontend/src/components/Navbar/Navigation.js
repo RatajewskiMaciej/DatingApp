@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useLocation, Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import logo from '../../data/logo.png'
 import logotextWhite from '../../data/logotext_white.png'
@@ -8,7 +9,6 @@ import {
   Toolbar,
   Typography,
   IconButton,
-  Container,
   Box,
   Tooltip,
 } from '@material-ui/core'
@@ -19,17 +19,14 @@ import ChatIcon from '@material-ui/icons/Chat'
 import PeopleIcon from '@material-ui/icons/People'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
-import SettingsPage from '../LandingPage/SettingsPage'
-import ChatPage from '../LandingPage/ChatPage'
-import MeetPage from '../LandingPage/MeetPage'
-import ProfilePage from '../LandingPage/ProfilePage'
-import StepsPage from '../LandingPage/StepsPage'
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     position: 'absolute',
     width: '100%',
+  },
+  link: {
+    color: 'inherit',
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -41,69 +38,68 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navigation() {
   const classes = useStyles()
+  const location = useLocation().pathname
 
-  const [page, setPage] = useState(<ProfilePage />)
-
-  const navBar = (
+  return (
     <Box className={classes.root}>
       <AppBar>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            <img src={logo} height="50px" alt="Loveli logo" onClick={() => setPage(<MeetPage />)} className="logo"/>
-            <img src={logotextWhite} height="42px" alt="Loveli" onClick={() => setPage(<MeetPage />)} className="logo"/>
+            <Link to="/" className={classes.link}>
+              <img
+                src={logo}
+                height="50px"
+                alt="Loveli logo"
+                onClick={() => console.log(location)}
+                className="logo"
+              />
+              <img
+                src={logotextWhite}
+                height="42px"
+                alt="Loveli"
+                onClick={() => console.log(location)}
+                className="logo"
+              />
+            </Link>
           </Typography>
 
-          {/* Profile creation page (testing) */}
-          <Tooltip title="Tworzenie konta (TEST)">
-            <IconButton color="inherit" onClick={() => setPage(<StepsPage />)}>
-              <PeopleIcon />
-            </IconButton>
-          </Tooltip>
-
           <Tooltip title="Odkrywaj">
-            <IconButton color="inherit" onClick={() => setPage(<MeetPage />)}>
-              <PeopleIcon />
-            </IconButton>
+            <Link to="/odkrywaj" className={classes.link}>
+              <IconButton color="inherit" onClick={() => console.log(location)}>
+                <PeopleIcon />
+              </IconButton>
+            </Link>
           </Tooltip>
           <Tooltip title="Czat">
-            <IconButton color="inherit" onClick={() => setPage(<ChatPage />)}>
-              <ChatIcon />
-            </IconButton>
+            <Link to="/czat" className={classes.link}>
+              <IconButton color="inherit" onClick={() => console.log(location)}>
+                <ChatIcon />
+              </IconButton>
+            </Link>
           </Tooltip>
           <Tooltip title="Profil">
-            <IconButton
-              color="inherit"
-              onClick={() => setPage(<ProfilePage />)}
-            >
-              <AccountCircleIcon />
-            </IconButton>
+            <Link to="/profil" className={classes.link}>
+              <IconButton color="inherit" onClick={() => console.log(location)}>
+                <AccountCircleIcon />
+              </IconButton>
+            </Link>
           </Tooltip>
           <Tooltip title="Ustawienia">
-            <IconButton
-              color="inherit"
-              onClick={() => setPage(<SettingsPage />)}
-            >
-              <SettingsIcon />
-            </IconButton>
+            <Link to="/ustawienia" className={classes.link}>
+              <IconButton color="inherit" onClick={() => console.log(location)}>
+                <SettingsIcon />
+              </IconButton>
+            </Link>
           </Tooltip>
           <Tooltip title="Wyloguj">
-            <IconButton color="inherit" onClick={() => setPage()}>
-              <ExitToAppIcon />
-            </IconButton>
+            <Link to="/wyloguj" className={classes.link}>
+              <IconButton color="inherit" onClick={() => console.log(location)}>
+                <ExitToAppIcon />
+              </IconButton>
+            </Link>
           </Tooltip>
         </Toolbar>
       </AppBar>
     </Box>
-  )
-
-  return (
-    <>
-      {navBar}
-      <Box className="reactBody">
-        <Container maxWidth={'lg'} disableGutters>
-          {page}
-        </Container>
-      </Box>
-    </>
   )
 }

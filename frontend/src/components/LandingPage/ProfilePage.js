@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ProfilePage = () => {
+const ProfilePage = (props) => {
   const classes = useStyles()
   const theme = useTheme()
 
