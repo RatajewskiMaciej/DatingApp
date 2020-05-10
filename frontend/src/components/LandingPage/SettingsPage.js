@@ -64,14 +64,17 @@ const SettingsPage = () => {
     user.locationPreference ? user.locationPreference : userData.preferences.location
   )
   const [genderPreferenceMale, setGenderPreferenceMale] = useState(
-    user.genderPreferenceMale ? user.genderPreferenceMale : userData.preferences.gender.male
+    user.gender.genderPreferenceMale ? user.gender.genderPreferenceMale : false
   )
   const [genderPreferenceFemale, setGenderPreferenceFemale] = useState(
-    user.genderPreferenceFemale ? user.genderPreferenceFemale : userData.preferences.gender.female
+    user.gender.genderPreferenceFemale ? user.gender.genderPreferenceFemale : false
   )
   const [ageRangePreference, setAgeRangePreference] = useState(
-    user.ageRangePreference ? user.ageRangePreference : userData.preferences.ageRange
+    user.ageRange ? user.ageRange : userData.preferences.ageRange
   )
+
+  console.log(ageRangePreference)
+
   // Preference edit handlers
   const handleAgeRangeSlider = (event, newAgeRange) => {
     setAgeRangePreference(newAgeRange)
@@ -210,7 +213,6 @@ const SettingsPage = () => {
                           <Checkbox
                             checked={genderPreferenceFemale}
                             onChange={handleGenderPreferenceFemale}
-                            value="female"
                             style={{ padding: '0' }}
                           />
                         }
@@ -222,7 +224,6 @@ const SettingsPage = () => {
                           <Checkbox
                             checked={genderPreferenceMale}
                             onChange={handleGenderPreferenceMale}
-                            value="male"
                             style={{ padding: '0' }}
                           />
                         }
