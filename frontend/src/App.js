@@ -31,7 +31,6 @@ function App() {
               <Switch>
                 <Route path="/" exact component={ProfilePage} />
                 <Route path="/start" component={StepsPage} />
-                <Route path="/profil" component={ProfilePage} />
                 <Route path="/odkrywaj" component={MeetPage} />
                 <Route path="/czat" component={ChatPage} />
                 <Route path="/ustawienia" component={SettingsPage} />

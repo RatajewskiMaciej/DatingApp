@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from "react-redux"
+import axios from "axios"
 
 import ImageGrid from './_Parts/ImageGrid'
 import userData from '../../data/userData'
@@ -85,7 +86,7 @@ const ProfilePage = (props) => {
   const age = user.age
   const city = user.city
   const userImages = userData.images
-  const [about, setAbout] = useState(user.about)
+  const [about, setAbout] = useState(user.description)
   const [profileImage, setProfileImage] = useState(
     userData.images.filter((image) => image.profile)[0].src
   )
@@ -113,7 +114,10 @@ const ProfilePage = (props) => {
 
   const headerSection = (
     <Grid container>
-      <IconButton onClick={(event) => toggleEditImage()}>
+      <IconButton onClick={(event) => {
+        toggleEditImage();
+      }
+      }>
         <Badge
           overlap="circle"
           badgeContent="zmień"
@@ -144,7 +148,7 @@ const ProfilePage = (props) => {
           <Typography variant="h5">{`${city}, ${age}`}</Typography>
         </Box>
       </Grid>
-    </Grid>
+    </Grid >
   )
 
   const aboutSection = (
@@ -155,7 +159,7 @@ const ProfilePage = (props) => {
         </Typography>
 
         {editAbout ? (
-          <IconButton style={{ margin: '10px 10px 0 0' }}>
+          <IconButton style={{ margin: '10px 10px 0 0' }} onClick={async () => { await axios.put("http://localhost:5000/user/profile", { description: about }) }}>
             <CheckCircleIcon fontSize="large" style={{ color: 'green' }} />
           </IconButton>
         ) : (
@@ -163,7 +167,8 @@ const ProfilePage = (props) => {
               style={{ margin: '10px 10px 0 0' }}
               color="primary"
               onClick={(event) => {
-                toggleEditAbout()
+                toggleEditAbout();
+                console.log("niedziala")
               }}
             >
               <EditIcon fontSize="large" />

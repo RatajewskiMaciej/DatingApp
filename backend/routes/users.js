@@ -57,6 +57,7 @@ router.put("/profile", auth, async (req, res) => {
     genderPreferenceMale ? user.gender = "male" : null;
     avatar ? user.avatar = avatar : null;
 
+
     user.save()
 
     // console.log(user)

@@ -91,13 +91,6 @@ export default function Navigation() {
               </IconButton>
             </Link>
           </Tooltip>
-          <Tooltip title="Profil">
-            <Link to="/profil" className={classes.link}>
-              <IconButton color="inherit" onClick={() => console.log(location)}>
-                <AccountCircleIcon />
-              </IconButton>
-            </Link>
-          </Tooltip>
           <Tooltip title="Ustawienia">
             <Link to="/ustawienia" className={classes.link}>
               <IconButton color="inherit" onClick={() => console.log(location)}>
