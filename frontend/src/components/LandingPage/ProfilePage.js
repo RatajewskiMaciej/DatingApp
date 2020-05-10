@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useSelector } from "react-redux"
+
 import ImageGrid from './_Parts/ImageGrid'
 import userData from '../../data/userData'
 
@@ -76,13 +78,14 @@ const useStyles = makeStyles((theme) => ({
 const ProfilePage = (props) => {
   const classes = useStyles()
   const theme = useTheme()
+  const user = useSelector(state => state.users.user)
 
   // User profile data
-  const name = userData.username
-  const age = userData.age
-  const city = userData.city
+  const name = user.first_name
+  const age = user.age
+  const city = user.city
   const userImages = userData.images
-  const [about, setAbout] = useState(userData.about)
+  const [about, setAbout] = useState(user.about)
   const [profileImage, setProfileImage] = useState(
     userData.images.filter((image) => image.profile)[0].src
   )
@@ -156,16 +159,16 @@ const ProfilePage = (props) => {
             <CheckCircleIcon fontSize="large" style={{ color: 'green' }} />
           </IconButton>
         ) : (
-          <IconButton
-            style={{ margin: '10px 10px 0 0' }}
-            color="primary"
-            onClick={(event) => {
-              toggleEditAbout()
-            }}
-          >
-            <EditIcon fontSize="large" />
-          </IconButton>
-        )}
+            <IconButton
+              style={{ margin: '10px 10px 0 0' }}
+              color="primary"
+              onClick={(event) => {
+                toggleEditAbout()
+              }}
+            >
+              <EditIcon fontSize="large" />
+            </IconButton>
+          )}
       </Box>
       <br />
       {editAbout ? (
@@ -184,15 +187,15 @@ const ProfilePage = (props) => {
           />
         </ClickAwayListener>
       ) : (
-        <Typography
-          onClick={() => toggleEditAbout()}
-          variant="body1"
-          paragraph
-          style={{ margin: '0px 20px 35px 20px' }}
-        >
-          {about ? about : 'Napisz coś o sobie...'}
-        </Typography>
-      )}
+          <Typography
+            onClick={() => toggleEditAbout()}
+            variant="body1"
+            paragraph
+            style={{ margin: '0px 20px 35px 20px' }}
+          >
+            {about ? about : 'Napisz coś o sobie...'}
+          </Typography>
+        )}
     </Box>
   )
 
@@ -292,8 +295,8 @@ const ProfilePage = (props) => {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowLeft />
               ) : (
-                <KeyboardArrowRight />
-              )}
+                  <KeyboardArrowRight />
+                )}
             </Button>
           }
           backButton={
@@ -305,8 +308,8 @@ const ProfilePage = (props) => {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowRight />
               ) : (
-                <KeyboardArrowLeft />
-              )}
+                  <KeyboardArrowLeft />
+                )}
               Back
             </Button>
           }
@@ -325,19 +328,19 @@ const ProfilePage = (props) => {
           {photoSection}
         </Paper>
       ) : (
-        <Grid container>
-          <Grid item md={6}>
-            <Paper className={classes.paper} style={{ paddingBottom: 5 }}>
-              {headerSection}
-              <Divider />
-              {aboutSection}
-            </Paper>
+          <Grid container>
+            <Grid item md={6}>
+              <Paper className={classes.paper} style={{ paddingBottom: 5 }}>
+                {headerSection}
+                <Divider />
+                {aboutSection}
+              </Paper>
+            </Grid>
+            <Grid item md={6}>
+              <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
+            </Grid>
           </Grid>
-          <Grid item md={6}>
-            <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
-          </Grid>
-        </Grid>
-      )}
+        )}
 
       {galleryModal}
       {editPhotoModal}

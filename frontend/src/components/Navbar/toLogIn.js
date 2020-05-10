@@ -1,224 +1,165 @@
-import React, { useState } from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
-import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import axios from 'axios'
-import { useDispatch } from 'react-redux'
-import { toLogIn } from '../../redux/actions/logActions'
+import React, { useState } from 'react'
+import { Link } from "react-router-dom"
+import { useDispatch } from 'react-redux';
+import logotextBlack from '../../data/logotext_black.png'
+import { getToken } from '../../redux/actions/logActions';
 
+
+import {
+  Avatar,
+  Button,
+  TextField,
+  Grid,
+  Box,
+  Typography,
+  Paper
+} from '@material-ui/core'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import { makeStyles } from '@material-ui/core/styles'
+
+import axios from 'axios'
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <img src={logotextBlack} alt="Loveli" style={{ height: '1.2em' }} />{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  )
+}
 
 const useStyles = makeStyles(theme => ({
-  grow: {
-    flexGrow: 1,
+  image: {
+    backgroundImage:
+      'url(https://isorepublic.com/wp-content/uploads/2018/11/couple-in-love-1100x733.jpg)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light'
+        ? theme.palette.grey[50]
+        : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    width: theme.spacing(7),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
+  paper: {
+    marginTop: theme.spacing(8),
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
-  inputRoot: {
-    color: 'inherit',
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main
   },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: 200,
-    },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3)
   },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-  loginError: {
-    display: "flex",
-    justifyContent: "flex-end",
-    marginRight: "20px",
-    color: "red"
+  submit: {
+    margin: theme.spacing(4, 0, 2),
+    height: theme.spacing(6)
   }
-}));
+}))
 
-export default function PrimarySearchAppBar() {
-  //login user
+export default function SignIn() {
   const dispatch = useDispatch();
-  const [data, setData] = useState({
+
+  const classes = useStyles()
+  // const [registerError, setRegisterError] = useState('')
+  const [loginError, setLoginError] = useState('');
+
+  let [data, setData] = useState({
     email: '',
     password: ''
-  });
-  const [loginError, setLoginError] = useState('')
-  const onClick = async (e) => {
+  })
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/login', data)
+      const res = await axios.post('http://localhost:5000/login', data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       if (res.data.token) {
         localStorage.setItem('usertoken', (res.data.token));
-        dispatch(toLogIn())
+        dispatch(getToken());
       }
       else {
-        setLoginError(res.data.msg)
+        setLoginError(res.data.msg);
       }
-    } catch (error) {
-      setLoginError("Please write correct email or password")
+    }
+    catch (error) {
+      setLoginError("Please write correct email or password");
     }
   };
 
-
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-
-
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
-
   return (
-    <div className={classes.grow}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            (logo)
+    <Grid container component="main" className={classes.root}>
+      <Grid item xs={false} sm={6} md={7} className={classes.image} />
+      <Grid item xs={12} sm={6} md={5} component={Paper} elevation={6} square style={{ padding: 20 }}>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            <div>{loginError ? loginError : 'Zaloguj się!'}</div>
           </Typography>
-          <div className={classes.grow} />
-          <form className={classes.root} noValidate autoComplete="off">
-            <label htmlFor="email">Email: </label>
-            <input
-              type="text"
-              name="email"
-              value={data.email}
-              onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
-            />
-            <label htmlFor="email">   Password: </label>
-            <input
-              type="password"
-              name="password"
-              autoComplete="on"
-              value={data.password}
-              onChange={(e) => { setData({ ...data, [e.target.name]: e.target.value }) }}
-            />
-            <span>    </span>
-            <Button variant="contained" color="primary" onClick={onClick}>Login</Button>
-          </form><br />
-        </Toolbar>
-        <div className={classes.loginError}>{loginError}</div>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </div>
-  );
+          <form className={classes.form} noValidate onSubmit={onSubmit}>
+            <Grid container spacing={2}>
+
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Adres Email"
+                  name="email"
+                  autoComplete="email"
+                  value={data.email}
+                  onChange={e => {
+                    setData({ ...data, [e.target.name]: e.target.value })
+                  }}
+                />{' '}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Haslo"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={data.password}
+                  onChange={e => {
+                    setData({ ...data, [e.target.name]: e.target.value })
+                  }}
+                />{' '}
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              size="large"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Zaloguj
+            </Button>
+            <Box mt={5}>
+              <Link to="/register">Nie masz konto? Zarejestruj sie!!</Link>
+            </Box>
+            <Box mt={5}>
+              <Copyright />
+            </Box>
+          </form>
+        </div>
+      </Grid>
+    </Grid>
+  )
 }

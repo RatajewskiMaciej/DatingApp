@@ -4,6 +4,7 @@ const config = require('config');
 const cors = require('cors');
 const register = require('./routes/register')
 const login = require('./routes/login')
+const user = require("./routes/users")
 const app = express();
 
 
@@ -24,6 +25,7 @@ app.use(cors())
 //routing
 app.use('/register', register)
 app.use('/login', login)
+app.use("/user", user)
 
 
 //Server running

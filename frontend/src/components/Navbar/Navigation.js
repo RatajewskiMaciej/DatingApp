@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
+import { useDispatch } from 'react-redux';
 import logo from '../../data/logo.png'
 import logotextWhite from '../../data/logotext_white.png'
 
@@ -18,6 +19,11 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import ChatIcon from '@material-ui/icons/Chat'
 import PeopleIcon from '@material-ui/icons/People'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+
+import { removeToken } from "../../redux/actions/logActions"
+import setAuthToken from '../../middleware/setAuthToken';
+import { getUser } from "../../redux/actions/usersAction"
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +43,14 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function Navigation() {
+  const dispatch = useDispatch();
+
+  const token = localStorage.getItem("usertoken");
+  useEffect(() => {
+    if (token) setAuthToken(token);
+    dispatch(getUser())
+  }, [token]);
+
   const classes = useStyles()
   const location = useLocation().pathname
 
@@ -92,8 +106,8 @@ export default function Navigation() {
             </Link>
           </Tooltip>
           <Tooltip title="Wyloguj">
-            <Link to="/wyloguj" className={classes.link}>
-              <IconButton color="inherit" onClick={() => console.log(location)}>
+            <Link to="/" className={classes.link}>
+              <IconButton color="inherit" onClick={() => dispatch(removeToken())}>
                 <ExitToAppIcon />
               </IconButton>
             </Link>

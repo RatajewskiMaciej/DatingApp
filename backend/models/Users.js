@@ -8,7 +8,6 @@ const User = new Schema({
   },
   last_name: {
     type: String,
-    required: true
   },
   email: {
     type: String,
@@ -16,12 +15,17 @@ const User = new Schema({
   },
   password: {
     type: String,
-    required: true
   },
   date: {
     type: Date,
     default: Date.now
-  }
+  },
+  avatar: { type: String },
+  description: { type: String },
+  age: { type: Number },
+  gender: { type: String },
+  ageRange: { type: Array },
+  city: { type: String }
 });
 
 module.exports = mongoose.model("User", User)

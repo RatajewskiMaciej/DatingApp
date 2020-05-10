@@ -24,6 +24,9 @@ import userData from '../../data/userData'
 import SearchIcon from '@material-ui/icons/Search'
 import SettingsIcon from '@material-ui/icons/Settings'
 
+import axios from "axios"
+import { useSelector } from "react-redux"
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     margin: theme.spacing(1),
@@ -48,24 +51,26 @@ const useStyles = makeStyles((theme) => ({
 const SettingsPage = () => {
   const classes = useStyles()
 
+  const user = useSelector(state => state.users.user)
+
   // User profile data
   const city = userData.city
-  const [name, setName] = useState(userData.username)
-  const [age, setAge] = useState(userData.age)
-  const [email, setEmail] = useState(userData.email)
+  const [name, setName] = useState(user.first_name)
+  const [age, setAge] = useState(user.age)
+  const [email, setEmail] = useState(user.email)
 
   // User preferences
   const [locationPreference, setLocationPreference] = useState(
-    userData.preferences.location
+    user.locationPreference ? user.locationPreference : userData.preferences.location
   )
   const [genderPreferenceMale, setGenderPreferenceMale] = useState(
-    userData.preferences.gender.male
+    user.genderPreferenceMale ? user.genderPreferenceMale : userData.preferences.gender.male
   )
   const [genderPreferenceFemale, setGenderPreferenceFemale] = useState(
-    userData.preferences.gender.female
+    user.genderPreferenceFemale ? user.genderPreferenceFemale : userData.preferences.gender.female
   )
   const [ageRangePreference, setAgeRangePreference] = useState(
-    userData.preferences.ageRange
+    user.ageRangePreference ? user.ageRangePreference : userData.preferences.ageRange
   )
   // Preference edit handlers
   const handleAgeRangeSlider = (event, newAgeRange) => {
@@ -79,6 +84,12 @@ const SettingsPage = () => {
   }
   const handleLocationPreference = (event) => {
     setLocationPreference(event.target.value)
+  }
+
+
+  const payload = { name, age, email, locationPreference, genderPreferenceFemale, genderPreferenceMale, ageRangePreference }
+  const onClick = async () => {
+    await axios.put("http://localhost:5000/user/profile", payload);
   }
 
   return (
@@ -143,7 +154,7 @@ const SettingsPage = () => {
                   <TableCell>
                     <Link
                       href="#"
-                      onClick={() => alert('send change password email')}
+                    // onClick={() => alert('send change password email')}
                     >
                       <Typography>Zmień hasło</Typography>
                     </Link>
@@ -156,7 +167,7 @@ const SettingsPage = () => {
                   <TableCell>
                     <Link
                       href="#"
-                      onClick={() => alert('delete account popup')}
+                    // onClick={() => alert('delete account popup')}
                     >
                       <Typography>Usuń konto</Typography>
                     </Link>
@@ -167,11 +178,11 @@ const SettingsPage = () => {
           </TableContainer>
           <Button
             className={classes.button}
-            onClick={() => alert('save changes button')}
+            onClick={onClick}
             variant="contained"
             color="primary"
             size="large"
-            
+
           >
             Zapisz zmiany
           </Button>
@@ -259,11 +270,11 @@ const SettingsPage = () => {
 
           <Button
             className={classes.button}
-            onClick={() => alert('save changes button')}
+            onClick={onClick}
             variant="contained"
             color="primary"
             size="large"
-           
+
           >
             Zapisz zmiany
           </Button>
