@@ -53,9 +53,11 @@ router.put("/profile", auth, async (req, res) => {
     email ? user.email = email : null;
     locationPreference ? user.city = locationPreference : null;
     ageRangePreference ? user.ageRange = ageRangePreference : null;
-    genderPreferenceFemale ? user.gender = "female" : null;
-    genderPreferenceMale ? user.gender = "male" : null;
+    genderPreferenceFemale ? user.gender.genderPreferenceFemale = true : user.gender.genderPreferenceFemale = false;
+    genderPreferenceMale ? user.gender.genderPreferenceMale = true : user.gender.genderPreferenceMale = false;
     avatar ? user.avatar = avatar : null;
+
+    console.log(user.ageRangePreference)
 
 
     user.save()

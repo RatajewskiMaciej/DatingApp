@@ -359,12 +359,13 @@ const SettingsPage = () => {
               <InputLabel>Z</InputLabel>
               <Select
                 native
-                value="Wrocław"
+                value={locationPreference}
                 onChange={handleLocationPreference}
+                displayEmpty
                 label="wiek"
               >
-                <option value="local">{city}</option>
-                <option value="global">Cały kraj</option>
+                <option value={city}>{city}</option>
+                <option value="Kraj">Kraj</option>
               </Select>
             </FormControl>
           </Grid>
