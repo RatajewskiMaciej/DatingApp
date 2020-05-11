@@ -15,10 +15,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import questionData from '../../../data/questionData'
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    margin: theme.spacing(1),
-    padding: theme.spacing(2),
-  },
   formLabel: {
     marginBottom: '10px',
   },
@@ -36,13 +32,7 @@ const Questions = (props) => {
   }
 
   return (
-    <Grid
-      container
-      direction="column"
-      justify="space-between"
-      alignItems="stretch"
-      className={classes.paper}
-    >
+    <form>
       {questionData
         .filter((q) => q.id <= props.ids[1] && q.id >= props.ids[0])
         .map((question, index) => (
@@ -76,7 +66,7 @@ const Questions = (props) => {
             </Box>
           </Grid>
         ))}
-    </Grid>
+    </form>
   )
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux'
 import logo from '../../data/logo.png'
 import logotextWhite from '../../data/logotext_white.png'
 
@@ -12,18 +12,17 @@ import {
   IconButton,
   Box,
   Tooltip,
+  Hidden,
 } from '@material-ui/core'
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import SettingsIcon from '@material-ui/icons/Settings'
 import ChatIcon from '@material-ui/icons/Chat'
-import PeopleIcon from '@material-ui/icons/People'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
-import { removeToken } from "../../redux/actions/logActions"
-import setAuthToken from '../../middleware/setAuthToken';
-import { getUser } from "../../redux/actions/usersAction"
-
+import { removeToken } from '../../redux/actions/logActions'
+import setAuthToken from '../../middleware/setAuthToken'
+import { getUser } from '../../redux/actions/usersAction'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,16 +39,19 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  active: {
+    backgroundColor: '#3949a8'
+  }
 }))
 
 export default function Navigation() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const token = localStorage.getItem("usertoken");
+  const token = localStorage.getItem('usertoken')
   useEffect(() => {
-    if (token) setAuthToken(token);
+    if (token) setAuthToken(token)
     dispatch(getUser())
-  }, [token]);
+  }, [token])
 
   const classes = useStyles()
   const location = useLocation().pathname
@@ -67,40 +69,58 @@ export default function Navigation() {
                 onClick={() => console.log(location)}
                 className="logo"
               />
-              <img
-                src={logotextWhite}
-                height="42px"
-                alt="Loveli"
-                onClick={() => console.log(location)}
-                className="logo"
-              />
+
+              <Hidden xsDown>
+                <img
+                  src={logotextWhite}
+                  height="42px"
+                  alt="Loveli"
+                  onClick={() => console.log(location)}
+                  className="logo"
+                />
+              </Hidden>
             </Link>
           </Typography>
 
           <Tooltip title="Odkrywaj">
-            <Link to="/odkrywaj" className={classes.link}>
-              <IconButton color="inherit" onClick={() => console.log(location)}>
-                <PeopleIcon />
+            <Link to="/profil" className={classes.link}>
+              <IconButton
+                color="inherit"
+                onClick={() => console.log(location)}
+                className={location === '/profil' ? classes.active : null}
+              >
+                <AccountCircleIcon />
               </IconButton>
             </Link>
           </Tooltip>
           <Tooltip title="Czat">
             <Link to="/czat" className={classes.link}>
-              <IconButton color="inherit" onClick={() => console.log(location)}>
+              <IconButton
+                color="inherit"
+                onClick={() => console.log(location)}
+                className={location === '/czat' ? classes.active : null}
+              >
                 <ChatIcon />
               </IconButton>
             </Link>
           </Tooltip>
           <Tooltip title="Ustawienia">
             <Link to="/ustawienia" className={classes.link}>
-              <IconButton color="inherit" onClick={() => console.log(location)}>
+              <IconButton
+                color="inherit"
+                onClick={() => console.log(location)}
+                className={location === '/ustawienia' ? classes.active : null}
+              >
                 <SettingsIcon />
               </IconButton>
             </Link>
           </Tooltip>
           <Tooltip title="Wyloguj">
             <Link to="/" className={classes.link}>
-              <IconButton color="inherit" onClick={() => dispatch(removeToken())}>
+              <IconButton
+                color="inherit"
+                onClick={() => dispatch(removeToken())}
+              >
                 <ExitToAppIcon />
               </IconButton>
             </Link>

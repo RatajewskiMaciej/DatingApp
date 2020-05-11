@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useSelector } from "react-redux"
-import axios from "axios"
+import { useSelector } from 'react-redux'
+import axios from 'axios'
 
 import ImageGrid from './_Parts/ImageGrid'
 import userData from '../../data/userData'
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
 const ProfilePage = (props) => {
   const classes = useStyles()
   const theme = useTheme()
-  const user = useSelector(state => state.users.user)
+  const user = useSelector((state) => state.users.user)
 
   // User profile data
   const name = user.first_name
@@ -114,10 +114,11 @@ const ProfilePage = (props) => {
 
   const headerSection = (
     <Grid container>
-      <IconButton onClick={(event) => {
-        toggleEditImage();
-      }
-      }>
+      <IconButton
+        onClick={(event) => {
+          toggleEditImage()
+        }}
+      >
         <Badge
           overlap="circle"
           badgeContent="zmień"
@@ -148,7 +149,7 @@ const ProfilePage = (props) => {
           <Typography variant="h5">{`${city}, ${age}`}</Typography>
         </Box>
       </Grid>
-    </Grid >
+    </Grid>
   )
 
   const aboutSection = (
@@ -159,48 +160,57 @@ const ProfilePage = (props) => {
         </Typography>
 
         {editAbout ? (
-          <IconButton style={{ margin: '10px 10px 0 0' }} onClick={async () => { await axios.put("http://localhost:5000/user/profile", { description: about }) }}>
+          <IconButton
+            style={{ margin: '10px 10px 0 0' }}
+            onClick={async () => {
+              await axios.put('http://localhost:5000/user/profile', {
+                description: about,
+              })
+            }}
+          >
             <CheckCircleIcon fontSize="large" style={{ color: 'green' }} />
           </IconButton>
         ) : (
-            <IconButton
-              style={{ margin: '10px 10px 0 0' }}
-              color="primary"
-              onClick={(event) => {
-                toggleEditAbout();
-                console.log("niedziala")
-              }}
-            >
-              <EditIcon fontSize="large" />
-            </IconButton>
-          )}
+          <IconButton
+            style={{ margin: '10px 10px 0 0' }}
+            color="primary"
+            onClick={(event) => {
+              toggleEditAbout()
+              console.log('niedziala')
+            }}
+          >
+            <EditIcon fontSize="large" />
+          </IconButton>
+        )}
       </Box>
       <br />
       {editAbout ? (
         <ClickAwayListener onClickAway={(event) => toggleEditAbout()}>
-          <TextField
-            name="about"
-            variant="outlined"
-            fullWidth
-            multiline
-            id="firstName"
-            autoFocus
-            value={about}
-            placeholder="Napisz coś o sobie..."
-            onChange={(event) => setAbout(event.target.value)}
-            style={{ marginBottom: '15px' }}
-          />
+          <form>
+            <TextField
+              name="about"
+              variant="outlined"
+              fullWidth
+              multiline
+              id="firstName"
+              autoFocus
+              value={about}
+              placeholder="Napisz coś o sobie..."
+              onChange={(event) => setAbout(event.target.value)}
+              style={{ marginBottom: '15px' }}
+            />
+          </form>
         </ClickAwayListener>
       ) : (
-          <Typography
-            onClick={() => toggleEditAbout()}
-            variant="body1"
-            paragraph
-            style={{ margin: '0px 20px 35px 20px' }}
-          >
-            {about ? about : 'Napisz coś o sobie...'}
-          </Typography>
-        )}
+        <Typography
+          onClick={() => toggleEditAbout()}
+          variant="body1"
+          paragraph
+          style={{ margin: '0px 20px 35px 20px' }}
+        >
+          {about ? about : 'Napisz coś o sobie...'}
+        </Typography>
+      )}
     </Box>
   )
 
@@ -300,8 +310,8 @@ const ProfilePage = (props) => {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowLeft />
               ) : (
-                  <KeyboardArrowRight />
-                )}
+                <KeyboardArrowRight />
+              )}
             </Button>
           }
           backButton={
@@ -313,8 +323,8 @@ const ProfilePage = (props) => {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowRight />
               ) : (
-                  <KeyboardArrowLeft />
-                )}
+                <KeyboardArrowLeft />
+              )}
               Back
             </Button>
           }
@@ -333,19 +343,19 @@ const ProfilePage = (props) => {
           {photoSection}
         </Paper>
       ) : (
-          <Grid container>
-            <Grid item md={6}>
-              <Paper className={classes.paper} style={{ paddingBottom: 5 }}>
-                {headerSection}
-                <Divider />
-                {aboutSection}
-              </Paper>
-            </Grid>
-            <Grid item md={6}>
-              <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
-            </Grid>
+        <Grid container>
+          <Grid item md={6}>
+            <Paper className={classes.paper} style={{ paddingBottom: 5 }}>
+              {headerSection}
+              <Divider />
+              {aboutSection}
+            </Paper>
           </Grid>
-        )}
+          <Grid item md={6}>
+            <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
+          </Grid>
+        </Grid>
+      )}
 
       {galleryModal}
       {editPhotoModal}

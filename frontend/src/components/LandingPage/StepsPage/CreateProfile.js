@@ -16,12 +16,13 @@ const profileImage = userData.images.filter((image) => image.profile)[0].src
 // ***
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(3),
-  },
   avatar: {
     width: theme.spacing(25),
     height: theme.spacing(25),
+    cursor: 'pointer',
+    '&:hover': {
+      opacity: 0.9,
+    },
   },
   imageBox: {
     display: 'flex',
@@ -40,7 +41,10 @@ const useStyles = makeStyles((theme) => ({
   buttonGroup: {
     height: theme.spacing(6),
   },
-  slider: {},
+  slider: {
+    width: '100%',
+    paddingTop: 45,
+  },
 }))
 
 const CreateProfile = () => {
@@ -55,6 +59,7 @@ const CreateProfile = () => {
   const [preferenceMale, setPreferenceMale] = useState(false)
   const [preferenceFemale, setPreferenceFemale] = useState(false)
   const [photoAdd, setPhotoAdd] = useState(false)
+
   // Handlers
   const handleAgeRangeSlider = (event, newAgeRange) => {
     setAgeRangePreference(newAgeRange)
@@ -76,13 +81,34 @@ const CreateProfile = () => {
   }
   // ***
 
+  const ageOptions = (select) => {
+    let options = []
+    for (let i = 18; i < 70; i++) {
+      options.push(
+        <option value={i} key={i}>
+          {i}
+        </option>
+      )
+    }
+    options.push(
+      <option value={70} key={70}>
+        70+
+      </option>
+    )
+    return options
+  }
+
   return (
-    <Box className={classes.paper}>
+    <Box>
       <Box className={classes.imageBox}>
         <Avatar
           alt="Profile picture"
           src={photoAdd ? profileImage : null}
           className={classes.avatar}
+          onClick={() => {
+            alert('Add photo popup')
+            handlePhotoAdd()
+          }}
         />
       </Box>
       <Grid
@@ -103,11 +129,13 @@ const CreateProfile = () => {
             color="primary"
             fullWidth
           >
-            {photoAdd? 'Zmień zdjęcie' : 'Dodaj zdjęcie'}
+            {photoAdd ? 'Zmień zdjęcie' : 'Dodaj zdjęcie'}
           </Button>
         </Grid>
         <Grid item>
-          <Typography variant="h5">Jestem</Typography>
+          <Typography variant="h6" align="center">
+            Jestem
+          </Typography>
           <ButtonGroup fullWidth className={classes.buttonGroup}>
             <Button
               onClick={() => handleGender('male')}
@@ -126,19 +154,23 @@ const CreateProfile = () => {
           </ButtonGroup>
         </Grid>
         <Grid item>
-          <Typography variant="h5">W wieku</Typography>
+          <Typography variant="h6" align="center">
+            W wieku
+          </Typography>
           <Slider
             className={classes.slider}
             value={age}
             onChange={handleAge}
-            valueLabelDisplay="auto"
+            valueLabelDisplay="on"
             aria-labelledby="range-slider"
             min={18}
             max={70}
           />
         </Grid>
         <Grid item>
-          <Typography variant="h5">Chcę poznać</Typography>
+          <Typography variant="h6" align="center">
+            Chcę poznać
+          </Typography>
           <ButtonGroup fullWidth className={classes.buttonGroup}>
             <Button
               onClick={() => handlePreferenceFemale()}
@@ -157,12 +189,14 @@ const CreateProfile = () => {
           </ButtonGroup>
         </Grid>
         <Grid item>
-          <Typography variant="h5">W wieku</Typography>
+          <Typography variant="h6" align="center">
+            W wieku
+          </Typography>
           <Slider
             className={classes.slider}
             value={ageRangePreference}
             onChange={handleAgeRangeSlider}
-            valueLabelDisplay="auto"
+            valueLabelDisplay="on"
             aria-labelledby="range-slider"
             min={18}
             max={70}

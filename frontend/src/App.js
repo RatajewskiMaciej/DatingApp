@@ -29,9 +29,9 @@ function App() {
             <Navigation />
             <Box className="reactBody">
               <Switch>
-                <Route path="/" exact component={ProfilePage} />
                 <Route path="/start" component={StepsPage} />
-                <Route path="/odkrywaj" component={MeetPage} />
+                <Route path="/" exact component={MeetPage} />
+                <Route path="/profil" component={ProfilePage} />
                 <Route path="/czat" component={ChatPage} />
                 <Route path="/ustawienia" component={SettingsPage} />
               </Switch>

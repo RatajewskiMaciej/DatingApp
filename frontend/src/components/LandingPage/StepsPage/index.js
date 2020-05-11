@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Questions from './Questions'
 import CreateProfile from './CreateProfile'
 
@@ -13,6 +14,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
+  content: {
+    padding: theme.spacing(3),
+  },
+  link: {
+    color: 'inherit',
+    textDecoration: 'none'
+  }
 }))
 
 const StepsPage = () => {
@@ -31,10 +39,12 @@ const StepsPage = () => {
     <Box className={classes.stepsPage}>
       <Container maxWidth="sm">
         <Paper>
-          {activeStep === 0 ? <CreateProfile /> : null}
-          {activeStep === 1 ? <Questions ids={[1, 4]} /> : null}
-          {activeStep === 2 ? <Questions ids={[5, 8]} /> : null}
-          {activeStep === 3 ? <Questions ids={[9, 12]} /> : null}
+          <Box className={classes.content}>
+            {activeStep === 0 ? <CreateProfile /> : null}
+            {activeStep === 1 ? <Questions ids={[1, 4]} /> : null}
+            {activeStep === 2 ? <Questions ids={[5, 8]} /> : null}
+            {activeStep === 3 ? <Questions ids={[9, 12]} /> : null}
+          </Box>
 
           <MobileStepper
             variant="progress"
@@ -42,19 +52,30 @@ const StepsPage = () => {
             activeStep={activeStep}
             position="static"
             nextButton={
-              <Button
-                size="large"
-                onClick={() =>
-                  activeStep === 3 ? alert('Zapisz, przejdz do "Odkrywaj"(MeetPage)') : handleNext()
-                }
-              >
-                {activeStep === 3 ? 'Zapisz' : 'Dalej'}
-                {theme.direction === 'rtl?' ? (
-                  <KeyboardArrowLeft />
-                ) : (
-                  <KeyboardArrowRight />
-                )}
-              </Button>
+              activeStep === 3 ? (
+                <Link className={classes.link} to="/">
+                  <Button
+                    size="large"
+                    onClick={() => alert('zapisz formularz')}
+                  >
+                    Zapisz
+                    {theme.direction === 'rtl?' ? (
+                      <KeyboardArrowLeft />
+                    ) : (
+                      <KeyboardArrowRight />
+                    )}
+                  </Button>
+                </Link>
+              ) : (
+                <Button size="large" onClick={() => handleNext()}>
+                  Dalej
+                  {theme.direction === 'rtl?' ? (
+                    <KeyboardArrowLeft />
+                  ) : (
+                    <KeyboardArrowRight />
+                  )}
+                </Button>
+              )
             }
             backButton={
               <Button
