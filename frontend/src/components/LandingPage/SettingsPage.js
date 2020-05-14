@@ -161,7 +161,6 @@ const SettingsPage = () => {
                 autoComplete="fname"
                 fullWidth
                 label="Imię"
-                autoFocus
               />
             </Grid>
             <Grid item>
@@ -189,7 +188,6 @@ const SettingsPage = () => {
                 variant="outlined"
                 fullWidth
                 label="Adres email"
-                autoFocus
               />
             </Grid>
           </Grid>
@@ -242,8 +240,7 @@ const SettingsPage = () => {
               onClick={() => setMenu('main')}
             >
               <Link
-                href="#"
-                // onClick={() => alert('send change password email')}
+              // onClick={() => alert('send change password email')}
               >
                 <Typography>Ustawienia podstawowe</Typography>
               </Link>
@@ -257,8 +254,7 @@ const SettingsPage = () => {
               onClick={() => setMenu('pass')}
             >
               <Link
-                href="#"
-                // onClick={() => alert('send change password email')}
+              // onClick={() => alert('send change password email')}
               >
                 <Typography>Zmień hasło</Typography>
               </Link>
@@ -276,21 +272,20 @@ const SettingsPage = () => {
               <Box style={{ display: 'flex' }}>
                 <Link
                   color="secondary"
-                  href="#"
                   onClick={() => alert('delete account popup')}
                 >
                   <Typography>Tak</Typography>
                 </Link>
                 <span> / </span>
-                <Link color="primary" href="#">
+                <Link color="primary">
                   <Typography>Anuluj</Typography>
                 </Link>
               </Box>
             </>
           ) : (
             <Link
-              href="#"
-              // onClick={() => alert('delete account popup')}
+
+            // onClick={() => alert('delete account popup')}
             >
               <Typography>Usuń konto</Typography>
             </Link>
@@ -384,6 +379,55 @@ const SettingsPage = () => {
     </Paper>
   )
 
+  const feedback = (
+    <Paper className={classes.paper}>
+      <Typography variant="h4" className={classes.title}>
+        Feedback
+      </Typography>
+
+      <form>
+        <TextField
+          value={null}
+          name="feedback"
+          id="feedback"
+          onChange={(event) => setName(event.target.value)}
+          variant="outlined"
+          fullWidth
+          label="Zgłoś błąd lub zadaj pytanie..."
+          multiline
+          rows={4}
+        />
+      </form>
+
+      <Button
+        className={classes.button}
+        onClick={onClick}
+        variant="contained"
+        color="primary"
+        size="large"
+      >
+        Wyślij
+      </Button>
+    </Paper>
+  )
+
+  const blocked = (
+    <Paper className={classes.paper}>
+      <Typography variant="h4" className={classes.title}>
+        Odblokuj
+      </Typography>
+
+      <Box className={classes.clickableRow} onClick={() => alert('Odblokowano!')}>
+        <Link
+          // onClick={() => alert('send change password email')}
+        >
+          <Typography>Aga, Wrocław, 21</Typography>
+        </Link>
+      </Box>
+      <Divider />
+    </Paper>
+  )
+
   const questionSettings = (
     <Paper className={classes.paper}>
       <Questions ids={[1, 12]} />
@@ -404,23 +448,21 @@ const SettingsPage = () => {
       <Grid item xs={12} md={6}>
         {accountSettings}
         {preferenceSettings}
+        {feedback}
+        {blocked}
       </Grid>
       <Grid item xs={12} md={6}>
         {questionSettings}
       </Grid>
     </Grid>
   ) : (
-    <Grid container>
-      <Grid item xs={12} md={6}>
-        {accountSettings}
-      </Grid>
-      <Grid item xs={12} md={6}>
-        {preferenceSettings}
-      </Grid>
-      <Grid item xs={12} md={6}>
-        {questionSettings}
-      </Grid>
-    </Grid>
+    <Box>
+      {accountSettings}
+      {preferenceSettings}
+      {feedback}
+      {blocked}
+      {questionSettings}
+    </Box>
   )
 }
 

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import axios from 'axios'
 
 import ImageGrid from './_Parts/ImageGrid'
+import Popup from './_Parts/Popup'
 import userData from '../../data/userData'
 
 import {
@@ -20,7 +21,6 @@ import {
   Modal,
   useMediaQuery,
   MobileStepper,
-  Container,
 } from '@material-ui/core'
 
 import EditIcon from '@material-ui/icons/Edit'
@@ -46,19 +46,16 @@ const useStyles = makeStyles((theme) => ({
     opacity: '0.5',
     textAlign: 'center',
   },
-  modal: {
+  gallery: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  modalContent: {
+  galleryContent: {
     padding: theme.spacing(1),
   },
   galleryUi: {
     color: theme.palette.background.paper,
-  },
-  modalUi: {
-    color: theme.palette.text.primary,
   },
   clickableImage: {
     '&:hover': {
@@ -229,9 +226,11 @@ const ProfilePage = (props) => {
   )
 
   const editPhotoModal = (
-    <Modal open={editPhoto} className={classes.modal}>
-      <Container maxWidth="md">
-        <Paper className={classes.modalContent}>
+    <Popup
+      paper
+      open={editPhoto}
+      content={
+        <>
           <ImageGrid
             colNumLg={4}
             mapSource={userImages}
@@ -253,18 +252,18 @@ const ProfilePage = (props) => {
           >
             Dodaj zdjęcie
           </Button>
-        </Paper>
-      </Container>
-    </Modal>
+        </>
+      }
+    />
   )
 
   const galleryModal = (
     <Modal
       open={gallery}
       style={{ backgroundColor: 'black' }}
-      className={classes.modal}
+      className={classes.gallery}
     >
-      <Box className={classes.modalContent}>
+      <Box className={classes.galleryContent}>
         <Box>
           <IconButton
             onClick={() => {

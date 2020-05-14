@@ -1,13 +1,8 @@
 import React from 'react'
 
-import {
-  Avatar,
-  Typography,
-  Divider,
-  Button,
-  Box,
-} from '@material-ui/core'
+import { Avatar, Typography, Divider, Button, Box, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 //Dummy user data
 import chatData from '../../../data/chatData'
@@ -17,7 +12,7 @@ const profileImage = userData.images.filter((image) => image.profile)[0].src
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    overflow: 'auto',
   },
   button: {
     justifyContent: 'flex-start',
@@ -38,14 +33,17 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: 'ellipsis',
     textAlign: 'left',
   },
+  searchBox: {
+    height: '70px',
+  },
 }))
 
-const ChatLeftPane = () => {
+const ChatLeftPane = (props) => {
   const classes = useStyles()
 
   const button = (
     <>
-      <Button className={classes.button}>
+      <Button className={classes.button} onClick={props.onClick}>
         <Avatar src={profileImage} className={classes.avatar} />
         <Box className={classes.textWrapper}>
           <Typography noWrap className={classes.buttonText}>
@@ -60,19 +58,25 @@ const ChatLeftPane = () => {
     </>
   )
 
+  const search = (
+    <>
+      <Box className={classes.searchBox}></Box>
+      <Divider />
+    </>
+  )
+
   return (
     <Box className={classes.root}>
-      <Box>
-        {button}
-        {button}
-        {button}
-        {button}
-        {button}
-        {button}
-        {button}
-        {button}
-        {button}
-      </Box>
+      {search}
+      {button}
+      {button}
+      {button}
+      {button}
+      {button}
+      {button}
+      {button}
+      {button}
+      {button}
     </Box>
   )
 }

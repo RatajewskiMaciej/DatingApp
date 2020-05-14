@@ -39,7 +39,7 @@ const ChatPage = () => {
       <Box>
         <Paper className={classes.paperRight}>
           <ChatHeader onClick={handleExtend} />
-          <ChatLeftPane />
+          <ChatLeftPane onClick={handleExtend}/>
         </Paper>
       </Box>
     ) : (
@@ -56,7 +56,7 @@ const ChatPage = () => {
       <Hidden smDown>
         <Grid item md={4}>
           <Paper className={classes.paperLeft}>
-            <ChatLeftPane />
+            <ChatLeftPane onClick={handleExtend}/>
           </Paper>
         </Grid>
       </Hidden>
