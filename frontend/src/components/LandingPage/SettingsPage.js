@@ -28,8 +28,14 @@ import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    margin: theme.spacing(1),
-    padding: theme.spacing(5),
+    [theme.breakpoints.up('sm')]: {
+      margin: theme.spacing(1),
+      padding: theme.spacing(5),
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: '2vh',
+    },
+    overflow: 'hidden',
   },
   title: {
     padding: theme.spacing(2),
@@ -417,9 +423,12 @@ const SettingsPage = () => {
         Odblokuj
       </Typography>
 
-      <Box className={classes.clickableRow} onClick={() => alert('Odblokowano!')}>
+      <Box
+        className={classes.clickableRow}
+        onClick={() => alert('Odblokowano!')}
+      >
         <Link
-          // onClick={() => alert('send change password email')}
+        // onClick={() => alert('send change password email')}
         >
           <Typography>Aga, Wrocław, 21</Typography>
         </Link>

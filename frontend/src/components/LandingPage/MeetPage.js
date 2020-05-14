@@ -10,8 +10,10 @@ import { Paper } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    margin: theme.spacing(1),
-    padding: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      margin: theme.spacing(1),
+      padding: theme.spacing(2),
+    },
   },
   matchScoreHigh: {
     color: theme.palette.secondary.light,
@@ -29,7 +31,8 @@ const MeetPage = (props) => {
 
   const getMatchClass = () => {
     if (userData.match >= 80) return classes.matchScoreHigh
-    if (userData.match >= 50 && userData.match <80) return classes.matchScoreMid
+    if (userData.match >= 50 && userData.match < 80)
+      return classes.matchScoreMid
     if (userData.match < 50) return classes.matchScoreLow
   }
 
@@ -39,7 +42,9 @@ const MeetPage = (props) => {
         tileBar
         title={`${userData.username}, ${userData.age}`}
         subtitle={
-          <span className={getMatchClass()}>{`Dopasowanie ${userData.match}%`}</span>
+          <span
+            className={getMatchClass()}
+          >{`Dopasowanie ${userData.match}%`}</span>
         }
         mapSource={userData.images}
         tileClick={(event) => alert('go to profile')}

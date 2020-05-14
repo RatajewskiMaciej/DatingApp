@@ -6,7 +6,7 @@ import { Box } from '@material-ui/core'
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import { useSelector } from "react-redux"
+import { useSelector } from 'react-redux'
 
 import Navigation from './components/Navbar/Navigation'
 import SettingsPage from './components/LandingPage/SettingsPage'
@@ -18,13 +18,12 @@ import ToLogIn from './components/Navbar/toLogIn'
 import SignUp from './components/LandingPage/SignUp'
 
 function App() {
-  const login = useSelector(state => state.log.tokenLogin)
+  const login = useSelector((state) => state.log.tokenLogin)
   return (
-
     <Router>
-      {login ?
+      <CssBaseline />
+      {login ? (
         <>
-          <CssBaseline />
           <Box className="App">
             <Navigation />
             <Box className="reactBody">
@@ -38,12 +37,12 @@ function App() {
             </Box>
           </Box>
         </>
-        :
+      ) : (
         <>
           <Route path="/" exact component={ToLogIn} />
           <Route path="/register" exact component={SignUp} />
         </>
-      }
+      )}
     </Router>
   )
 }

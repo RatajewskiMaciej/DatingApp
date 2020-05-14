@@ -38,7 +38,7 @@ const ChatPage = () => {
     extend ? (
       <Box>
         <Paper className={classes.paperRight}>
-          <ChatHeader onClick={handleExtend} />
+          {/* <ChatHeader onClick={handleExtend} /> */}
           <ChatLeftPane onClick={handleExtend}/>
         </Paper>
       </Box>

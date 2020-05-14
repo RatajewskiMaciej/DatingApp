@@ -38,11 +38,16 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
+  container: {
+    padding: 20,
+    display: 'flex',
+    alignItems: 'center'
+  },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(1),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   avatar: {
     margin: theme.spacing(1),
@@ -88,7 +93,7 @@ export default function SignUp() {
   return (
     <Grid container component="main" className={classes.root}>
       <Grid item xs={false} sm={6} md={7} className={classes.image} />
-      <Grid item xs={12} sm={6} md={5} component={Paper} elevation={6} square style={{padding: 20}}>
+      <Grid item xs={12} sm={6} md={5} component={Paper} elevation={6} square className={classes.container}>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />

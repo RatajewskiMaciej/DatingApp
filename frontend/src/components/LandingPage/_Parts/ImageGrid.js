@@ -16,7 +16,6 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '800px',
     padding: theme.spacing(0.5),
   },
   gridListTile: {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -78,9 +78,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const MessageList = () => {
+const MessageList = ({ messages }) => {
   const classes = useStyles()
 
+  // Scroll to bottom
+  const endRef = useRef(null);
+  useEffect(() => {
+    endRef.current.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Create chat bubbles
   const bubblePicker = (senderId) => {
     if (senderId === 'Ja') return classes.bubbleRight
     return classes.bubbleLeft
@@ -105,7 +112,7 @@ const MessageList = () => {
           </Box>
         </Box>
       ))}
-      <div style={{ clear: 'both' }} />
+      <div ref={endRef} style={{ clear: 'both' }} />
     </Box>
   )
 }

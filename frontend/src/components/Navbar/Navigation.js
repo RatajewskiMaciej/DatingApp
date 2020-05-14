@@ -13,6 +13,7 @@ import {
   Box,
   Tooltip,
   Hidden,
+  Badge,
 } from '@material-ui/core'
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
@@ -40,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   active: {
-    backgroundColor: '#3949a8'
-  }
+    backgroundColor: '#3949a8',
+  },
 }))
 
 export default function Navigation() {
@@ -66,7 +67,6 @@ export default function Navigation() {
                 src={logo}
                 height="50px"
                 alt="Loveli logo"
-                onClick={() => console.log(location)}
                 className="logo"
               />
 
@@ -75,7 +75,6 @@ export default function Navigation() {
                   src={logotextWhite}
                   height="42px"
                   alt="Loveli"
-                  onClick={() => console.log(location)}
                   className="logo"
                 />
               </Hidden>
@@ -86,7 +85,6 @@ export default function Navigation() {
             <Link to="/profil" className={classes.link}>
               <IconButton
                 color="inherit"
-                onClick={() => console.log(location)}
                 className={location === '/profil' ? classes.active : null}
               >
                 <AccountCircleIcon />
@@ -97,10 +95,18 @@ export default function Navigation() {
             <Link to="/czat" className={classes.link}>
               <IconButton
                 color="inherit"
-                onClick={() => console.log(location)}
                 className={location === '/czat' ? classes.active : null}
               >
-                <ChatIcon />
+                <Badge
+                  badgeContent={4}
+                  color="secondary"
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                >
+                  <ChatIcon />
+                </Badge>
               </IconButton>
             </Link>
           </Tooltip>
@@ -108,7 +114,6 @@ export default function Navigation() {
             <Link to="/ustawienia" className={classes.link}>
               <IconButton
                 color="inherit"
-                onClick={() => console.log(location)}
                 className={location === '/ustawienia' ? classes.active : null}
               >
                 <SettingsIcon />

@@ -34,11 +34,51 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    margin: theme.spacing(1),
+    [theme.breakpoints.up('sm')]: {
+      margin: theme.spacing(1),
+    },
+    overflow: 'hidden',
   },
   avatar: {
-    width: theme.spacing(25),
-    height: theme.spacing(25),
+    [theme.breakpoints.down('xs')]: {
+      width: '35vw',
+      height: '35vw',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(25),
+      height: theme.spacing(25),
+    },
+  },
+  headerSection: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  header: {
+    width: '100%',
+  },
+  headerTextUp: {
+    textOverflow: 'ellipsis',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '9vw',
+    },
+  },
+  headerTextDown: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '5vw',
+    },
+  },
+  aboutSection: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  aboutHeader: {
+    padding: '20px 20px 0px 20px',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '8vw',
+    },
+  },
+  aboutField: {
+    margin: theme.spacing(1),
   },
   addIcon: {
     color: 'white',
@@ -110,7 +150,7 @@ const ProfilePage = (props) => {
   }
 
   const headerSection = (
-    <Grid container>
+    <Box className={classes.headerSection}>
       <IconButton
         onClick={(event) => {
           toggleEditImage()
@@ -133,26 +173,22 @@ const ProfilePage = (props) => {
         </Badge>
       </IconButton>
 
-      <Grid item style={{ position: 'relative' }}>
-        <Box
-          style={{
-            position: 'absolute',
-            top: '50%',
-            transform: 'translate(0,-50%)',
-            marginLeft: '15px',
-          }}
-        >
-          <Typography variant="h3">{name}</Typography>
-          <Typography variant="h5">{`${city}, ${age}`}</Typography>
-        </Box>
-      </Grid>
-    </Grid>
+      <Box className={classes.header}>
+        <Typography className={classes.headerTextUp} variant="h3">
+          {name}
+        </Typography>
+        <Typography
+          className={classes.headerTextDown}
+          variant="h5"
+        >{`${city}, ${age}`}</Typography>
+      </Box>
+    </Box>
   )
 
   const aboutSection = (
     <Box>
-      <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography variant="h4" style={{ padding: '20px 20px 10px 30px' }}>
+      <Box className={classes.aboutSection}>
+        <Typography variant="h4" className={classes.aboutHeader}>
           O mnie
         </Typography>
 
@@ -180,23 +216,23 @@ const ProfilePage = (props) => {
           </IconButton>
         )}
       </Box>
-      <br />
       {editAbout ? (
         <ClickAwayListener onClickAway={(event) => toggleEditAbout()}>
-          <form>
-            <TextField
-              name="about"
-              variant="outlined"
-              fullWidth
-              multiline
-              id="firstName"
-              autoFocus
-              value={about}
-              placeholder="Napisz coś o sobie..."
-              onChange={(event) => setAbout(event.target.value)}
-              style={{ marginBottom: '15px' }}
-            />
-          </form>
+          <Box className={classes.aboutField}>
+            <form>
+              <TextField
+                name="about"
+                variant="outlined"
+                fullWidth
+                multiline
+                id="firstName"
+                autoFocus
+                value={about}
+                placeholder="Napisz coś o sobie..."
+                onChange={(event) => setAbout(event.target.value)}
+              />
+            </form>
+          </Box>
         </ClickAwayListener>
       ) : (
         <Typography

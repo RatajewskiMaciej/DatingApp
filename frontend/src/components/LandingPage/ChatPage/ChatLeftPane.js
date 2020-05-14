@@ -1,8 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import { Avatar, Typography, Divider, Button, Box, TextField } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import {
+  Avatar,
+  Typography,
+  Divider,
+  Button,
+  Box,
+  InputBase,
+} from '@material-ui/core'
+import { fade, makeStyles } from '@material-ui/core/styles'
+import SearchIcon from '@material-ui/icons/Search'
+import ClearIcon from '@material-ui/icons/Clear'
 
 //Dummy user data
 import chatData from '../../../data/chatData'
@@ -33,13 +41,40 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: 'ellipsis',
     textAlign: 'left',
   },
-  searchBox: {
+  searchContainer: {
     height: '70px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  search: {
+    width: '90%',
+    padding: '10px',
+    display: 'flex',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.black, 0.1),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.black, 0.075),
+    },
+  },
+  searchIcon: {
+    height: '100%',
+  },
+  clearIcon: {
+    height: '100%',
+    cursor: 'pointer',
+  },
+  searchInput: {
+    height: '100%',
+    flexGrow: 1,
   },
 }))
 
 const ChatLeftPane = (props) => {
   const classes = useStyles()
+  const [search, setSearch] = useState()
+  // TO DO SEARCH FILTERING
 
   const button = (
     <>
@@ -58,16 +93,33 @@ const ChatLeftPane = (props) => {
     </>
   )
 
-  const search = (
+  const searchBox = (
     <>
-      <Box className={classes.searchBox}></Box>
+      <Box className={classes.searchContainer}>
+        <Box className={classes.search}>
+          <SearchIcon className={classes.searchIcon} />
+          <InputBase
+            value={search}
+            className={classes.searchInput}
+            placeholder="Szukaj..."
+            inputProps={{ 'aria-label': 'search' }}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+          {search ? (
+            <ClearIcon
+              className={classes.clearIcon}
+              onClick={() => setSearch('')}
+            />
+          ) : null}
+        </Box>
+      </Box>
       <Divider />
     </>
   )
 
   return (
     <Box className={classes.root}>
-      {search}
+      {searchBox}
       {button}
       {button}
       {button}
