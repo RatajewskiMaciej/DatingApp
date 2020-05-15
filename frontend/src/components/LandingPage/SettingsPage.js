@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Typography,
   Paper,
@@ -23,8 +23,9 @@ import Questions from './StepsPage/Questions'
 import SearchIcon from '@material-ui/icons/Search'
 import SettingsIcon from '@material-ui/icons/Settings'
 
+import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
-import { useSelector } from 'react-redux'
+import { getUser } from '../../redux/actions/usersAction'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -65,38 +66,37 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const SettingsPage = () => {
+  const dispatch = useDispatch()
   const classes = useStyles()
   const theme = useTheme()
+  useEffect(() => {
+    dispatch(getUser())
+  }, [getUser])
 
   const user = useSelector((state) => state.users.user)
+  console.log(user.gender)
 
   // User profile data
   const city = userData.city
-  const [name, setName] = useState(user.first_name)
-  const [age, setAge] = useState(user.age)
-  const [email, setEmail] = useState(user.email)
+  const [name, setName] = useState("")
+  const [age, setAge] = useState("")
+  const [email, setEmail] = useState("")
 
   // User preferences
-  const [locationPreference, setLocationPreference] = useState(
-    user.locationPreference
-      ? user.locationPreference
-      : userData.preferences.location
-  )
-  const [genderPreferenceMale, setGenderPreferenceMale] = useState(
-    user.genderPreferenceMale
-      ? user.genderPreferenceMale
-      : userData.preferences.gender.male
-  )
-  const [genderPreferenceFemale, setGenderPreferenceFemale] = useState(
-    user.genderPreferenceFemale
-      ? user.genderPreferenceFemale
-      : userData.preferences.gender.female
-  )
-  const [ageRangePreference, setAgeRangePreference] = useState(
-    user.ageRangePreference
-      ? user.ageRangePreference
-      : userData.preferences.ageRange
-  )
+  const [locationPreference, setLocationPreference] = useState("Kraj")
+  const [genderPreferenceMale, setGenderPreferenceMale] = useState(true)
+  const [genderPreferenceFemale, setGenderPreferenceFemale] = useState(true)
+  const [ageRangePreference, setAgeRangePreference] = useState([22, 50])
+
+  useEffect(() => {
+    setLocationPreference(user.city)
+    // setGenderPreferenceMale(user.gender.genderPreferenceMale)
+    setName(user.first_name)
+    setAge(user.age)
+    setEmail(user.email)
+    // setGenderPreferenceFemale(user.gender.genderPreferenceFemale)
+    setAgeRangePreference(user.ageRange)
+  }, [user])
 
   // Preference edit handlers
   const handleAgeRangeSlider = (event, newAgeRange) => {
@@ -314,74 +314,81 @@ const SettingsPage = () => {
 
   const preferenceSettings = (
     <Paper className={classes.paper}>
-      <Typography variant="h4" gutterBottom className={classes.title}>
-        <SearchIcon />
+      {user ?
+        <>
+          <Typography variant="h4" gutterBottom className={classes.title}>
+            <SearchIcon />
         Preferencje
       </Typography>
 
-      <form>
-        <Grid container spacing={2} alignItems="stretch" direction="column">
-          <Grid item>
-            <ButtonGroup fullWidth className={classes.buttonGroup}>
-              <Button
-                value="male"
-                onClick={() => handleGenderPreferenceMale()}
-                color={genderPreferenceMale === 'male' ? 'primary' : null}
-                variant={genderPreferenceMale === 'male' ? 'contained' : null}
-              >
-                Mężczyzni
+          <form>
+            <Grid container spacing={2} alignItems="stretch" direction="column">
+              <Grid item>
+                <ButtonGroup fullWidth className={classes.buttonGroup}>
+                  <Button
+                    value="male"
+                    onClick={() => setGenderPreferenceMale(true)}
+                    color={genderPreferenceMale === 'male' ? 'primary' : null}
+                    variant={genderPreferenceMale === 'male' ? 'contained' : null}
+                  >
+                    Mężczyzni
               </Button>
-              <Button
-                value="female"
-                onClick={() => handleGenderPreferenceFemale()}
-                color={genderPreferenceFemale === 'female' ? 'secondary' : null}
-                variant={
-                  genderPreferenceFemale === 'female' ? 'contained' : null
-                }
-              >
-                Kobiety
+                  <Button
+                    value="female"
+                    onClick={() => setGenderPreferenceFemale(!genderPreferenceFemale)}
+                    color={genderPreferenceFemale === 'female' ? 'secondary' : null}
+                    variant={
+                      genderPreferenceFemale === 'female' ? 'contained' : null
+                    }
+                  >
+                    Kobiety
               </Button>
-            </ButtonGroup>
-          </Grid>
-          <Grid item>
-            <Typography>Wiek:</Typography>
-            <Slider
-              value={ageRangePreference}
-              onChange={handleAgeRangeSlider}
-              valueLabelDisplay="on"
-              aria-labelledby="range-slider"
-              style={{ width: '100%', paddingTop: '60px' }}
-              min={18}
-              max={70}
-            />
-          </Grid>
-          <Grid item>
-            <FormControl variant="outlined" style={{ width: '100%' }}>
-              <InputLabel>Z</InputLabel>
-              <Select
-                native
-                value={locationPreference}
-                onChange={handleLocationPreference}
-                displayEmpty
-                label="wiek"
-              >
-                <option value={city}>{city}</option>
-                <option value="Kraj">Kraj</option>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-      </form>
+                </ButtonGroup>
+              </Grid>
+              <Grid item>
+                <Typography>Wiek:</Typography>
+                <Slider
+                  value={ageRangePreference}
+                  onChange={(e) => {
+                    console.log(e.target)
+                    setAgeRangePreference(e.target.value)
+                  }}
+                  valueLabelDisplay="on"
+                  aria-labelledby="range-slider"
+                  style={{ width: '100%', paddingTop: '60px' }}
+                  min={18}
+                  max={70}
+                />
+              </Grid>
+              <Grid item>
+                <FormControl variant="outlined" style={{ width: '100%' }}>
+                  <InputLabel>Z</InputLabel>
+                  <Select
+                    native
+                    value={locationPreference}
+                    onChange={handleLocationPreference}
+                    displayEmpty
+                    label="wiek"
+                  >
+                    <option value={city}>{}</option>
+                    <option value="Kraj">Kraj</option>
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </form>
 
-      <Button
-        className={classes.button}
-        onClick={onClick}
-        variant="contained"
-        color="primary"
-        size="large"
-      >
-        Zapisz zmiany
+          <Button
+            className={classes.button}
+            onClick={onClick}
+            variant="contained"
+            color="primary"
+            size="large"
+          >
+            Zapisz zmiany
       </Button>
+        </>
+        : null}
     </Paper>
   )
 
@@ -455,17 +462,21 @@ const SettingsPage = () => {
   return useMediaQuery(theme.breakpoints.up('md')) ?
     (
       <Grid container>
-        <Grid item xs={12} md={6}>
-          {accountSettings}
-          {preferenceSettings}
-          {feedback}
-          {blocked}
-        </Grid>
-        <Grid item xs={12} md={6}>
-          {questionSettings}
-        </Grid>
+        {user ?
+          <>
+            <Grid item xs={12} md={6}>
+              {accountSettings}
+              {preferenceSettings}
+              {feedback}
+              {blocked}
+            </Grid>
+            <Grid item xs={12} md={6}>
+              {questionSettings}
+            </Grid>
+          </>
+          : null}
       </Grid>
-    ) : (
+    ) : (user ?
       <Box>
         {accountSettings}
         {preferenceSettings}
@@ -473,6 +484,7 @@ const SettingsPage = () => {
         {blocked}
         {questionSettings}
       </Box>
+      : null
     )
 }
 

@@ -120,9 +120,7 @@ const ProfilePage = (props) => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getUser())
-
-    // setAbout(user.description)
-    console.log("kiedy?")
+    setProfileImage(user.avatar)
   }, [getUser])
   const user = useSelector((state) => state.users.user)
 
@@ -342,7 +340,7 @@ const ProfilePage = (props) => {
           <Button
             className={classes.galleryUi}
             onClick={() => {
-              setProfileImage(userImages[activeStep])
+              setProfileImage(user.avatars[activeStep])
               setGallery(false)
             }}
           >
@@ -361,7 +359,7 @@ const ProfilePage = (props) => {
         </Box>
         <img
           className={classes.img}
-          src={`http://localhost:5000/${userImages[activeStep]}`}
+          src={`http://localhost:5000/${user.avatar}`}
           alt={`zdjęcie`}
         />
         <MobileStepper
