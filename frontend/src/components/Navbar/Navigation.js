@@ -23,7 +23,6 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
 import { removeToken } from '../../redux/actions/logActions'
 import setAuthToken from '../../middleware/setAuthToken'
-import { getUser } from '../../redux/actions/usersAction'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +50,6 @@ export default function Navigation() {
   const token = localStorage.getItem('usertoken')
   useEffect(() => {
     if (token) setAuthToken(token)
-    dispatch(getUser())
   }, [token])
 
   const classes = useStyles()

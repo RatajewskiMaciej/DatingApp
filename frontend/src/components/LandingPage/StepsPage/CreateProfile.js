@@ -81,22 +81,22 @@ const CreateProfile = () => {
   }
   // ***
 
-  const ageOptions = (select) => {
-    let options = []
-    for (let i = 18; i < 70; i++) {
-      options.push(
-        <option value={i} key={i}>
-          {i}
-        </option>
-      )
-    }
-    options.push(
-      <option value={70} key={70}>
-        70+
-      </option>
-    )
-    return options
-  }
+  // const ageOptions = (select) => {
+  //   let options = []
+  //   for (let i = 18; i < 70; i++) {
+  //     options.push(
+  //       <option value={i} key={i}>
+  //         {i}
+  //       </option>
+  //     )
+  //   }
+  //   options.push(
+  //     <option value={70} key={70}>
+  //       70+
+  //     </option>
+  //   )
+  //   return options
+  // }
 
   return (
     <Box>

@@ -1,5 +1,6 @@
-import React from 'react'
-import ImageGrid from './_Parts/ImageGrid'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from "react-redux"
+import ProfileGallery from './_Parts/ProfileGallery'
 
 //DUMMY USER DATA
 import userData from '../../data/userData'
@@ -7,6 +8,8 @@ import userData from '../../data/userData'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper } from '@material-ui/core'
+
+import { getUsers } from "../../redux/actions/usersAction"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,26 +30,34 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const MeetPage = (props) => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getUsers())
+  }, [getUsers])
   const classes = useStyles()
 
+  const users = useSelector(state => state.users.users)
+
   const getMatchClass = () => {
-    if (userData.match >= 80) return classes.matchScoreHigh
-    if (userData.match >= 50 && userData.match < 80)
+    if (users.match >= 80) return classes.matchScoreHigh
+    if (users.match >= 50 && userData.match < 80)
       return classes.matchScoreMid
-    if (userData.match < 50) return classes.matchScoreLow
+    if (users.match < 50) return classes.matchScoreLow
   }
+
+
 
   return (
     <Paper className={classes.paper}>
-      <ImageGrid
+      <ProfileGallery
         tileBar
-        title={`${userData.username}, ${userData.age}`}
+        title={`${users.first_name}, ${users.age}`}
         subtitle={
           <span
             className={getMatchClass()}
-          >{`Dopasowanie ${userData.match}%`}</span>
+          >{`Dopasowanie ${users.match}%`}</span>
         }
-        mapSource={userData.images}
+        mapSource={users}
         tileClick={(event) => alert('go to profile')}
         iconClick={(event) => {
           event.stopPropagation()

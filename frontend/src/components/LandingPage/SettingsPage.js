@@ -199,44 +199,44 @@ const SettingsPage = () => {
           </Grid>
         </form>
       ) : (
-        <form>
-          <Grid container spacing={2} alignItems="stretch" direction="column">
-            <Grid item>
-              <TextField
-                value={null}
-                name="oldPass"
-                id="oldPass"
-                onChange={null}
-                variant="outlined"
-                fullWidth
-                label="Stare hasło"
-              />
+          <form>
+            <Grid container spacing={2} alignItems="stretch" direction="column">
+              <Grid item>
+                <TextField
+                  value={null}
+                  name="oldPass"
+                  id="oldPass"
+                  onChange={null}
+                  variant="outlined"
+                  fullWidth
+                  label="Stare hasło"
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  value={null}
+                  name="newPass"
+                  id="newPass"
+                  onChange={null}
+                  variant="outlined"
+                  fullWidth
+                  label="Nowe hasło"
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  value={null}
+                  name="repeatPass"
+                  id="repeatPass"
+                  onChange={null}
+                  variant="outlined"
+                  fullWidth
+                  label="Powtórz nowe hasło"
+                />
+              </Grid>
             </Grid>
-            <Grid item>
-              <TextField
-                value={null}
-                name="newPass"
-                id="newPass"
-                onChange={null}
-                variant="outlined"
-                fullWidth
-                label="Nowe hasło"
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                value={null}
-                name="repeatPass"
-                id="repeatPass"
-                onChange={null}
-                variant="outlined"
-                fullWidth
-                label="Powtórz nowe hasło"
-              />
-            </Grid>
-          </Grid>
-        </form>
-      )}
+          </form>
+        )}
 
       <Box className={classes.menu}>
         {menu === 'pass' ? (
@@ -254,20 +254,20 @@ const SettingsPage = () => {
             <Divider />
           </>
         ) : (
-          <>
-            <Box
-              className={classes.clickableRow}
-              onClick={() => setMenu('pass')}
-            >
-              <Link
-              // onClick={() => alert('send change password email')}
+            <>
+              <Box
+                className={classes.clickableRow}
+                onClick={() => setMenu('pass')}
               >
-                <Typography>Zmień hasło</Typography>
-              </Link>
-            </Box>
-            <Divider />
-          </>
-        )}
+                <Link
+                // onClick={() => alert('send change password email')}
+                >
+                  <Typography>Zmień hasło</Typography>
+                </Link>
+              </Box>
+              <Divider />
+            </>
+          )}
 
         <Box className={classes.clickableRow} onClick={() => setConf(!conf)}>
           {conf ? (
@@ -289,13 +289,13 @@ const SettingsPage = () => {
               </Box>
             </>
           ) : (
-            <Link
+              <Link
 
-            // onClick={() => alert('delete account popup')}
-            >
-              <Typography>Usuń konto</Typography>
-            </Link>
-          )}
+              // onClick={() => alert('delete account popup')}
+              >
+                <Typography>Usuń konto</Typography>
+              </Link>
+            )}
         </Box>
         <Divider />
       </Box>
@@ -452,27 +452,28 @@ const SettingsPage = () => {
     </Paper>
   )
 
-  return useMediaQuery(theme.breakpoints.up('md')) ? (
-    <Grid container>
-      <Grid item xs={12} md={6}>
+  return useMediaQuery(theme.breakpoints.up('md')) ?
+    (
+      <Grid container>
+        <Grid item xs={12} md={6}>
+          {accountSettings}
+          {preferenceSettings}
+          {feedback}
+          {blocked}
+        </Grid>
+        <Grid item xs={12} md={6}>
+          {questionSettings}
+        </Grid>
+      </Grid>
+    ) : (
+      <Box>
         {accountSettings}
         {preferenceSettings}
         {feedback}
         {blocked}
-      </Grid>
-      <Grid item xs={12} md={6}>
         {questionSettings}
-      </Grid>
-    </Grid>
-  ) : (
-    <Box>
-      {accountSettings}
-      {preferenceSettings}
-      {feedback}
-      {blocked}
-      {questionSettings}
-    </Box>
-  )
+      </Box>
+    )
 }
 
 export default SettingsPage

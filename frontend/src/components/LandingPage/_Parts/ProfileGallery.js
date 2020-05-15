@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ImageGrid = (props) => {
+const ProfileGallery = (props) => {
   const classes = useStyles()
   const theme = useTheme()
 
@@ -88,7 +88,6 @@ const ImageGrid = (props) => {
                 let formData = new FormData();
                 formData.append("avatar", image, image.name);
                 await axios.put('http://localhost:5000/user/profile', formData)
-                console.log(formData)
               }}
           />
           <GridListTile>
@@ -101,14 +100,14 @@ const ImageGrid = (props) => {
       {props.mapSource.map((image) => (
         <GridListTile key={Math.random()} onClick={props.tileClick}>
           <img
-            src={image}
+            src={image.avatar}
             className={classes.gridListTile}
             alt={image}
           />
 
           {props.tileBar ? (
             <GridListTileBar
-              title={props.title}
+              title={`${image.first_name}, ${image.age}`}
               subtitle={props.subtitle}
               className={classes.titleBar}
               actionIcon={
@@ -127,4 +126,4 @@ const ImageGrid = (props) => {
   )
 }
 
-export default ImageGrid
+export default ProfileGallery

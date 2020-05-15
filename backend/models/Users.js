@@ -36,7 +36,11 @@ const User = new Schema({
     age: { type: Number },
     avatar: { type: String },
     fit: { type: Number }
-  }]
+  }],
+  match: {
+    type: String,
+    default: "80%"
+  }
 });
 
 module.exports = mongoose.model("User", User)

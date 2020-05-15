@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
+import { getUser } from '../../redux/actions/usersAction'
 
 import ImageGrid from './_Parts/ImageGrid'
 import Popup from './_Parts/Popup'
-import userData from '../../data/userData'
 
 import {
   Avatar,
@@ -117,22 +117,26 @@ const ProfilePage = (props) => {
   const classes = useStyles()
   const theme = useTheme()
   const inputRef = useRef();
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getUser())
+
+    // setAbout(user.description)
+    console.log("kiedy?")
+  }, [getUser])
   const user = useSelector((state) => state.users.user)
 
   // User profile data
   const name = user.first_name
   const age = user.age
   const city = user.city
-  const userImages = userData.images
+  const userImages = user.avatars
   const [about, setAbout] = useState(user.description)
   const [profileImage, setProfileImage] = useState(
-    userData.images.filter((image) => image.profile)[0].src
+    user.avatar
   )
 
-  useEffect(() => {
-    setAbout(user.description)
 
-  }, [user])
   // Modal sections
   const [editAbout, setEditAbout] = useState(false)
   const [editPhoto, setEditPhoto] = useState(false)
@@ -146,7 +150,7 @@ const ProfilePage = (props) => {
 
   // Image gallery
   const [activeStep, setActiveStep] = useState(0)
-  const maxSteps = userImages.length
+  const maxSteps = 3
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
   }
@@ -172,7 +176,7 @@ const ProfilePage = (props) => {
         >
           <Avatar
             alt="Profile picture"
-            src={profileImage}
+            src={`http://localhost:5000/${profileImage}`}
             className={classes.avatar}
           />
         </Badge>
@@ -253,17 +257,20 @@ const ProfilePage = (props) => {
   )
 
   const photoSection = (
+
     <ImageGrid
       mapSource={userImages}
       addTile
       alt="Zdjęcie"
-      tileClick={(event) => {
-        setActiveStep(Number(event.target.alt.split(' ').pop()) - 1)
-        setGallery(true)
-      }}
+      tileClick={
+        (event) => {
+          setActiveStep(Number(event.target.alt.split(' ').pop()) - 1)
+          setGallery(true)
+        }}
       colNumMd={2}
       colNumLg={2}
     />
+
   )
 
   const editPhotoModal = (
@@ -276,8 +283,10 @@ const ProfilePage = (props) => {
             colNumLg={4}
             mapSource={userImages}
             alt={'user gallery item'}
-            tileClick={(event) => {
+            tileClick={async (event) => {
+              console.log(event.target.src)
               setProfileImage(event.target.src)
+              await axios.put('http://localhost:5000/user/profile', { avatar: event.target.src })
               toggleEditImage()
             }}
           />
@@ -303,7 +312,7 @@ const ProfilePage = (props) => {
                   const image = e.target.files[0]
                   let formData = new FormData();
                   formData.append("avatar", image, image.name);
-                  const res = await axios.put('http://localhost:5000/user/profile', formData)
+                  await axios.put('http://localhost:5000/user/profile', formData)
                 }}
             />
             Dodaj zdjęcie
@@ -333,9 +342,8 @@ const ProfilePage = (props) => {
           <Button
             className={classes.galleryUi}
             onClick={() => {
-              setProfileImage(userData.images[activeStep].src)
+              setProfileImage(userImages[activeStep])
               setGallery(false)
-
             }}
           >
             Ustaw jako profilowe
@@ -353,8 +361,8 @@ const ProfilePage = (props) => {
         </Box>
         <img
           className={classes.img}
-          src={userImages[activeStep].src}
-          alt={`zdjęcie ${userImages[activeStep].id}`}
+          src={`http://localhost:5000/${userImages[activeStep]}`}
+          alt={`zdjęcie`}
         />
         <MobileStepper
           steps={maxSteps}
@@ -399,7 +407,9 @@ const ProfilePage = (props) => {
   )
 
   return (
-    <Box className={classes.root}>
+
+    <Box className={classes.root
+    } >
       {useMediaQuery(theme.breakpoints.down('sm')) ? (
         <Paper className={classes.paper}>
           {headerSection}
@@ -420,11 +430,13 @@ const ProfilePage = (props) => {
               <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
             </Grid>
           </Grid>
-        )}
+        )
+      }
 
       {galleryModal}
       {editPhotoModal}
-    </Box>
+    </Box >
+
   )
 }
 
