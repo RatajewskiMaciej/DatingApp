@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useRef } from 'react'
+import axios from "axios"
+
 
 import {
   GridList,
@@ -13,6 +15,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import FavoriteIcon from '@material-ui/icons/Favorite'
+import { useDispatch } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,8 +48,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ImageGrid = (props) => {
+  const dispatch = useDispatch()
   const classes = useStyles()
   const theme = useTheme()
+
+  const inputRef = useRef();
+
 
   const xs = useMediaQuery(theme.breakpoints.down('xs'))
   const sm = useMediaQuery(theme.breakpoints.down('sm'))
@@ -69,14 +76,30 @@ const ImageGrid = (props) => {
   return (
     <GridList cellHeight={getImageHeight()} cols={getImageCols()}>
       {props.addTile ? (
+
+
         <Button
-          onClick={(e) => alert('upload image window')} //do dodania
+          onClick={() => inputRef.current.click()}
           style={{ backgroundColor: '#222' }}
         >
+          <input
+            type="file"
+            name="avatar"
+            ref={inputRef}
+            style={{ display: "none" }}
+            onChange={
+              async (e) => {
+                const image = e.target.files[0]
+                let formData = new FormData();
+                formData.append("avatar", image, image.name);
+                const res = await axios.put('http://localhost:5000/user/profile', formData)
+              }}
+          />
           <GridListTile>
             <AddCircleIcon className={classes.addIcon} />
           </GridListTile>
         </Button>
+
       ) : null}
 
       {props.mapSource.map((image) => (
@@ -95,7 +118,7 @@ const ImageGrid = (props) => {
               actionIcon={
                 <IconButton
                   className={classes.favIcon}
-                  onClick={props.iconClick}
+                  onClick={() => { props.iconClick(); console.log("iconButton") }}
                 >
                   <FavoriteIcon />
                 </IconButton>

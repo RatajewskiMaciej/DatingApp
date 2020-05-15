@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 
@@ -116,6 +116,7 @@ const useStyles = makeStyles((theme) => ({
 const ProfilePage = (props) => {
   const classes = useStyles()
   const theme = useTheme()
+  const inputRef = useRef();
   const user = useSelector((state) => state.users.user)
 
   // User profile data
@@ -131,7 +132,7 @@ const ProfilePage = (props) => {
   useEffect(() => {
     setAbout(user.description)
 
-  }, [user.description])
+  }, [user])
   // Modal sections
   const [editAbout, setEditAbout] = useState(false)
   const [editPhoto, setEditPhoto] = useState(false)
@@ -280,18 +281,33 @@ const ProfilePage = (props) => {
               toggleEditImage()
             }}
           />
+
           <Button
             className={classes.modalUploadButton}
             onClick={() => {
-              toggleEditImage()
-              alert('upload image window')
+              toggleEditImage();
+              inputRef.current.click()
+              console.log("dziala")
             }}
             variant="contained"
             color="primary"
             fullWidth
           >
+            <input
+              type="file"
+              name="avatar"
+              ref={inputRef}
+              style={{ display: "none" }}
+              onChange={
+                async (e) => {
+                  const image = e.target.files[0]
+                  let formData = new FormData();
+                  formData.append("avatar", image, image.name);
+                  const res = await axios.put('http://localhost:5000/user/profile', formData)
+                }}
+            />
             Dodaj zdjęcie
-          </Button>
+        </Button>
         </>
       }
     />
@@ -309,6 +325,7 @@ const ProfilePage = (props) => {
             onClick={() => {
               alert('delete forever')
               setGallery()
+
             }}
           >
             <DeleteForeverIcon fontSize="large" className={classes.galleryUi} />
@@ -318,13 +335,18 @@ const ProfilePage = (props) => {
             onClick={() => {
               setProfileImage(userData.images[activeStep].src)
               setGallery(false)
+
             }}
           >
             Ustaw jako profilowe
           </Button>
           <IconButton
             style={{ float: 'right' }}
-            onClick={() => setGallery(false)}
+            onClick={() => {
+              setGallery(false)
+            }
+            }
+
           >
             <CancelIcon fontSize="large" className={classes.galleryUi} />
           </IconButton>
@@ -342,7 +364,9 @@ const ProfilePage = (props) => {
           nextButton={
             <Button
               size="small"
-              onClick={handleNext}
+              onClick={() => {
+                handleNext();
+              }}
               disabled={activeStep === maxSteps - 1}
             >
               Next
@@ -356,7 +380,9 @@ const ProfilePage = (props) => {
           backButton={
             <Button
               size="small"
-              onClick={handleBack}
+              onClick={() => {
+                handleBack();
+              }}
               disabled={activeStep === 0}
             >
               {theme.direction === 'rtl' ? (
@@ -369,7 +395,7 @@ const ProfilePage = (props) => {
           }
         />
       </Box>
-    </Modal>
+    </Modal >
   )
 
   return (

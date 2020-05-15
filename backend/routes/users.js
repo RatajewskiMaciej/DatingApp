@@ -1,5 +1,4 @@
 const express = require('express');
-
 const router = express.Router();
 
 const auth = require('../middleware/auth.js');
@@ -40,7 +39,7 @@ router.get('/user/:id', async (req, res) => {
 
 //update user data
 
-router.put("/profile", auth, async (req, res) => {
+router.put("/profile", [auth, upload], async (req, res) => {
 
   const user = await User.findById(req.user.id)
 
@@ -55,14 +54,10 @@ router.put("/profile", auth, async (req, res) => {
     ageRangePreference ? user.ageRange = ageRangePreference : null;
     genderPreferenceFemale ? user.gender.genderPreferenceFemale = true : user.gender.genderPreferenceFemale = false;
     genderPreferenceMale ? user.gender.genderPreferenceMale = true : user.gender.genderPreferenceMale = false;
-    avatar ? user.avatar = avatar : null;
-
-    console.log(user.ageRangePreference)
-
+    req.file.path ? user.avatars.push(req.file.path) : null
+    avatar ? user.avatar : null
 
     user.save()
-
-    // console.log(user)
 
     return res.json({ msg: "User data have already updated" })
 

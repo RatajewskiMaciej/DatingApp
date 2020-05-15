@@ -1,15 +1,15 @@
 const multer = require("multer")
 
-let storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/")
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
   },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
   }
 })
 
-let upload = multer({
+let uploads = multer({
   storage: storage,
   fileFilter: (req, file, callback) => {
     if (
@@ -27,4 +27,4 @@ let upload = multer({
   }
 }).single("avatar")
 
-module.exports = upload
+module.exports = uploads
