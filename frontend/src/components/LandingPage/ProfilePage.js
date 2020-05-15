@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 
@@ -128,6 +128,10 @@ const ProfilePage = (props) => {
     userData.images.filter((image) => image.profile)[0].src
   )
 
+  useEffect(() => {
+    setAbout(user.description)
+
+  }, [user.description])
   // Modal sections
   const [editAbout, setEditAbout] = useState(false)
   const [editPhoto, setEditPhoto] = useState(false)
@@ -204,17 +208,17 @@ const ProfilePage = (props) => {
             <CheckCircleIcon fontSize="large" style={{ color: 'green' }} />
           </IconButton>
         ) : (
-          <IconButton
-            style={{ margin: '10px 10px 0 0' }}
-            color="primary"
-            onClick={(event) => {
-              toggleEditAbout()
-              console.log('niedziala')
-            }}
-          >
-            <EditIcon fontSize="large" />
-          </IconButton>
-        )}
+            <IconButton
+              style={{ margin: '10px 10px 0 0' }}
+              color="primary"
+              onClick={(event) => {
+                toggleEditAbout()
+                console.log('niedziala')
+              }}
+            >
+              <EditIcon fontSize="large" />
+            </IconButton>
+          )}
       </Box>
       {editAbout ? (
         <ClickAwayListener onClickAway={(event) => toggleEditAbout()}>
@@ -235,15 +239,15 @@ const ProfilePage = (props) => {
           </Box>
         </ClickAwayListener>
       ) : (
-        <Typography
-          onClick={() => toggleEditAbout()}
-          variant="body1"
-          paragraph
-          style={{ margin: '0px 20px 35px 20px' }}
-        >
-          {about ? about : 'Napisz coś o sobie...'}
-        </Typography>
-      )}
+          <Typography
+            onClick={() => toggleEditAbout()}
+            variant="body1"
+            paragraph
+            style={{ margin: '0px 20px 35px 20px' }}
+          >
+            {about ? about : 'Napisz coś o sobie...'}
+          </Typography>
+        )}
     </Box>
   )
 
@@ -345,8 +349,8 @@ const ProfilePage = (props) => {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowLeft />
               ) : (
-                <KeyboardArrowRight />
-              )}
+                  <KeyboardArrowRight />
+                )}
             </Button>
           }
           backButton={
@@ -358,8 +362,8 @@ const ProfilePage = (props) => {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowRight />
               ) : (
-                <KeyboardArrowLeft />
-              )}
+                  <KeyboardArrowLeft />
+                )}
               Back
             </Button>
           }
@@ -378,19 +382,19 @@ const ProfilePage = (props) => {
           {photoSection}
         </Paper>
       ) : (
-        <Grid container>
-          <Grid item md={6}>
-            <Paper className={classes.paper} style={{ paddingBottom: 5 }}>
-              {headerSection}
-              <Divider />
-              {aboutSection}
-            </Paper>
+          <Grid container>
+            <Grid item md={6}>
+              <Paper className={classes.paper} style={{ paddingBottom: 5 }}>
+                {headerSection}
+                <Divider />
+                {aboutSection}
+              </Paper>
+            </Grid>
+            <Grid item md={6}>
+              <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
+            </Grid>
           </Grid>
-          <Grid item md={6}>
-            <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
-          </Grid>
-        </Grid>
-      )}
+        )}
 
       {galleryModal}
       {editPhotoModal}
