@@ -27,8 +27,8 @@ const User = new Schema({
   description: { type: String },
   age: { type: Number },
   gender: {
-    genderPreferenceMale: { type: Boolean },
-    genderPreferenceFemale: { type: Boolean }
+    genderPreferenceMale: { type: Boolean, default: false },
+    genderPreferenceFemale: { type: Boolean, default: false }
   },
   ageRange: { type: Array, default: [18, 70] },
   city: { type: String },

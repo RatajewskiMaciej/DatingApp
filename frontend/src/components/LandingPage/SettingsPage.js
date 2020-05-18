@@ -23,8 +23,6 @@ import Questions from './StepsPage/Questions'
 
 import SearchIcon from '@material-ui/icons/Search'
 import SettingsIcon from '@material-ui/icons/Settings'
-import { CircularProgress } from '@material-ui/core';
-import { Checkbox, FormControlLabel } from '@material-ui/core';
 
 
 
@@ -90,18 +88,16 @@ const SettingsPage = () => {
 
   // User preferences
   const [locationPreference, setLocationPreference] = useState(user.city)
-  const [genderPreferenceMale, setGenderPreferenceMale] = useState(user.gender.genderPreferenceMale)
-  const [genderPreferenceFemale, setGenderPreferenceFemale] = useState(user.gender.genderPreferenceFemale)
+  const [genderPreferenceMale, setGenderPreferenceMale] = useState(false)
+  const [genderPreferenceFemale, setGenderPreferenceFemale] = useState(false)
   const [ageRangePreference, setAgeRangePreference] = useState(user.ageRange)
 
   useEffect(() => {
-    // setLocationPreference(user.city)
-    // setGenderPreferenceMale(user.genderPreferenceMale)
-    // setName(user.first_name)
-    // setAge(user.age)
-    // setEmail(user.email)
-    // setGenderPreferenceFemale(user.genderPreferenceFemale)
-    // setAgeRangePreference(user.ageRange)
+    setLocationPreference(user.city)
+    setName(user.first_name)
+    setAge(user.age)
+    setEmail(user.email)
+    setAgeRangePreference(user.ageRange)
   }, [user])
 
   // Preference edit handlers
@@ -194,87 +190,87 @@ const SettingsPage = () => {
       </Typography>
 
       {menu === 'main' ? (
-        // <form onSubmit={onClick}>
-        <Grid container spacing={2} alignItems="stretch" direction="column">
-          <Grid item>
-            <TextField
-              value={name}
-              name="name"
-              id="username"
-              onChange={(event) => setName(event.target.value)}
-              variant="outlined"
-              autoComplete="fname"
-              fullWidth
-              label="Imię"
-            />
-          </Grid>
-          <Grid item>
-            <FormControl variant="outlined" style={{ width: '100%' }}>
-              <InputLabel>Wiek</InputLabel>
-              <Select
-                native
-                value={age}
-                name="age"
-                id="userage"
-                onChange={(event) => setAge(event.target.value)}
-                label="wiek"
-              >
-                {ageOptions()}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item>
-            <TextField
-              autoComplete="email"
-              value={email}
-              name="email"
-              id="useremail"
-              onChange={(event) => setEmail(event.target.value)}
-              variant="outlined"
-              fullWidth
-              label="Adres email"
-            />
-          </Grid>
-        </Grid>
-        // </form>
-      ) : (
-          // <form onSubmit={changePassword}>
+        <form onSubmit={onClick}>
           <Grid container spacing={2} alignItems="stretch" direction="column">
             <Grid item>
               <TextField
-                value={oldPass}
-                name="oldPass"
-                id="oldPass"
-                onChange={(e) => setOldPass(e.target.value)}
+                value={name}
+                name="name"
+                id="username"
+                onChange={(event) => setName(event.target.value)}
                 variant="outlined"
+                autoComplete="fname"
                 fullWidth
-                label="Stare hasło"
+                label="Imię"
               />
             </Grid>
             <Grid item>
-              <TextField
-                value={newPass}
-                name="newPass"
-                id="newPass"
-                onChange={(e) => setNewPass(e.target.value)}
-                variant="outlined"
-                fullWidth
-                label="Nowe hasło"
-              />
+              <FormControl variant="outlined" style={{ width: '100%' }}>
+                <InputLabel>Wiek</InputLabel>
+                <Select
+                  native
+                  value={age}
+                  name="age"
+                  id="userage"
+                  onChange={(event) => setAge(event.target.value)}
+                  label="wiek"
+                >
+                  {ageOptions()}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item>
               <TextField
-                value={repeatPass}
-                name="repeatPass"
-                id="repeatPass"
-                onChange={(e) => setRepeatPass(e.target.value)}
+                autoComplete="email"
+                value={email}
+                name="email"
+                id="useremail"
+                onChange={(event) => setEmail(event.target.value)}
                 variant="outlined"
                 fullWidth
-                label="Powtórz nowe hasło"
+                label="Adres email"
               />
             </Grid>
           </Grid>
-          // </form>
+        </form>
+      ) : (
+          <form onSubmit={changePassword}>
+            <Grid container spacing={2} alignItems="stretch" direction="column">
+              <Grid item>
+                <TextField
+                  value={oldPass}
+                  name="oldPass"
+                  id="oldPass"
+                  onChange={(e) => setOldPass(e.target.value)}
+                  variant="outlined"
+                  fullWidth
+                  label="Stare hasło"
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  value={newPass}
+                  name="newPass"
+                  id="newPass"
+                  onChange={(e) => setNewPass(e.target.value)}
+                  variant="outlined"
+                  fullWidth
+                  label="Nowe hasło"
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  value={repeatPass}
+                  name="repeatPass"
+                  id="repeatPass"
+                  onChange={(e) => setRepeatPass(e.target.value)}
+                  variant="outlined"
+                  fullWidth
+                  label="Powtórz nowe hasło"
+                />
+              </Grid>
+            </Grid>
+          </form>
         )}
 
       <Box className={classes.menu}>
@@ -363,80 +359,89 @@ const SettingsPage = () => {
   )
 
   const preferenceSettings = (
-    <Paper className={classes.paper}>
-      <Typography variant="h4" gutterBottom className={classes.title}>
-        <SearchIcon />
+    <>
+      {
+        locationPreference ?
+          <>
+            <Paper className={classes.paper}>
+              <Typography variant="h4" gutterBottom className={classes.title}>
+                <SearchIcon />
         Preferencje
         <div style={{ color: "red", fontSize: "0.8rem" }}>{responsePreference ? responsePreference : null}</div>
-      </Typography>
-      <form>
-        <Grid container spacing={2} alignItems="stretch" direction="column">
-          <Grid item>
-            <label style={{ fontSize: "1.5rem", marginRight: "15px" }}
-            >Męzczyźni
+              </Typography>
+              <form>
+                <Grid container spacing={2} alignItems="stretch" direction="column">
+                  <Grid item>
+                    <label style={{ fontSize: "1.5rem", marginRight: "15px" }}
+                    >Męzczyźni
               <input
-                type="checkbox"
-                checked={genderPreferenceMale}
-                onChange={() => setGenderPreferenceMale(!genderPreferenceMale)}
-                name="genderPreferenceMale" />
-            </label>
-            <label style={{ fontSize: "1.5rem" }}> Kobiety
+                        type="checkbox"
+                        checked={genderPreferenceMale}
+                        onChange={() => setGenderPreferenceMale(!genderPreferenceMale)}
+                        name="genderPreferenceMale" />
+                    </label>
+                    <label style={{ fontSize: "1.5rem" }}> Kobiety
                 < input
-                type="checkbox"
-                checked={genderPreferenceFemale}
-                onChange={() => setGenderPreferenceFemale(!genderPreferenceFemale)}
-                name="genderPreferenceFemale" />
-            </label>
-          </Grid>
-          <Grid item>
-            <Typography>Wiek:</Typography>
-            <Slider
-              value={ageRangePreference}
-              onChange={(event, newValue) => {
-                setAgeRangePreference(newValue)
-              }}
-              valueLabelDisplay="on"
-              name="ageRangePreference"
-              aria-labelledby="range-slider"
-              style={{ width: '100%', paddingTop: '60px' }}
-              min={18}
-              max={70}
-            />
-          </Grid>
-          <Grid item>
-            <FormControl variant="outlined" style={{ width: '100%' }}>
-              <InputLabel>Z</InputLabel>
-              <Select
-                native
-                value={locationPreference}
-                onChange={handleLocationPreference}
-                name="locationPreference"
-                displayEmpty
+                        type="checkbox"
+                        checked={genderPreferenceFemale}
+                        onChange={() => setGenderPreferenceFemale(!genderPreferenceFemale)}
+                        name="genderPreferenceFemale" />
+                    </label>
+                  </Grid>
+                  <Grid item>
+                    <Typography>Wiek:</Typography>
+                    <Slider
+                      value={ageRangePreference}
+                      onChange={(event, newValue) => {
+                        setAgeRangePreference(newValue)
+                      }}
+                      valueLabelDisplay="on"
+                      name="ageRangePreference"
+                      aria-labelledby="range-slider"
+                      style={{ width: '100%', paddingTop: '60px' }}
+                      min={18}
+                      max={70}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <FormControl variant="outlined" style={{ width: '100%' }}>
+                      <InputLabel>Z</InputLabel>
+                      <Select
+                        native
+                        value={locationPreference}
+                        onChange={handleLocationPreference}
+                        name="locationPreference"
+                        displayEmpty
+                      >
+                        <option value="Poznan">Poznan</option>
+                        <option value="Wroclaw">Wroclaw</option>
+                        <option value="Krakow">Krakow</option>
+                        <option value="Warszawa">Warszawa</option>
+                        <option value="Gdansk">Gdansk</option>
+                        <option value="Lodz">Lodz</option>
+                        <option value="Szczecin">Szczecin</option>
+
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              </form>
+
+              <Button
+                className={classes.button}
+                onClick={onClickPreference}
+                variant="contained"
+                color="primary"
+                size="large"
               >
-                <option value="Poznan">Poznan</option>
-                <option value="Wroclaw">Wroclaw</option>
-                <option value="Krakow">Krakow</option>
-                <option value="Warszawa">Warszawa</option>
-                <option value="Gdansk">Gdansk</option>
-                <option value="Lodz">Lodz</option>
-                <option value="Szczecin">Szczecin</option>
-
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-      </form>
-
-      <Button
-        className={classes.button}
-        onClick={onClickPreference}
-        variant="contained"
-        color="primary"
-        size="large"
-      >
-        Zapisz zmiany
+                Zapisz zmiany
       </Button>
-    </Paper >
+            </Paper >
+          </>
+          : null
+
+      }
+    </>
   )
 
   const feedback = (
@@ -509,34 +514,27 @@ const SettingsPage = () => {
   return useMediaQuery(theme.breakpoints.up('md')) ?
     (
       <Grid container>
-        {user ?
-          <>
-            <Grid item xs={12} md={6}>
-              {accountSettings}
-              {preferenceSettings}
-              {feedback}
-              {blocked}
-            </Grid>
-            {/* <Grid item xs={12} md={6}>
+
+        <Grid item xs={12} md={6}>
+          {accountSettings}
+          {preferenceSettings}
+          {feedback}
+          {blocked}
+        </Grid>
+        {/* <Grid item xs={12} md={6}>
               {questionSettings}
             </Grid> */}
-          </>
-          :
-          <CircularProgress />}
+
       </Grid>
     ) : (
       <Box>
-        {user ?
-          <>
-            {accountSettings}
-            {preferenceSettings}
-            {feedback}
-            {blocked}
-            {/* {questionSettings} */}
-          </>
-          :
-          <CircularProgress />
-        }
+
+        {accountSettings}
+        {preferenceSettings}
+        {feedback}
+        {blocked}
+        {/* {questionSettings} */}
+
       </Box>
     )
 }
