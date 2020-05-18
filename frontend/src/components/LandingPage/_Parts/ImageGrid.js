@@ -88,7 +88,6 @@ const ImageGrid = (props) => {
                 let formData = new FormData();
                 formData.append("avatar", image, image.name);
                 await axios.put('http://localhost:5000/user/profile', formData)
-                console.log(formData)
               }}
           />
           <GridListTile>

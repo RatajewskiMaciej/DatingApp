@@ -22,10 +22,14 @@ import Questions from './StepsPage/Questions'
 
 import SearchIcon from '@material-ui/icons/Search'
 import SettingsIcon from '@material-ui/icons/Settings'
+import { CircularProgress } from '@material-ui/core';
+
 
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { getUser } from '../../redux/actions/usersAction'
+import { removeToken } from '../../redux/actions/logActions'
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -90,11 +94,11 @@ const SettingsPage = () => {
 
   useEffect(() => {
     setLocationPreference(user.city)
-    // setGenderPreferenceMale(user.gender.genderPreferenceMale)
+    setGenderPreferenceMale(user.genderPreferenceMale)
     setName(user.first_name)
     setAge(user.age)
     setEmail(user.email)
-    // setGenderPreferenceFemale(user.gender.genderPreferenceFemale)
+    setGenderPreferenceFemale(user.genderPreferenceFemale)
     setAgeRangePreference(user.ageRange)
   }, [user])
 
@@ -203,7 +207,7 @@ const SettingsPage = () => {
             <Grid container spacing={2} alignItems="stretch" direction="column">
               <Grid item>
                 <TextField
-                  value={null}
+                  value={""}
                   name="oldPass"
                   id="oldPass"
                   onChange={null}
@@ -214,7 +218,7 @@ const SettingsPage = () => {
               </Grid>
               <Grid item>
                 <TextField
-                  value={null}
+                  value={""}
                   name="newPass"
                   id="newPass"
                   onChange={null}
@@ -225,7 +229,7 @@ const SettingsPage = () => {
               </Grid>
               <Grid item>
                 <TextField
-                  value={null}
+                  value={""}
                   name="repeatPass"
                   id="repeatPass"
                   onChange={null}
@@ -278,7 +282,8 @@ const SettingsPage = () => {
               <Box style={{ display: 'flex' }}>
                 <Link
                   color="secondary"
-                  onClick={() => alert('delete account popup')}
+                  to="/"
+                  onClick={() => { axios.delete('http://localhost:5000/user/user'); dispatch(removeToken()) }}
                 >
                   <Typography>Tak</Typography>
                 </Link>
@@ -326,15 +331,15 @@ const SettingsPage = () => {
               <Grid item>
                 <ButtonGroup fullWidth className={classes.buttonGroup}>
                   <Button
-                    value="male"
-                    onClick={() => setGenderPreferenceMale(true)}
+                    value={genderPreferenceMale}
+                    onClick={() => setGenderPreferenceMale(!genderPreferenceMale)}
                     color={genderPreferenceMale === 'male' ? 'primary' : null}
                     variant={genderPreferenceMale === 'male' ? 'contained' : null}
                   >
                     Mężczyzni
               </Button>
                   <Button
-                    value="female"
+                    value={genderPreferenceFemale}
                     onClick={() => setGenderPreferenceFemale(!genderPreferenceFemale)}
                     color={genderPreferenceFemale === 'female' ? 'secondary' : null}
                     variant={
@@ -348,9 +353,9 @@ const SettingsPage = () => {
               <Grid item>
                 <Typography>Wiek:</Typography>
                 <Slider
-                  value={ageRangePreference}
+                  value={user.ageRange}
                   onChange={(e) => {
-                    console.log(e.target)
+                    console.log(e.target.value)
                     setAgeRangePreference(e.target.value)
                   }}
                   valueLabelDisplay="on"
@@ -371,7 +376,14 @@ const SettingsPage = () => {
                     label="wiek"
                   >
                     <option value={city}>{}</option>
-                    <option value="Kraj">Kraj</option>
+                    <option value="Kraj">Poznan</option>
+                    <option value="Kraj">Wroclaw</option>
+                    <option value="Kraj">Krakow</option>
+                    <option value="Kraj">Warszawa</option>
+                    <option value="Kraj">Gdansk</option>
+                    <option value="Kraj">Lodz</option>
+                    <option value="Kraj">Szczecin</option>
+
                   </Select>
                 </FormControl>
               </Grid>
@@ -388,7 +400,8 @@ const SettingsPage = () => {
             Zapisz zmiany
       </Button>
         </>
-        : null}
+        : <CircularProgress />
+      }
     </Paper>
   )
 
@@ -400,7 +413,7 @@ const SettingsPage = () => {
 
       <form>
         <TextField
-          value={null}
+          value={""}
           name="feedback"
           id="feedback"
           onChange={(event) => setName(event.target.value)}
@@ -462,21 +475,20 @@ const SettingsPage = () => {
   return useMediaQuery(theme.breakpoints.up('md')) ?
     (
       <Grid container>
-        {user ?
-          <>
-            <Grid item xs={12} md={6}>
-              {accountSettings}
-              {preferenceSettings}
-              {feedback}
-              {blocked}
-            </Grid>
-            <Grid item xs={12} md={6}>
-              {questionSettings}
-            </Grid>
-          </>
-          : null}
+
+        <>
+          <Grid item xs={12} md={6}>
+            {accountSettings}
+            {preferenceSettings}
+            {feedback}
+            {blocked}
+          </Grid>
+          <Grid item xs={12} md={6}>
+            {questionSettings}
+          </Grid>
+        </>
       </Grid>
-    ) : (user ?
+    ) : (
       <Box>
         {accountSettings}
         {preferenceSettings}
@@ -484,7 +496,6 @@ const SettingsPage = () => {
         {blocked}
         {questionSettings}
       </Box>
-      : null
     )
 }
 

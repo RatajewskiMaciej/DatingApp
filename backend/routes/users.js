@@ -54,7 +54,7 @@ router.put("/profile", [auth, upload], async (req, res) => {
     ageRangePreference ? user.ageRange = ageRangePreference : null;
     genderPreferenceFemale ? user.gender.genderPreferenceFemale = true : user.gender.genderPreferenceFemale = false;
     genderPreferenceMale ? user.gender.genderPreferenceMale = true : user.gender.genderPreferenceMale = false;
-    req.file.path ? user.avatars.push(req.file.path) : null
+    req.file ? user.avatars.push(req.file.path) : null
     avatar ? user.avatar : null
 
     user.save()
@@ -85,6 +85,13 @@ router.post("/profile/uploads", [auth, upload], async (req, res) => {
   } catch (err) {
     console.log(err.message)
   }
+
+})
+
+//delete user
+
+router.delete("/user", [auth], async (req, res) => {
+  const user = await User.findByIdAndRemove(req.user.id)
 
 })
 

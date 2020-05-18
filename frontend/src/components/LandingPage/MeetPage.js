@@ -52,11 +52,11 @@ const MeetPage = (props) => {
       <ProfileGallery
         tileBar
         title={`${users.first_name}, ${users.age}`}
-        subtitle={
-          <span
-            className={getMatchClass()}
-          >{`Dopasowanie ${users.match}%`}</span>
-        }
+        // subtitle={
+        // <span
+        //   className={getMatchClass()}
+        // >{`Dopasowanie ${users.match}%`}</span>
+        // }
         mapSource={users}
         tileClick={(event) => alert('go to profile')}
         iconClick={(event) => {

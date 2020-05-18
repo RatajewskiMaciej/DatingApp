@@ -42,3 +42,4 @@ export const getProfile = id => async dispatch => {
     console.log(error.message);
   }
 };
+

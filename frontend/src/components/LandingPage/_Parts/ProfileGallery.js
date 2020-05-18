@@ -100,14 +100,14 @@ const ProfileGallery = (props) => {
       {props.mapSource.map((image) => (
         <GridListTile key={Math.random()} onClick={props.tileClick}>
           <img
-            src={image.avatar}
+            src={image.avatar ? image.avatar : "https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-person-512.png"}
             className={classes.gridListTile}
             alt={image}
           />
 
           {props.tileBar ? (
             <GridListTileBar
-              title={`${image.first_name}, ${image.age}`}
+              title={`${image.first_name}, ${image.age ? image.age : ""}`}
               subtitle={props.subtitle}
               className={classes.titleBar}
               actionIcon={

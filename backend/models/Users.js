@@ -21,7 +21,9 @@ const User = new Schema({
     default: Date.now
   },
   avatar: { type: String },
-  avatars: { type: Array },
+  avatars: {
+    type: Array
+  },
   description: { type: String },
   age: { type: Number },
   gender: {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import logotextBlack from '../../data/logotext_black.png'
+import { Link } from "react-router-dom"
 
 import {
   Avatar,
@@ -19,7 +20,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <img src={logotextBlack} alt="Loveli" style={{height: '1.2em'}}/>{' '}
+      <img src={logotextBlack} alt="Loveli" style={{ height: '1.2em' }} />{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -192,6 +193,9 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
+            <Box mt={5}>
+              <Link to="/">Zaloguj się!</Link>
+            </Box>
             <Box mt={5}>
               <Copyright />
             </Box>

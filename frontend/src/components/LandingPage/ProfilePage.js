@@ -23,6 +23,7 @@ import {
   MobileStepper,
 } from '@material-ui/core'
 
+import { CircularProgress } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import CancelIcon from '@material-ui/icons/Cancel'
@@ -112,27 +113,29 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
 }))
-
+let user;
 const ProfilePage = (props) => {
   const classes = useStyles()
   const theme = useTheme()
   const inputRef = useRef();
   const dispatch = useDispatch()
+
+  const [newAvatar, setNewAvatar] = useState('')
+
   useEffect(() => {
     dispatch(getUser())
     setProfileImage(user.avatar)
-  }, [getUser])
-  const user = useSelector((state) => state.users.user)
+  }, [getUser, user, newAvatar])
+  user = useSelector((state) => state.users.user)
 
   // User profile data
+
   const name = user.first_name
   const age = user.age
   const city = user.city
   const userImages = user.avatars
   const [about, setAbout] = useState(user.description)
-  const [profileImage, setProfileImage] = useState(
-    user.avatar
-  )
+  const [profileImage, setProfileImage] = useState(user.avatar)
 
 
   // Modal sections
@@ -140,7 +143,9 @@ const ProfilePage = (props) => {
   const [editPhoto, setEditPhoto] = useState(false)
   const [gallery, setGallery] = useState(false)
   const toggleEditAbout = () => {
+
     setEditAbout(!editAbout)
+
   }
   const toggleEditImage = () => {
     setEditPhoto(!editPhoto)
@@ -174,7 +179,7 @@ const ProfilePage = (props) => {
         >
           <Avatar
             alt="Profile picture"
-            src={`http://localhost:5000/${profileImage}`}
+            src={`${profileImage}`}
             className={classes.avatar}
           />
         </Badge>
@@ -187,7 +192,7 @@ const ProfilePage = (props) => {
         <Typography
           className={classes.headerTextDown}
           variant="h5"
-        >{`${city}, ${age}`}</Typography>
+        >{`${city ? city : ""} ${age ? age : ""}`}</Typography>
       </Box>
     </Box>
   )
@@ -202,10 +207,11 @@ const ProfilePage = (props) => {
         {editAbout ? (
           <IconButton
             style={{ margin: '10px 10px 0 0' }}
-            onClick={async () => {
-              await axios.put('http://localhost:5000/user/profile', {
+            onClick={() => {
+              axios.put('http://localhost:5000/user/profile', {
                 description: about,
               })
+              dispatch(getUser())
             }}
           >
             <CheckCircleIcon fontSize="large" style={{ color: 'green' }} />
@@ -216,7 +222,6 @@ const ProfilePage = (props) => {
               color="primary"
               onClick={(event) => {
                 toggleEditAbout()
-                console.log('niedziala')
               }}
             >
               <EditIcon fontSize="large" />
@@ -236,7 +241,7 @@ const ProfilePage = (props) => {
                 autoFocus
                 value={about}
                 placeholder="Napisz coś o sobie..."
-                onChange={(event) => setAbout(event.target.value)}
+                onChange={(event) => { setAbout(event.target.value); }}
               />
             </form>
           </Box>
@@ -264,6 +269,7 @@ const ProfilePage = (props) => {
         (event) => {
           setActiveStep(Number(event.target.alt.split(' ').pop()) - 1)
           setGallery(true)
+          dispatch(getUser())
         }}
       colNumMd={2}
       colNumLg={2}
@@ -281,11 +287,15 @@ const ProfilePage = (props) => {
             colNumLg={4}
             mapSource={userImages}
             alt={'user gallery item'}
-            tileClick={async (event) => {
-              console.log(event.target.src)
-              setProfileImage(event.target.src)
-              await axios.put('http://localhost:5000/user/profile', { avatar: event.target.src })
+            tileClick={(event) => {
+              let adres = event.target.src
+              let split = adres.split("http://localhost:3000/")
+              adres = split[1]
+              console.log(adres)
+              setProfileImage(adres)
+              axios.put('http://localhost:5000/user/profile', { avatar: adres })
               toggleEditImage()
+              dispatch(getUser())
             }}
           />
 
@@ -294,7 +304,6 @@ const ProfilePage = (props) => {
             onClick={() => {
               toggleEditImage();
               inputRef.current.click()
-              console.log("dziala")
             }}
             variant="contained"
             color="primary"
@@ -306,11 +315,12 @@ const ProfilePage = (props) => {
               ref={inputRef}
               style={{ display: "none" }}
               onChange={
-                async (e) => {
+                (e) => {
                   const image = e.target.files[0]
                   let formData = new FormData();
                   formData.append("avatar", image, image.name);
-                  await axios.put('http://localhost:5000/user/profile', formData)
+                  axios.put('http://localhost:5000/user/profile', formData)
+                  setNewAvatar(formData);
                 }}
             />
             Dodaj zdjęcie
@@ -332,7 +342,6 @@ const ProfilePage = (props) => {
             onClick={() => {
               alert('delete forever')
               setGallery()
-
             }}
           >
             <DeleteForeverIcon fontSize="large" className={classes.galleryUi} />
@@ -405,9 +414,7 @@ const ProfilePage = (props) => {
   )
 
   return (
-
-    <Box className={classes.root
-    } >
+    <Box className={classes.root} >
       {useMediaQuery(theme.breakpoints.down('sm')) ? (
         <Paper className={classes.paper}>
           {headerSection}
@@ -425,7 +432,10 @@ const ProfilePage = (props) => {
               </Paper>
             </Grid>
             <Grid item md={6}>
-              <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
+              {user.avatars ?
+                <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
+                : <CircularProgress />
+              }
             </Grid>
           </Grid>
         )
@@ -433,6 +443,7 @@ const ProfilePage = (props) => {
 
       {galleryModal}
       {editPhotoModal}
+
     </Box >
 
   )
