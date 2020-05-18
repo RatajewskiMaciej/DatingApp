@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+
 
 const auth = require('../middleware/auth.js');
 const User = require('../models/Users.js');
@@ -46,6 +48,8 @@ router.put("/profile", [auth, upload], async (req, res) => {
   try {
     const { description, name, age, email, locationPreference, ageRangePreference, genderPreferenceMale, genderPreferenceFemale, avatar } = req.body
 
+    console.log(req.body)
+
     description ? user.description = description : null;
     name ? user.first_name = name : null;
     age ? user.age = age : null;
@@ -59,7 +63,10 @@ router.put("/profile", [auth, upload], async (req, res) => {
 
     user.save()
 
-    return res.json({ msg: "User data have already updated" })
+    return res.json({
+      msg: "Dane uytkownika zaktualizowane poprawnie!",
+      user: user
+    })
 
   } catch (err) {
     console.log(err.message)
@@ -80,7 +87,7 @@ router.post("/profile/uploads", [auth, upload], async (req, res) => {
     user.save()
 
 
-    return res.json({ msg: "User data have already updated" })
+    return res.json(user)
 
   } catch (err) {
     console.log(err.message)
@@ -93,6 +100,34 @@ router.post("/profile/uploads", [auth, upload], async (req, res) => {
 router.delete("/user", [auth], async (req, res) => {
   const user = await User.findByIdAndRemove(req.user.id)
 
+})
+
+router.put("/password", [auth], async (req, res) => {
+  const user = await User.findById(req.user.id)
+  try {
+    const {
+      oldPass,
+      newPass,
+      repeatPass
+    } = req.body
+
+    const match = await bcrypt.compare(oldPass, user.password)
+
+    if (!match) {
+      return res.json({ msg: "Email or Password is wrong" })
+    }
+    else {
+      const salt = await bcrypt.genSaltSync(10);
+      const hash = await bcrypt.hashSync(newPass, salt);
+
+      user.password = hash
+
+      return res.json({ msg: "Haslo zmienione poprawnie!" })
+    }
+
+  } catch (error) {
+
+  }
 })
 
 

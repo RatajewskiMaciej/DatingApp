@@ -14,6 +14,7 @@ import {
   useMediaQuery,
   ButtonGroup,
   Divider,
+  Input,
 } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 
@@ -23,13 +24,15 @@ import Questions from './StepsPage/Questions'
 import SearchIcon from '@material-ui/icons/Search'
 import SettingsIcon from '@material-ui/icons/Settings'
 import { CircularProgress } from '@material-ui/core';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
+
+
 
 
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
-import { getUser } from '../../redux/actions/usersAction'
+import { getUser, deleteUser } from '../../redux/actions/usersAction'
 import { removeToken } from '../../redux/actions/logActions'
-
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -78,28 +81,27 @@ const SettingsPage = () => {
   }, [getUser])
 
   const user = useSelector((state) => state.users.user)
-  console.log(user.gender)
 
   // User profile data
   const city = userData.city
-  const [name, setName] = useState("")
-  const [age, setAge] = useState("")
-  const [email, setEmail] = useState("")
+  const [name, setName] = useState(user.first_name)
+  const [age, setAge] = useState(user.age)
+  const [email, setEmail] = useState(user.email)
 
   // User preferences
-  const [locationPreference, setLocationPreference] = useState("Kraj")
-  const [genderPreferenceMale, setGenderPreferenceMale] = useState(true)
-  const [genderPreferenceFemale, setGenderPreferenceFemale] = useState(true)
-  const [ageRangePreference, setAgeRangePreference] = useState([22, 50])
+  const [locationPreference, setLocationPreference] = useState(user.city)
+  const [genderPreferenceMale, setGenderPreferenceMale] = useState(user.gender.genderPreferenceMale)
+  const [genderPreferenceFemale, setGenderPreferenceFemale] = useState(user.gender.genderPreferenceFemale)
+  const [ageRangePreference, setAgeRangePreference] = useState(user.ageRange)
 
   useEffect(() => {
-    setLocationPreference(user.city)
-    setGenderPreferenceMale(user.genderPreferenceMale)
-    setName(user.first_name)
-    setAge(user.age)
-    setEmail(user.email)
-    setGenderPreferenceFemale(user.genderPreferenceFemale)
-    setAgeRangePreference(user.ageRange)
+    // setLocationPreference(user.city)
+    // setGenderPreferenceMale(user.genderPreferenceMale)
+    // setName(user.first_name)
+    // setAge(user.age)
+    // setEmail(user.email)
+    // setGenderPreferenceFemale(user.genderPreferenceFemale)
+    // setAgeRangePreference(user.ageRange)
   }, [user])
 
   // Preference edit handlers
@@ -114,6 +116,7 @@ const SettingsPage = () => {
   }
   const handleLocationPreference = (event) => {
     setLocationPreference(event.target.value)
+    console.log(event.target.value)
   }
 
   const payload = {
@@ -125,8 +128,37 @@ const SettingsPage = () => {
     genderPreferenceMale,
     ageRangePreference,
   }
+  const [responseSettingsUpdate, setResponseSettingsUpdate] = useState("")
+  const [responsePreference, setResponsePreference] = useState("")
+
+
   const onClick = async () => {
-    await axios.put('http://localhost:5000/user/profile', payload)
+    const res = await axios.put('http://localhost:5000/user/profile', payload)
+    setResponseSettingsUpdate(res.data.msg)
+  }
+
+  const onClickPreference = async () => {
+    const res = await axios.put('http://localhost:5000/user/profile', payload)
+    setResponsePreference(res.data.msg)
+  }
+
+
+  const [oldPass, setOldPass] = useState("")
+  const [newPass, setNewPass] = useState("")
+  const [repeatPass, setRepeatPass] = useState("")
+  const [responsePass, setRessponsePass] = useState("")
+
+  const payloadPassword = { oldPass, newPass }
+
+  const changePassword = async () => {
+    if (newPass === repeatPass) {
+      const res = await axios.put("http://localhost:5000/user/password", payloadPassword)
+      setRessponsePass(res.data.msg)
+      console.log(res.data)
+    }
+    else {
+      setRessponsePass("Powtórz hasło poprawnie!")
+    }
   }
 
   // Age options for age select
@@ -156,90 +188,93 @@ const SettingsPage = () => {
       <Typography variant="h4" className={classes.title}>
         <SettingsIcon />
         Ustawienia konta
+  <div style={{ color: "red", fontSize: "0.8rem" }}>{responseSettingsUpdate ? responseSettingsUpdate : null}</div>
+        <div style={{ color: "red", fontSize: "0.8rem" }}>{responsePass ? responsePass : null}</div>
+
       </Typography>
 
       {menu === 'main' ? (
-        <form>
+        // <form onSubmit={onClick}>
+        <Grid container spacing={2} alignItems="stretch" direction="column">
+          <Grid item>
+            <TextField
+              value={name}
+              name="name"
+              id="username"
+              onChange={(event) => setName(event.target.value)}
+              variant="outlined"
+              autoComplete="fname"
+              fullWidth
+              label="Imię"
+            />
+          </Grid>
+          <Grid item>
+            <FormControl variant="outlined" style={{ width: '100%' }}>
+              <InputLabel>Wiek</InputLabel>
+              <Select
+                native
+                value={age}
+                name="age"
+                id="userage"
+                onChange={(event) => setAge(event.target.value)}
+                label="wiek"
+              >
+                {ageOptions()}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item>
+            <TextField
+              autoComplete="email"
+              value={email}
+              name="email"
+              id="useremail"
+              onChange={(event) => setEmail(event.target.value)}
+              variant="outlined"
+              fullWidth
+              label="Adres email"
+            />
+          </Grid>
+        </Grid>
+        // </form>
+      ) : (
+          // <form onSubmit={changePassword}>
           <Grid container spacing={2} alignItems="stretch" direction="column">
             <Grid item>
               <TextField
-                value={name}
-                name="name"
-                id="username"
-                onChange={(event) => setName(event.target.value)}
+                value={oldPass}
+                name="oldPass"
+                id="oldPass"
+                onChange={(e) => setOldPass(e.target.value)}
                 variant="outlined"
-                autoComplete="fname"
                 fullWidth
-                label="Imię"
+                label="Stare hasło"
               />
-            </Grid>
-            <Grid item>
-              <FormControl variant="outlined" style={{ width: '100%' }}>
-                <InputLabel>Wiek</InputLabel>
-                <Select
-                  native
-                  value={age}
-                  name="age"
-                  id="userage"
-                  onChange={(event) => setAge(event.target.value)}
-                  label="wiek"
-                >
-                  {ageOptions()}
-                </Select>
-              </FormControl>
             </Grid>
             <Grid item>
               <TextField
-                autoComplete="email"
-                value={email}
-                name="email"
-                id="useremail"
-                onChange={(event) => setEmail(event.target.value)}
+                value={newPass}
+                name="newPass"
+                id="newPass"
+                onChange={(e) => setNewPass(e.target.value)}
                 variant="outlined"
                 fullWidth
-                label="Adres email"
+                label="Nowe hasło"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                value={repeatPass}
+                name="repeatPass"
+                id="repeatPass"
+                onChange={(e) => setRepeatPass(e.target.value)}
+                variant="outlined"
+                fullWidth
+                label="Powtórz nowe hasło"
               />
             </Grid>
           </Grid>
-        </form>
-      ) : (
-          <form>
-            <Grid container spacing={2} alignItems="stretch" direction="column">
-              <Grid item>
-                <TextField
-                  value={""}
-                  name="oldPass"
-                  id="oldPass"
-                  onChange={null}
-                  variant="outlined"
-                  fullWidth
-                  label="Stare hasło"
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  value={""}
-                  name="newPass"
-                  id="newPass"
-                  onChange={null}
-                  variant="outlined"
-                  fullWidth
-                  label="Nowe hasło"
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  value={""}
-                  name="repeatPass"
-                  id="repeatPass"
-                  onChange={null}
-                  variant="outlined"
-                  fullWidth
-                  label="Powtórz nowe hasło"
-                />
-              </Grid>
-            </Grid>
-          </form>
+          // </form>
         )}
 
       <Box className={classes.menu}>
@@ -283,7 +318,7 @@ const SettingsPage = () => {
                 <Link
                   color="secondary"
                   to="/"
-                  onClick={() => { axios.delete('http://localhost:5000/user/user'); dispatch(removeToken()) }}
+                  onClick={() => { dispatch(deleteUser()); dispatch(removeToken()) }}
                 >
                   <Typography>Tak</Typography>
                 </Link>
@@ -304,105 +339,104 @@ const SettingsPage = () => {
         </Box>
         <Divider />
       </Box>
+      {menu === 'pass' ?
+        <Button
+          className={classes.button}
+          onClick={changePassword}
+          variant="contained"
+          color="primary"
+          size="large"
+        >
+          Zapisz zmiany
+      </Button>
+        :
+        <Button
+          className={classes.button}
+          onClick={onClick}
+          variant="contained"
+          color="primary"
+          size="large"
+        >
+          Zapisz zmiany
+      </Button>}
+    </Paper>
+  )
+
+  const preferenceSettings = (
+    <Paper className={classes.paper}>
+      <Typography variant="h4" gutterBottom className={classes.title}>
+        <SearchIcon />
+        Preferencje
+        <div style={{ color: "red", fontSize: "0.8rem" }}>{responsePreference ? responsePreference : null}</div>
+      </Typography>
+      <form>
+        <Grid container spacing={2} alignItems="stretch" direction="column">
+          <Grid item>
+            <label style={{ fontSize: "1.5rem", marginRight: "15px" }}
+            >Męzczyźni
+              <input
+                type="checkbox"
+                checked={genderPreferenceMale}
+                onChange={() => setGenderPreferenceMale(!genderPreferenceMale)}
+                name="genderPreferenceMale" />
+            </label>
+            <label style={{ fontSize: "1.5rem" }}> Kobiety
+                < input
+                type="checkbox"
+                checked={genderPreferenceFemale}
+                onChange={() => setGenderPreferenceFemale(!genderPreferenceFemale)}
+                name="genderPreferenceFemale" />
+            </label>
+          </Grid>
+          <Grid item>
+            <Typography>Wiek:</Typography>
+            <Slider
+              value={ageRangePreference}
+              onChange={(event, newValue) => {
+                setAgeRangePreference(newValue)
+              }}
+              valueLabelDisplay="on"
+              name="ageRangePreference"
+              aria-labelledby="range-slider"
+              style={{ width: '100%', paddingTop: '60px' }}
+              min={18}
+              max={70}
+            />
+          </Grid>
+          <Grid item>
+            <FormControl variant="outlined" style={{ width: '100%' }}>
+              <InputLabel>Z</InputLabel>
+              <Select
+                native
+                value={locationPreference}
+                onChange={handleLocationPreference}
+                name="locationPreference"
+                displayEmpty
+              >
+                <option value="Poznan">Poznan</option>
+                <option value="Wroclaw">Wroclaw</option>
+                <option value="Krakow">Krakow</option>
+                <option value="Warszawa">Warszawa</option>
+                <option value="Gdansk">Gdansk</option>
+                <option value="Lodz">Lodz</option>
+                <option value="Szczecin">Szczecin</option>
+
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+      </form>
 
       <Button
         className={classes.button}
-        onClick={onClick}
+        onClick={onClickPreference}
         variant="contained"
         color="primary"
         size="large"
       >
         Zapisz zmiany
       </Button>
-    </Paper>
-  )
-
-  const preferenceSettings = (
-    <Paper className={classes.paper}>
-      {user ?
-        <>
-          <Typography variant="h4" gutterBottom className={classes.title}>
-            <SearchIcon />
-        Preferencje
-      </Typography>
-
-          <form>
-            <Grid container spacing={2} alignItems="stretch" direction="column">
-              <Grid item>
-                <ButtonGroup fullWidth className={classes.buttonGroup}>
-                  <Button
-                    value={genderPreferenceMale}
-                    onClick={() => setGenderPreferenceMale(!genderPreferenceMale)}
-                    color={genderPreferenceMale === 'male' ? 'primary' : null}
-                    variant={genderPreferenceMale === 'male' ? 'contained' : null}
-                  >
-                    Mężczyzni
-              </Button>
-                  <Button
-                    value={genderPreferenceFemale}
-                    onClick={() => setGenderPreferenceFemale(!genderPreferenceFemale)}
-                    color={genderPreferenceFemale === 'female' ? 'secondary' : null}
-                    variant={
-                      genderPreferenceFemale === 'female' ? 'contained' : null
-                    }
-                  >
-                    Kobiety
-              </Button>
-                </ButtonGroup>
-              </Grid>
-              <Grid item>
-                <Typography>Wiek:</Typography>
-                <Slider
-                  value={user.ageRange}
-                  onChange={(e) => {
-                    console.log(e.target.value)
-                    setAgeRangePreference(e.target.value)
-                  }}
-                  valueLabelDisplay="on"
-                  aria-labelledby="range-slider"
-                  style={{ width: '100%', paddingTop: '60px' }}
-                  min={18}
-                  max={70}
-                />
-              </Grid>
-              <Grid item>
-                <FormControl variant="outlined" style={{ width: '100%' }}>
-                  <InputLabel>Z</InputLabel>
-                  <Select
-                    native
-                    value={locationPreference}
-                    onChange={handleLocationPreference}
-                    displayEmpty
-                    label="wiek"
-                  >
-                    <option value={city}>{}</option>
-                    <option value="Kraj">Poznan</option>
-                    <option value="Kraj">Wroclaw</option>
-                    <option value="Kraj">Krakow</option>
-                    <option value="Kraj">Warszawa</option>
-                    <option value="Kraj">Gdansk</option>
-                    <option value="Kraj">Lodz</option>
-                    <option value="Kraj">Szczecin</option>
-
-                  </Select>
-                </FormControl>
-              </Grid>
-            </Grid>
-          </form>
-
-          <Button
-            className={classes.button}
-            onClick={onClick}
-            variant="contained"
-            color="primary"
-            size="large"
-          >
-            Zapisz zmiany
-      </Button>
-        </>
-        : <CircularProgress />
-      }
-    </Paper>
+    </Paper >
   )
 
   const feedback = (
@@ -475,26 +509,34 @@ const SettingsPage = () => {
   return useMediaQuery(theme.breakpoints.up('md')) ?
     (
       <Grid container>
-
-        <>
-          <Grid item xs={12} md={6}>
+        {user ?
+          <>
+            <Grid item xs={12} md={6}>
+              {accountSettings}
+              {preferenceSettings}
+              {feedback}
+              {blocked}
+            </Grid>
+            {/* <Grid item xs={12} md={6}>
+              {questionSettings}
+            </Grid> */}
+          </>
+          :
+          <CircularProgress />}
+      </Grid>
+    ) : (
+      <Box>
+        {user ?
+          <>
             {accountSettings}
             {preferenceSettings}
             {feedback}
             {blocked}
-          </Grid>
-          <Grid item xs={12} md={6}>
-            {questionSettings}
-          </Grid>
-        </>
-      </Grid>
-    ) : (
-      <Box>
-        {accountSettings}
-        {preferenceSettings}
-        {feedback}
-        {blocked}
-        {questionSettings}
+            {/* {questionSettings} */}
+          </>
+          :
+          <CircularProgress />
+        }
       </Box>
     )
 }

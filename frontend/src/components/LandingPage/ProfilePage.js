@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
-import { getUser } from '../../redux/actions/usersAction'
+import { getUser, addPhoto } from '../../redux/actions/usersAction'
 
 import ImageGrid from './_Parts/ImageGrid'
 import Popup from './_Parts/Popup'
@@ -319,7 +319,7 @@ const ProfilePage = (props) => {
                   const image = e.target.files[0]
                   let formData = new FormData();
                   formData.append("avatar", image, image.name);
-                  axios.put('http://localhost:5000/user/profile', formData)
+                  dispatch(addPhoto(formData))
                   setNewAvatar(formData);
                 }}
             />

@@ -1,10 +1,11 @@
-import { GET_USERS, GET_USERDATA, GET_PROFILE } from '../types';
+import { GET_USERS, GET_USERDATA, GET_PROFILE, DELETE_USER, UPDATE_USERDATA, ADD_PHOTO } from '../types';
 
 
 const initialState = {
   users: [],
   user: [],
-  profile: {}
+  profile: {},
+  response: ""
 };
 
 export default (state = initialState, action) => {
@@ -23,6 +24,16 @@ export default (state = initialState, action) => {
       return {
         ...state,
         profile: action.profile
+      };
+    case DELETE_USER:
+      return {
+        ...state,
+        user: []
+      };
+    case ADD_PHOTO:
+      return {
+        ...state,
+        user: action.user
       };
     default:
       return state;
