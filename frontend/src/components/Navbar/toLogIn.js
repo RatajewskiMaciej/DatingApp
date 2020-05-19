@@ -42,11 +42,17 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
+  container: {
+    padding: 20,
+    display: 'flex',
+    alignItems: 'center',
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
   avatar: {
     margin: theme.spacing(1),
@@ -98,7 +104,7 @@ export default function SignIn() {
   return (
     <Grid container component="main" className={classes.root}>
       <Grid item xs={false} sm={6} md={7} className={classes.image} />
-      <Grid item xs={12} sm={6} md={5} component={Paper} elevation={6} square style={{ padding: 20 }}>
+      <Grid item xs={12} sm={6} md={5} component={Paper} elevation={6} square style={{ padding: 20 }} className={classes.container}>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -130,7 +136,7 @@ export default function SignIn() {
                   required
                   fullWidth
                   name="password"
-                  label="Haslo"
+                  label="Hasło"
                   type="password"
                   id="password"
                   autoComplete="current-password"
@@ -152,7 +158,7 @@ export default function SignIn() {
               Zaloguj
             </Button>
             <Box mt={5}>
-              <Link to="/register">Nie masz konto? Zarejestruj sie!!</Link>
+              <Link to="/register">Nie masz konta? Zarejestruj sie!</Link>
             </Box>
             <Box mt={5}>
               <Copyright />

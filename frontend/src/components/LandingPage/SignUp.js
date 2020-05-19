@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import logotextBlack from '../../data/logotext_black.png'
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom'
 
 import {
   Avatar,
@@ -9,7 +9,9 @@ import {
   Grid,
   Box,
   Typography,
-  Paper
+  Paper,
+  Checkbox,
+  FormControlLabel,
 } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { makeStyles } from '@material-ui/core/styles'
@@ -27,7 +29,7 @@ function Copyright() {
   )
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   image: {
     backgroundImage:
       'url(https://isorepublic.com/wp-content/uploads/2018/11/couple-in-love-1100x733.jpg)',
@@ -42,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   container: {
     padding: 20,
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   paper: {
     marginTop: theme.spacing(1),
@@ -52,16 +54,16 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(4, 0, 2),
-    height: theme.spacing(6)
-  }
+    height: theme.spacing(6),
+  },
 }))
 
 export default function SignUp() {
@@ -72,9 +74,10 @@ export default function SignUp() {
     last_name: '',
     email: '',
     password: '',
-    password2: ''
+    password2: '',
+    privacy: false,
   })
-  const onClick = async e => {
+  const onClick = async (e) => {
     e.preventDefault()
 
     const res = await axios.post('http://localhost:5000/register', data)
@@ -86,7 +89,8 @@ export default function SignUp() {
         last_name: '',
         email: '',
         password: '',
-        password2: ''
+        password2: '',
+        privacy: false,
       })
     }
   }
@@ -94,13 +98,22 @@ export default function SignUp() {
   return (
     <Grid container component="main" className={classes.root}>
       <Grid item xs={false} sm={6} md={7} className={classes.image} />
-      <Grid item xs={12} sm={6} md={5} component={Paper} elevation={6} square className={classes.container}>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={5}
+        component={Paper}
+        elevation={6}
+        square
+        className={classes.container}
+      >
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            <div>{registerError ? registerError : 'Sign Up'}</div>
+            <div>{registerError ? registerError : 'Załóż konto'}</div>
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
@@ -112,10 +125,10 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="firstName"
-                  label="First Name"
+                  label="Imię"
                   autoFocus
                   value={data.first_name}
-                  onChange={e => {
+                  onChange={(e) => {
                     setData({ ...data, [e.target.name]: e.target.value })
                   }}
                 />{' '}
@@ -126,11 +139,11 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="lastName"
-                  label="Last Name"
+                  label="Nazwisko"
                   name="last_name"
                   autoComplete="lname"
                   value={data.last_name}
-                  onChange={e => {
+                  onChange={(e) => {
                     setData({ ...data, [e.target.name]: e.target.value })
                   }}
                 />{' '}
@@ -141,11 +154,11 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="Adres email"
                   name="email"
                   autoComplete="email"
                   value={data.email}
-                  onChange={e => {
+                  onChange={(e) => {
                     setData({ ...data, [e.target.name]: e.target.value })
                   }}
                 />{' '}
@@ -156,12 +169,12 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Hasło"
                   type="password"
                   id="password"
                   autoComplete="current-password"
                   value={data.password}
-                  onChange={e => {
+                  onChange={(e) => {
                     setData({ ...data, [e.target.name]: e.target.value })
                   }}
                 />{' '}
@@ -172,13 +185,27 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="password2"
-                  label="Confirm Password"
+                  label="Potwierdź hasło"
                   type="password"
                   id="password"
                   autoComplete="current-password"
-                  onChange={e => {
+                  onChange={(e) => {
                     setData({ ...data, [e.target.name]: e.target.value })
                   }}
+                />
+                <FormControlLabel
+                  label={<Link to="/prywatnosc">Akceptuję politykę prywatności i regulamin*</Link>}
+                  style={{ marginTop: '15px' }}
+                  control={
+                    <Checkbox
+                      checked={data.privacy}
+                      name="privacy"
+                      required
+                      onChange={(e) => {
+                        setData({ ...data, [e.target.name]: !data.privacy })
+                      }}
+                    />
+                  }
                 />
               </Grid>
             </Grid>
@@ -191,7 +218,7 @@ export default function SignUp() {
               className={classes.submit}
               onClick={onClick}
             >
-              Sign Up
+              Załóż konto
             </Button>
             <Box mt={5}>
               <Link to="/">Zaloguj się!</Link>

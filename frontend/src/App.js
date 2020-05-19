@@ -16,6 +16,7 @@ import ProfilePage from './components/LandingPage/ProfilePage'
 import StepsPage from './components/LandingPage/StepsPage'
 import ToLogIn from './components/Navbar/toLogIn'
 import SignUp from './components/LandingPage/SignUp'
+import Privacy from './components/LandingPage/Privacy'
 
 function App() {
   const login = useSelector((state) => state.log.tokenLogin)
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/profil" component={ProfilePage} />
                 <Route path="/czat" component={ChatPage} />
                 <Route path="/ustawienia" component={SettingsPage} />
+                <Route path="/prywatnosc" component={Privacy} />
               </Switch>
             </Box>
           </Box>
@@ -43,6 +45,7 @@ function App() {
           <Route path="/register" exact component={SignUp} />
         </>
       )}
+      <Route path="/prywatnosc" component={Privacy} />
     </Router>
   )
 }
