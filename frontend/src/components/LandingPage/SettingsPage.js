@@ -125,7 +125,7 @@ const SettingsPage = () => {
 
   const submitFeedback = async (e) => {
     e.preventDefault()
-    axios.post('http://localhost:5000/user/send', emailMessage)
+    axios.post('http://localhost:5000/user/send', { email: emailMessage })
     setFeedbackText("Email wysłany!")
     setEmailMessage("")
   }
@@ -452,7 +452,7 @@ const SettingsPage = () => {
         <TextField
           value={emailMessage}
           name="email"
-          id="feedback"
+          id="email"
           onChange={(e) => setEmailMessage(e.target.value)}
           variant="outlined"
           fullWidth
@@ -519,7 +519,7 @@ const SettingsPage = () => {
           {blocked}
         </Grid>
         <Grid item xs={12} md={6}>
-          {/* {questionSettings} */}
+          {questionSettings}
         </Grid>
 
       </Grid>
@@ -530,7 +530,7 @@ const SettingsPage = () => {
         {preferenceSettings}
         {feedback}
         {blocked}
-        {/* {questionSettings} */}
+        {questionSettings}
 
       </Box>
     )

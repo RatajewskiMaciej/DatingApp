@@ -33,39 +33,15 @@ const Questions = (props) => {
 
   return (
     <form>
-      {questionData
-        .filter((q) => q.id <= props.ids[1] && q.id >= props.ids[0])
-        .map((question, index) => (
-          <Grid item key={index}>
-            <Box className={classes.question}>
-              <FormControl component="fieldset">
-                <FormLabel className={classes.formLabel}>
-                  <Typography variant="h5" color="primary">
-                    {questionData[question.id - 1].question}
-                  </Typography>
-                </FormLabel>
-
-                <RadioGroup
-                  aria-label={question.question}
-                  name={question.id}
-                  value={value}
-                  onChange={handleChange}
-                >
-                  {Object.values(questionData[question.id - 1].answers).map(
-                    (answer) => (
-                      <FormControlLabel
-                        key={`${question}.${answer}`}
-                        value={`${question}.${answer}`}
-                        control={<Radio />}
-                        label={answer}
-                      />
-                    )
-                  )}
-                </RadioGroup>
-              </FormControl>
-            </Box>
-          </Grid>
-        ))}
+      {questionData.map(res => {
+        return (
+          <div key={Math.random()}>
+            <Typography variant="h5" color="primary">{res.question}</Typography>
+            {res.answers.map(response => { return (<div key={Math.random()}><input type="radio" name={res.id} value={response} />{response}</div>) }
+            )}
+          </div>
+        )
+      })}
     </form>
   )
 }
