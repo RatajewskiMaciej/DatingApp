@@ -138,12 +138,27 @@ router.put("/password", [auth], async (req, res) => {
 
 router.post("/send", [auth], (req, res) => {
 
-  console.log(JSON.parse(JSON.stringify(req.body)))
-
   sendEmail(req.body.email, req.user.id)
 
   return res.json({ msg: "Email wysłany" })
 
+})
+
+
+//send questions
+
+router.post("/questions", [auth], async (req, res) => {
+  const user = await User.findById(req.user.id)
+
+  console.log(req.body)
+
+  try {
+    user.questionnaire = req.body.answers
+    user.save()
+
+  } catch (error) {
+    console.log(err.message)
+  }
 })
 
 

@@ -496,15 +496,6 @@ const SettingsPage = () => {
   const questionSettings = (
     <Paper className={classes.paper}>
       <Questions ids={[1, 12]} />
-      <Button
-        className={classes.button}
-        onClick={onClick}
-        variant="contained"
-        color="primary"
-        size="large"
-      >
-        Zapisz zmiany
-      </Button>
     </Paper>
   )
 

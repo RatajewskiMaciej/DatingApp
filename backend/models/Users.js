@@ -40,6 +40,9 @@ const User = new Schema({
   match: {
     type: String,
     default: "80%"
+  },
+  questionnaire: {
+    type: Object
   }
 });
 
