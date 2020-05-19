@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const nodemailer = require("nodemailer");
 
 
 const auth = require('../middleware/auth.js');
 const User = require('../models/Users.js');
 const upload = require("../middleware/uploads.js");
+const { sendEmail } = require("./mail")
 
 //get user who login
 
@@ -56,8 +58,8 @@ router.put("/profile", [auth, upload], async (req, res) => {
     email ? user.email = email : null;
     locationPreference ? user.city = locationPreference : null;
     ageRangePreference ? user.ageRange = ageRangePreference : null;
-    genderPreferenceFemale ? user.gender.genderPreferenceFemale = true : user.gender.genderPreferenceFemale = false;
-    genderPreferenceMale ? user.gender.genderPreferenceMale = true : user.gender.genderPreferenceMale = false;
+    genderPreferenceFemale ? user.genderPreferenceFemale = true : user.genderPreferenceFemale = false;
+    genderPreferenceMale ? user.genderPreferenceMale = true : user.genderPreferenceMale = false;
     req.file ? user.avatars.push(req.file.path) : null
     avatar ? user.avatar : null
 
@@ -126,8 +128,22 @@ router.put("/password", [auth], async (req, res) => {
     }
 
   } catch (error) {
+    console.log(err.message)
 
   }
+})
+
+
+//send email
+
+router.post("/send", [auth], (req, res) => {
+
+  console.log(JSON.parse(JSON.stringify(req.body)))
+
+  sendEmail(req.body.email, req.user.id)
+
+  return res.json({ msg: "Email wysłany" })
+
 })
 
 
