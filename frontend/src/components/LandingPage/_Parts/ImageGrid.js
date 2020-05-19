@@ -1,6 +1,5 @@
 import React, { useRef } from 'react'
-import axios from "axios"
-
+import axios from 'axios'
 
 import {
   GridList,
@@ -42,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   titleBar: {
     background:
       'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
 }))
 
@@ -50,8 +49,7 @@ const ImageGrid = (props) => {
   const classes = useStyles()
   const theme = useTheme()
 
-  const inputRef = useRef();
-
+  const inputRef = useRef()
 
   const xs = useMediaQuery(theme.breakpoints.down('xs'))
   const sm = useMediaQuery(theme.breakpoints.down('sm'))
@@ -81,28 +79,27 @@ const ImageGrid = (props) => {
             type="file"
             name="avatar"
             ref={inputRef}
-            style={{ display: "none" }}
-            onChange={
-              async (e) => {
-                const image = e.target.files[0]
-                let formData = new FormData();
-                formData.append("avatar", image, image.name);
-                await axios.put('http://localhost:5000/user/profile', formData)
-              }}
+            style={{ display: 'none' }}
+            onChange={async (e) => {
+              const image = e.target.files[0]
+              let formData = new FormData()
+              formData.append('avatar', image, image.name)
+              await axios.put('http://localhost:5000/user/profile', formData)
+            }}
           />
           <GridListTile>
             <AddCircleIcon className={classes.addIcon} />
           </GridListTile>
         </Button>
-
       ) : null}
 
-      {props.mapSource.map((image) => (
+      {props.mapSource.map((image, index) => (
         <GridListTile key={Math.random()} onClick={props.tileClick}>
           <img
             src={image}
             className={classes.gridListTile}
             alt={image}
+            index={index}
           />
 
           {props.tileBar ? (
@@ -113,7 +110,9 @@ const ImageGrid = (props) => {
               actionIcon={
                 <IconButton
                   className={classes.favIcon}
-                  onClick={() => { props.iconClick() }}
+                  onClick={() => {
+                    props.iconClick()
+                  }}
                 >
                   <FavoriteIcon />
                 </IconButton>

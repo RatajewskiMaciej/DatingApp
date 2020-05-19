@@ -10,9 +10,9 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 
 const useStyles = makeStyles((theme) => ({
   stepsPage: {
-    height: 'calc(100vh - 72px)',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   content: {
     padding: theme.spacing(3),

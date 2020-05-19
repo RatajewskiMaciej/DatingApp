@@ -153,7 +153,7 @@ const ProfilePage = (props) => {
 
   // Image gallery
   const [activeStep, setActiveStep] = useState(0)
-  const maxSteps = 3
+  const maxSteps = 3 //userImages.length
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
   }
@@ -267,7 +267,7 @@ const ProfilePage = (props) => {
       alt="Zdjęcie"
       tileClick={
         (event) => {
-          setActiveStep(Number(event.target.alt.split(' ').pop()) - 1)
+          setActiveStep(Number(event.target.getAttribute('index')))
           setGallery(true)
           dispatch(getUser())
         }}
@@ -286,7 +286,7 @@ const ProfilePage = (props) => {
           <ImageGrid
             colNumLg={4}
             mapSource={userImages}
-            alt={'user gallery item'}
+            alt={'Image Gallery'}
             tileClick={(event) => {
               let adres = event.target.src
               let split = adres.split("http://localhost:3000/")
@@ -341,7 +341,7 @@ const ProfilePage = (props) => {
           <IconButton
             onClick={() => {
               alert('delete forever')
-              setGallery()
+              setGallery(false)
             }}
           >
             <DeleteForeverIcon fontSize="large" className={classes.galleryUi} />
@@ -357,8 +357,13 @@ const ProfilePage = (props) => {
           </Button>
           <IconButton
             style={{ float: 'right' }}
-            onClick={() => {
+            onClick={(event) => {
+              // let adres = userImages[activeStep]
+              // console.log(adres)
+              // setProfileImage(adres)
+              // axios.put('http://localhost:5000/user/profile', { avatar: adres })
               setGallery(false)
+              dispatch(getUser())
             }
             }
 
@@ -413,7 +418,7 @@ const ProfilePage = (props) => {
     </Modal >
   )
 
-  return (
+  return (console.log(userImages),
     <Box className={classes.root} >
       {useMediaQuery(theme.breakpoints.down('sm')) ? (
         <Paper className={classes.paper}>
@@ -445,7 +450,6 @@ const ProfilePage = (props) => {
       {editPhotoModal}
 
     </Box >
-
   )
 }
 

@@ -7,6 +7,7 @@ import {
   ButtonGroup,
   Typography,
   Slider,
+  Select,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -51,11 +52,13 @@ const CreateProfile = () => {
   const classes = useStyles()
 
   // States
+  const [locationPreference, setLocationPreference] = useState(null)
   const [ageRangePreference, setAgeRangePreference] = useState(
     userData.preferences.ageRange
   )
   const [age, setAge] = useState(userData.age)
   const [gender, setGender] = useState(null)
+  const [location, setLocation] = useState(null)
   const [preferenceMale, setPreferenceMale] = useState(false)
   const [preferenceFemale, setPreferenceFemale] = useState(false)
   const [photoAdd, setPhotoAdd] = useState(false)
@@ -70,6 +73,9 @@ const CreateProfile = () => {
   const handleGender = (newGender) => {
     setGender(newGender)
   }
+  const handleLocation = (newLocation) => {
+    setLocation(newLocation)
+  }
   const handlePreferenceMale = () => {
     setPreferenceMale(!preferenceMale)
   }
@@ -79,24 +85,6 @@ const CreateProfile = () => {
   const handlePhotoAdd = () => {
     setPhotoAdd(true)
   }
-  // ***
-
-  // const ageOptions = (select) => {
-  //   let options = []
-  //   for (let i = 18; i < 70; i++) {
-  //     options.push(
-  //       <option value={i} key={i}>
-  //         {i}
-  //       </option>
-  //     )
-  //   }
-  //   options.push(
-  //     <option value={70} key={70}>
-  //       70+
-  //     </option>
-  //   )
-  //   return options
-  // }
 
   return (
     <Box>
@@ -155,6 +143,28 @@ const CreateProfile = () => {
         </Grid>
         <Grid item>
           <Typography variant="h6" align="center">
+            Z miejscowości
+          </Typography>
+          <Select
+            native
+            value={null}
+            onChange={handleLocation}
+            name="location"
+            displayEmpty
+            variant="outlined"
+            fullWidth
+          >
+            <option value="Poznan">Poznan</option>
+            <option value="Wroclaw">Wroclaw</option>
+            <option value="Krakow">Krakow</option>
+            <option value="Warszawa">Warszawa</option>
+            <option value="Gdansk">Gdansk</option>
+            <option value="Lodz">Lodz</option>
+            <option value="Szczecin">Szczecin</option>
+          </Select>
+        </Grid>
+        <Grid item>
+          <Typography variant="h6" align="center">
             W wieku
           </Typography>
           <Slider
@@ -167,6 +177,7 @@ const CreateProfile = () => {
             max={70}
           />
         </Grid>
+
         <Grid item>
           <Typography variant="h6" align="center">
             Chcę poznać
@@ -187,6 +198,28 @@ const CreateProfile = () => {
               Mężczyzn
             </Button>
           </ButtonGroup>
+        </Grid>
+        <Grid item>
+          <Typography variant="h6" align="center">
+            Z miejscowości
+          </Typography>
+          <Select
+            native
+            value={null}
+            onChange={handleLocation}
+            name="location"
+            displayEmpty
+            variant="outlined"
+            fullWidth
+          >
+            <option value="Poznan">Poznan</option>
+            <option value="Wroclaw">Wroclaw</option>
+            <option value="Krakow">Krakow</option>
+            <option value="Warszawa">Warszawa</option>
+            <option value="Gdansk">Gdansk</option>
+            <option value="Lodz">Lodz</option>
+            <option value="Szczecin">Szczecin</option>
+          </Select>
         </Grid>
         <Grid item>
           <Typography variant="h6" align="center">
