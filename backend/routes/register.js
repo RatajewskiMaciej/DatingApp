@@ -6,17 +6,17 @@ const router = express.Router()
 
 
 router.post('/', [
-  check("first_name", "First Name is require!")
+  check("first_name", "First Name is required!")
     .not()
     .notEmpty(),
-  check("last_name", "Last Name is require!")
+  check("last_name", "Last Name is required!")
     .not()
     .notEmpty(),
-  check("email", "Email is require!")
+  check("email", "Email is required!")
     .not()
     .notEmpty()
     .isEmail(),
-  check('password', "Password have to min 5 length")
+  check('password', "Password has to be min 5 characters")
     .isLength({ min: 5 })
 ], async (req, res) => {
   const errors = validationResult(req);
@@ -38,7 +38,7 @@ router.post('/', [
 
     //if user exist
     if (user) {
-      return res.json({ msg: "User is already exist" })
+      return res.json({ msg: "User already exists" })
     }
     else {
       if (password === password2) {
@@ -61,10 +61,10 @@ router.post('/', [
 
         //save user with data
         await user.save()
-        return res.json({ msg: "You have registered" })
+        return res.json({ msg: "You have been registered" })
       }
       else {
-        res.json({ msg: "Your password does not match" })
+        res.json({ msg: "Passwords don't match" })
       }
     }
   } catch (error) {

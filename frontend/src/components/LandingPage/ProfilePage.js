@@ -23,7 +23,7 @@ import {
   MobileStepper,
 } from '@material-ui/core'
 
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import CancelIcon from '@material-ui/icons/Cancel'
@@ -113,11 +113,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
 }))
-let user;
+let user
 const ProfilePage = (props) => {
   const classes = useStyles()
   const theme = useTheme()
-  const inputRef = useRef();
+  const inputRef = useRef()
   const dispatch = useDispatch()
 
   const [newAvatar, setNewAvatar] = useState('')
@@ -129,23 +129,19 @@ const ProfilePage = (props) => {
   user = useSelector((state) => state.users.user)
 
   // User profile data
-
   const name = user.first_name
   const age = user.age
   const city = user.city
-  const userImages = user.avatars
+  const userImages = user.avatars? user.avatars: []
   const [about, setAbout] = useState(user.description)
   const [profileImage, setProfileImage] = useState(user.avatar)
-
 
   // Modal sections
   const [editAbout, setEditAbout] = useState(false)
   const [editPhoto, setEditPhoto] = useState(false)
   const [gallery, setGallery] = useState(false)
   const toggleEditAbout = () => {
-
     setEditAbout(!editAbout)
-
   }
   const toggleEditImage = () => {
     setEditPhoto(!editPhoto)
@@ -153,7 +149,7 @@ const ProfilePage = (props) => {
 
   // Image gallery
   const [activeStep, setActiveStep] = useState(0)
-  const maxSteps = 3 //userImages.length
+  const maxSteps = userImages.length
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
   }
@@ -189,10 +185,9 @@ const ProfilePage = (props) => {
         <Typography className={classes.headerTextUp} variant="h3">
           {name}
         </Typography>
-        <Typography
-          className={classes.headerTextDown}
-          variant="h5"
-        >{`${city ? city : ""} ${age ? age : ""}`}</Typography>
+        <Typography className={classes.headerTextDown} variant="h5">{`${
+          city ? city : ''
+        } ${age ? age : ''}`}</Typography>
       </Box>
     </Box>
   )
@@ -217,16 +212,16 @@ const ProfilePage = (props) => {
             <CheckCircleIcon fontSize="large" style={{ color: 'green' }} />
           </IconButton>
         ) : (
-            <IconButton
-              style={{ margin: '10px 10px 0 0' }}
-              color="primary"
-              onClick={(event) => {
-                toggleEditAbout()
-              }}
-            >
-              <EditIcon fontSize="large" />
-            </IconButton>
-          )}
+          <IconButton
+            style={{ margin: '10px 10px 0 0' }}
+            color="primary"
+            onClick={(event) => {
+              toggleEditAbout()
+            }}
+          >
+            <EditIcon fontSize="large" />
+          </IconButton>
+        )}
       </Box>
       {editAbout ? (
         <ClickAwayListener onClickAway={(event) => toggleEditAbout()}>
@@ -241,40 +236,39 @@ const ProfilePage = (props) => {
                 autoFocus
                 value={about}
                 placeholder="Napisz coś o sobie..."
-                onChange={(event) => { setAbout(event.target.value); }}
+                onChange={(event) => {
+                  setAbout(event.target.value)
+                }}
               />
             </form>
           </Box>
         </ClickAwayListener>
       ) : (
-          <Typography
-            onClick={() => toggleEditAbout()}
-            variant="body1"
-            paragraph
-            style={{ margin: '0px 20px 35px 20px' }}
-          >
-            {about ? about : 'Napisz coś o sobie...'}
-          </Typography>
-        )}
+        <Typography
+          onClick={() => toggleEditAbout()}
+          variant="body1"
+          paragraph
+          style={{ margin: '0px 20px 35px 20px' }}
+        >
+          {about ? about : 'Napisz coś o sobie...'}
+        </Typography>
+      )}
     </Box>
   )
 
   const photoSection = (
-
     <ImageGrid
       mapSource={userImages}
       addTile
       alt="Zdjęcie"
-      tileClick={
-        (event) => {
-          setActiveStep(Number(event.target.getAttribute('index')))
-          setGallery(true)
-          dispatch(getUser())
-        }}
+      tileClick={(event) => {
+        setActiveStep(Number(event.target.getAttribute('index')))
+        setGallery(true)
+        dispatch(getUser())
+      }}
       colNumMd={2}
       colNumLg={2}
     />
-
   )
 
   const editPhotoModal = (
@@ -289,7 +283,7 @@ const ProfilePage = (props) => {
             alt={'Image Gallery'}
             tileClick={(event) => {
               let adres = event.target.src
-              let split = adres.split("http://localhost:3000/")
+              let split = adres.split('http://localhost:3000/')
               adres = split[1]
               console.log(adres)
               setProfileImage(adres)
@@ -302,7 +296,7 @@ const ProfilePage = (props) => {
           <Button
             className={classes.modalUploadButton}
             onClick={() => {
-              toggleEditImage();
+              toggleEditImage()
               inputRef.current.click()
             }}
             variant="contained"
@@ -313,18 +307,17 @@ const ProfilePage = (props) => {
               type="file"
               name="avatar"
               ref={inputRef}
-              style={{ display: "none" }}
-              onChange={
-                (e) => {
-                  const image = e.target.files[0]
-                  let formData = new FormData();
-                  formData.append("avatar", image, image.name);
-                  dispatch(addPhoto(formData))
-                  setNewAvatar(formData);
-                }}
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                const image = e.target.files[0]
+                let formData = new FormData()
+                formData.append('avatar', image, image.name)
+                dispatch(addPhoto(formData))
+                setNewAvatar(formData)
+              }}
             />
             Dodaj zdjęcie
-        </Button>
+          </Button>
         </>
       }
     />
@@ -364,16 +357,14 @@ const ProfilePage = (props) => {
               // axios.put('http://localhost:5000/user/profile', { avatar: adres })
               setGallery(false)
               dispatch(getUser())
-            }
-            }
-
+            }}
           >
             <CancelIcon fontSize="large" className={classes.galleryUi} />
           </IconButton>
         </Box>
         <img
           className={classes.img}
-          src={`http://localhost:5000/${user.avatar}`}
+          src={`http://localhost:5000/${userImages[activeStep]}`}
           alt={`zdjęcie`}
         />
         <MobileStepper
@@ -385,7 +376,7 @@ const ProfilePage = (props) => {
             <Button
               size="small"
               onClick={() => {
-                handleNext();
+                handleNext()
               }}
               disabled={activeStep === maxSteps - 1}
             >
@@ -393,33 +384,33 @@ const ProfilePage = (props) => {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowLeft />
               ) : (
-                  <KeyboardArrowRight />
-                )}
+                <KeyboardArrowRight />
+              )}
             </Button>
           }
           backButton={
             <Button
               size="small"
               onClick={() => {
-                handleBack();
+                handleBack()
               }}
               disabled={activeStep === 0}
             >
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowRight />
               ) : (
-                  <KeyboardArrowLeft />
-                )}
+                <KeyboardArrowLeft />
+              )}
               Back
             </Button>
           }
         />
       </Box>
-    </Modal >
+    </Modal>
   )
 
-  return (console.log(userImages),
-    <Box className={classes.root} >
+  return (
+    <Box className={classes.root}>
       {useMediaQuery(theme.breakpoints.down('sm')) ? (
         <Paper className={classes.paper}>
           {headerSection}
@@ -428,28 +419,27 @@ const ProfilePage = (props) => {
           {photoSection}
         </Paper>
       ) : (
-          <Grid container>
-            <Grid item md={6}>
-              <Paper className={classes.paper} style={{ paddingBottom: 5 }}>
-                {headerSection}
-                <Divider />
-                {aboutSection}
-              </Paper>
-            </Grid>
-            <Grid item md={6}>
-              {user.avatars ?
-                <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
-                : <CircularProgress />
-              }
-            </Grid>
+        <Grid container>
+          <Grid item md={6}>
+            <Paper className={classes.paper} style={{ paddingBottom: 5 }}>
+              {headerSection}
+              <Divider />
+              {aboutSection}
+            </Paper>
           </Grid>
-        )
-      }
+          <Grid item md={6}>
+            {user.avatars ? (
+              <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
+            ) : (
+              <CircularProgress />
+            )}
+          </Grid>
+        </Grid>
+      )}
 
       {galleryModal}
       {editPhotoModal}
-
-    </Box >
+    </Box>
   )
 }
 

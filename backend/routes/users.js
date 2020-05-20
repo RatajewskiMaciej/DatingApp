@@ -116,7 +116,7 @@ router.put("/password", [auth], async (req, res) => {
     const match = await bcrypt.compare(oldPass, user.password)
 
     if (!match) {
-      return res.json({ msg: "Email or Password is wrong" })
+      return res.json({ msg: "Email or Password is incorrect" })
     }
     else {
       const salt = await bcrypt.genSaltSync(10);

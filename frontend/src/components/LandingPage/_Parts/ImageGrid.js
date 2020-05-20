@@ -96,9 +96,9 @@ const ImageGrid = (props) => {
       {props.mapSource.map((image, index) => (
         <GridListTile key={Math.random()} onClick={props.tileClick}>
           <img
-            src={image}
+            src={`http://localhost:5000/${image}`}
             className={classes.gridListTile}
-            alt={image}
+            alt={`http://localhost:5000/${image}`}
             index={index}
           />
 

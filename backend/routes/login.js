@@ -8,11 +8,11 @@ const router = express.Router()
 const key = config.get('secretKey')
 
 router.post('/', [
-  check("email", "Email is require!")
+  check("email", "Email is required!")
     .not()
     .notEmpty()
     .isEmail(),
-  check('password', "Password have to min 5 length")
+  check('password', "Password has to be min 5 characters")
     .isLength({ min: 5 })
 ], async (req, res) => {
   const errors = validationResult(req);
@@ -40,7 +40,7 @@ router.post('/', [
 
       //if password is wrong
       if (!match) {
-        return res.json({ msg: "Email or Password is wrong" })
+        return res.json({ msg: "Email or Password is incorrect" })
       }
       else {
 
