@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_USERS, GET_USERDATA, GET_PROFILE, UPDATE_USERDATA, DELETE_USER, ADD_PHOTO } from '../types';
+import { GET_USERS, GET_USERDATA, GET_PROFILE, UPDATE_USERDATA, DELETE_USER, ADD_PHOTO, USER_CHAT } from '../types';
 
 
 export const getUser = () => async dispatch => {
@@ -76,6 +76,18 @@ export const addPhoto = formData => async dispatch => {
     dispatch({
       type: ADD_PHOTO,
       user: res.data,
+    })
+  } catch (error) {
+    console.log(error.message);
+
+  }
+}
+
+export const userChat = user => async dispatch => {
+  try {
+    dispatch({
+      type: USER_CHAT,
+      user: user,
     })
   } catch (error) {
     console.log(error.message);

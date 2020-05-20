@@ -1,11 +1,12 @@
-import { GET_USERS, GET_USERDATA, GET_PROFILE, DELETE_USER, UPDATE_USERDATA, ADD_PHOTO } from '../types';
+import { GET_USERS, GET_USERDATA, GET_PROFILE, DELETE_USER, UPDATE_USERDATA, ADD_PHOTO, USER_CHAT } from '../types';
 
 
 const initialState = {
   users: [],
   user: [],
   profile: {},
-  response: ""
+  response: "",
+  userChat: {}
 };
 
 export default (state = initialState, action) => {
@@ -34,6 +35,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         user: action.user
+      };
+    case USER_CHAT:
+      return {
+        ...state,
+        userChat: action.user
       };
     default:
       return state;

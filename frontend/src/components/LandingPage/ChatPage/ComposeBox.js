@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import io from 'socket.io-client';
 
 import {
   Divider,
@@ -27,15 +28,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+let socket;
+
 const ComposeBox = () => {
   const classes = useStyles()
   const theme = useTheme()
-  const [message, setMessage] = useState()
+  socket = io('http://localhost:5000');
 
-  const sendMessage = () => {
-    setMessage('')
+  useEffect(() => {
+    socket.on('news', (data) => {
+      console.log(data);
+    })
+  }, []);
 
+  const [words, setWords] = useState("")
+  const [message, setMessage] = useState("")
+
+
+
+  const sendMessage = (event) => {
+    if (message) {
+
+      socket.emit('sendMessage', message, () => setMessage(''));
+    }
   }
+
 
   return (
     <Paper className={classes.composeBox}>

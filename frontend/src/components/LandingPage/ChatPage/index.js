@@ -3,9 +3,12 @@ import ChatHeader from './ChatHeader'
 import MessageList from './MessageList'
 import ComposeBox from './ComposeBox'
 import ChatLeftPane from './ChatLeftPane'
+import io from 'socket.io-client';
 
 import { Paper, Grid, Hidden, Box, useMediaQuery } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
+
+
 
 const useStyles = makeStyles((theme) => ({
   paperLeft: {
@@ -34,42 +37,48 @@ const ChatPage = () => {
     setExtend(!extend)
   }
 
+  // const socket = io('http://localhost:5000');
+  // socket.on('news', (data) => {
+  //   console.log(data);
+  //   socket.emit('my other event', { my: 'data' });
+  // });
+
   return smDown ? (
     extend ? (
       <Box>
         <Paper className={classes.paperRight}>
           {/* <ChatHeader onClick={handleExtend} /> */}
-          <ChatLeftPane onClick={handleExtend}/>
+          <ChatLeftPane />
         </Paper>
       </Box>
     ) : (
-      <Box>
-        <Paper className={classes.paperRight}>
-          <ChatHeader onClick={handleExtend} />
-          <MessageList />
-          <ComposeBox />
-        </Paper>
-      </Box>
-    )
+        <Box>
+          <Paper className={classes.paperRight}>
+            <ChatHeader />
+            <MessageList />
+            <ComposeBox />
+          </Paper>
+        </Box>
+      )
   ) : (
-    <Grid container>
-      <Hidden smDown>
-        <Grid item md={4}>
-          <Paper className={classes.paperLeft}>
-            <ChatLeftPane onClick={handleExtend}/>
+      <Grid container>
+        <Hidden smDown>
+          <Grid item md={4}>
+            <Paper className={classes.paperLeft}>
+              <ChatLeftPane />
+            </Paper>
+          </Grid>
+        </Hidden>
+
+        <Grid item md={8}>
+          <Paper className={classes.paperRight}>
+            <ChatHeader />
+            <MessageList />
+            <ComposeBox />
           </Paper>
         </Grid>
-      </Hidden>
-
-      <Grid item md={8}>
-        <Paper className={classes.paperRight}>
-          <ChatHeader onClick={handleExtend} />
-          <MessageList />
-          <ComposeBox />
-        </Paper>
       </Grid>
-    </Grid>
-  )
+    )
 }
 
 export default ChatPage

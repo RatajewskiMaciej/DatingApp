@@ -1,4 +1,9 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
+import { Link } from "react-router-dom"
+import axios from "axios"
+
+import { useDispatch, useSelector } from "react-redux"
+import { getUser, getUsers } from "../../../redux/actions/usersAction"
 import {
   Grid,
   Hidden,
@@ -20,6 +25,15 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ChatHeader = (props) => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getUser())
+  }, [])
+
+  const user = useSelector(state => state.users.user)
+  const userChat = useSelector(state => state.users.userChat)
+
 
   const [anchorEl, setAnchorEl] = useState()
   const handleClick = (event) => {
@@ -47,13 +61,17 @@ const ChatHeader = (props) => {
           </Hidden>
         </Grid>
         <Grid item>
-          <Typography variant="h5" align="center">
-            <b>Aga</b>, 27
-          </Typography>
-          <Typography color="secondary">Dopasowanie: 98%</Typography>
+          {userChat.first_name ?
+            <>
+              <Typography variant="h5" align="center">
+                <b>{userChat.first_name}</b>, {userChat.age}
+              </Typography>
+              <Typography color="secondary">Dopasowanie: {userChat.match}</Typography>
+            </>
+            : null}
         </Grid>
         <Grid item>
-        <IconButton onClick={handleClick}>
+          <IconButton onClick={handleClick}>
             <MoreVertIcon fontSize="large" />
           </IconButton>
           <Menu
@@ -66,14 +84,16 @@ const ChatHeader = (props) => {
             <MenuItem
               onClick={() => {
                 handleClose()
-                alert('Zgłoszono!')
+                alert('Zgłoś naruszenie regulaminu w podpunkcie feedback!')
               }}
             >
-              Zgłoś
+              <Link to="ustawienia">
+                Zgłoś</Link>
             </MenuItem>
             <MenuItem
               onClick={() => {
                 handleClose()
+                axios.post("http://localhost:5000/user/blocked", { user: userChat })
                 alert('Zablokowano!')
               }}
             >

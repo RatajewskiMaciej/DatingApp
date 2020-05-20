@@ -483,11 +483,9 @@ const SettingsPage = () => {
         className={classes.clickableRow}
         onClick={() => alert('Odblokowano!')}
       >
-        <Link
-        // onClick={() => alert('send change password email')}
-        >
-          <Typography>Aga, Wrocław, 21</Typography>
-        </Link>
+        {user.blockedUser ? user.blockedUser.map(profile => (
+          <Typography key={Math.random()}>{profile.first_name}, {profile.age}</Typography>
+        )) : <Typography></Typography>}
       </Box>
       <Divider />
     </Paper>

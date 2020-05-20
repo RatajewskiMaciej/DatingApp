@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import {
   Avatar,
@@ -12,11 +12,9 @@ import { fade, makeStyles } from '@material-ui/core/styles'
 import SearchIcon from '@material-ui/icons/Search'
 import ClearIcon from '@material-ui/icons/Clear'
 
-//Dummy user data
-import chatData from '../../../data/chatData'
-import userData from '../../../data/userData'
-const profileImage = userData.images.filter((image) => image.profile)[0].src
-// ***
+import { useDispatch, useSelector } from "react-redux"
+import { getUser, getUsers, userChat } from "../../../redux/actions/usersAction"
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,24 +70,36 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ChatLeftPane = (props) => {
+  const dispatch = useDispatch()
   const classes = useStyles()
+
+  useEffect(() => {
+    dispatch(getUsers());
+    dispatch(getUser())
+  }, [])
   const [search, setSearch] = useState()
-  // TO DO SEARCH FILTERING
+
+  const users = useSelector(state => state.users.users)
+  const userAuth = useSelector(state => state.users.user)
+
 
   const button = (
     <>
-      <Button className={classes.button} onClick={props.onClick}>
-        <Avatar src={profileImage} className={classes.avatar} />
-        <Box className={classes.textWrapper}>
-          <Typography noWrap className={classes.buttonText}>
-            <b>Aga</b>, 27
-          </Typography>
-          <Typography noWrap className={classes.buttonText}>
-            {chatData.filter((msg) => msg.senderId !== 'Ja').pop().text}
-          </Typography>
-        </Box>
-      </Button>
-      <Divider />
+      {users.filter(user => (user._id !== userAuth._id) && (search ? user.first_name.includes(search) : true))
+        .map(profile => (
+          <div div key={Math.random()} onClick={() => { dispatch(userChat(profile)) }}>
+            <Button className={classes.button} >
+              <Avatar src={`http://localhost:5000/${profile.avatar}`} className={classes.avatar} />
+              <Box className={classes.textWrapper}>
+                <Typography noWrap className={classes.buttonText}>
+                  <b>{profile.first_name}</b>, {profile.age}
+                </Typography>
+              </Box>
+            </Button>
+            <Divider />
+          </div>
+        ))
+      }
     </>
   )
 
@@ -120,14 +130,6 @@ const ChatLeftPane = (props) => {
   return (
     <Box className={classes.root}>
       {searchBox}
-      {button}
-      {button}
-      {button}
-      {button}
-      {button}
-      {button}
-      {button}
-      {button}
       {button}
     </Box>
   )

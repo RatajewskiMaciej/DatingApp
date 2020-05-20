@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import {
   Typography,
-  Button
+  Button,
+  Checkbox
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -27,7 +28,6 @@ const Questions = (props) => {
 
   const user = useSelector((state) => state.users.user)
 
-
   const classes = useStyles()
   const [value, setValue] = useState('female')
   const handleChange = (event) => {
@@ -36,24 +36,20 @@ const Questions = (props) => {
   const [payload, setPayload] = useState({})
 
   const onSubmit = async () => {
-    const res = await axios.post("http://localhost:5000/user/questions", { answers: payload })
+    const res = await axios.post("http://localhost:5000/user/questions", payload)
   }
 
   const onChange = e => {
     setPayload({
       ...payload,
       [e.target.name]: e.target.value
-    })
+    });
   }
-
-
-  // user.questionnaire.res1 ? console.log(user.questionnaire.res1) : null
-
 
   return (
     <form onSubmit={onSubmit}>
       <Typography variant="h5" color="primary">Jestem tu, żeby...</Typography>
-      <div><input type="radio" name="res1" value='rozmawiać' onChange={onChange} checked={user.questionnaire == 'rozmawiać'} />rozmawiać</div>
+      <div><input type="radio" name="res1" value='rozmawiać' onChange={onChange} />rozmawiać</div>
       <div><input type="radio" name="res1" value='znaleźć przyjaciół' onChange={onChange} />znaleźć przyjaciół</div>
       <div><input type="radio" name="res1" value='randkować' onChange={onChange} />randkować</div>
 
@@ -99,12 +95,10 @@ const Questions = (props) => {
       <div><input type="radio" name="res10" value='Lubię i psy i koty' onChange={onChange} />Lubię i psy i koty</div>
       <div><input type="radio" name="res10" value='Ani jedno, ani drugie' onChange={onChange} />Ani jedno, ani drugie</div>
 
-
       <Typography variant="h5" color="primary">Czy Twoje życie Cię zadowala?</Typography>
       <div><input type="radio" name="res11" value='Tak' onChange={onChange} />Tak</div>
       <div><input type="radio" name="res11" value='Nie' onChange={onChange} />Nie</div>
       <div><input type="radio" name="res11" value='Ciężko powiedzieć' onChange={onChange} />Ciężko powiedzieć</div>
-
 
       <Typography variant="h5" color="primary">Czy sztuka jest dla Ciebie ważna?</Typography>
       <div><input type="radio" name="res12" value='Tak' onChange={onChange} />Tak</div>
