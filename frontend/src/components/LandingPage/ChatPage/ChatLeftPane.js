@@ -79,13 +79,15 @@ const ChatLeftPane = (props) => {
   }, [])
   const [search, setSearch] = useState()
 
-  const users = useSelector(state => state.users.users)
   const userAuth = useSelector(state => state.users.user)
+  const users = useSelector(state => state.users.users)
+  const { blockedUser } = userAuth
 
+  const r = users.filter((elem) => !blockedUser.find(({ email }) => elem.email === email));
 
   const button = (
     <>
-      {users.filter(user => (user._id !== userAuth._id) && (search ? user.first_name.includes(search) : true))
+      {r.filter(user => (user._id !== userAuth._id) && (search ? user.first_name.includes(search) : true))
         .map(profile => (
           <div div key={Math.random()} onClick={() => { dispatch(userChat(profile)) }}>
             <Button className={classes.button} >

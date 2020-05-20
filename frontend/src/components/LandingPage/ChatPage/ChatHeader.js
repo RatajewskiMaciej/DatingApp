@@ -94,10 +94,12 @@ const ChatHeader = (props) => {
               onClick={() => {
                 handleClose()
                 axios.post("http://localhost:5000/user/blocked", { user: userChat })
+                document.location.reload()
                 alert('Zablokowano!')
               }}
             >
-              Zablokuj
+                Zablokuj
+              
             </MenuItem>
           </Menu>
 

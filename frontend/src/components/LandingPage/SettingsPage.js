@@ -478,15 +478,17 @@ const SettingsPage = () => {
       <Typography variant="h4" className={classes.title}>
         Odblokuj
       </Typography>
-
-      <Box
-        className={classes.clickableRow}
-        onClick={() => alert('Odblokowano!')}
-      >
-        {user.blockedUser ? user.blockedUser.map(profile => (
-          <Typography key={Math.random()}>{profile.first_name}, {profile.age}</Typography>
-        )) : <Typography></Typography>}
-      </Box>
+      {user.blockedUser ? user.blockedUser.map(profile => (
+        <Link style={{ cursor: "pointer" }} key={Math.random()}>
+          <Typography key={Math.random()} onClick={() => {
+            axios.put('http://localhost:5000/user/unblock', {
+              user: profile,
+            })
+            alert(`Odblokowane ${profile.first_name}`)
+            document.location.reload()
+          }}>{profile.first_name}, {profile.age}</Typography>
+        </Link>
+      )) : <Typography></Typography>}
       <Divider />
     </Paper>
   )

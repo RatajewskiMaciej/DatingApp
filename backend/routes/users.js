@@ -186,5 +186,26 @@ router.post("/blocked", [auth], async (req, res) => {
   }
 })
 
+//unblock User
+
+router.put("/unblock", [auth], async (req, res) => {
+
+  const user = await User.findById(req.user.id)
+
+  try {
+    user.blockedUser = user.blockedUser.filter((blockUser) => {
+      return blockUser.email !== req.body.user.email
+    })
+
+    user.save()
+
+    return res.json(user.blockedUser)
+
+  } catch (error) {
+    console.log(err.message)
+
+  }
+})
+
 
 module.exports = router
