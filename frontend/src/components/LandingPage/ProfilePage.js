@@ -309,6 +309,7 @@ const ProfilePage = (props) => {
             onClick={() => {
               toggleEditImage()
               inputRef.current.click()
+              window.location.reload()
             }}
             variant="contained"
             color="primary"

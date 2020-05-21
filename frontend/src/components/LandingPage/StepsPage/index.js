@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const StepsPage = () => {
+
   const classes = useStyles()
   const theme = useTheme()
 
@@ -40,10 +41,9 @@ const StepsPage = () => {
       <Container maxWidth="sm">
         <Paper>
           <Box className={classes.content}>
-            {activeStep === 0 ? <CreateProfile /> : null}
-            {activeStep === 1 ? <Questions ids={[1, 4]} /> : null}
-            {activeStep === 2 ? <Questions ids={[5, 8]} /> : null}
-            {activeStep === 3 ? <Questions ids={[9, 12]} /> : null}
+            {activeStep === 0 ? <Questions /> : null}
+            {activeStep === 1 ? <CreateProfile /> : null}
+
           </Box>
 
           <MobileStepper
@@ -52,30 +52,33 @@ const StepsPage = () => {
             activeStep={activeStep}
             position="static"
             nextButton={
-              activeStep === 3 ? (
+              activeStep === 1 ? (
                 <Link className={classes.link} to="/">
                   <Button
                     size="large"
-                    onClick={() => alert('zapisz formularz')}
+                    onClick={() => alert('Uzupełnił wszystkie dane i zapisz je klikając w przycisk "Zapisz zmiany')}
                   >
                     Zapisz
                     {theme.direction === 'rtl?' ? (
                       <KeyboardArrowLeft />
                     ) : (
-                      <KeyboardArrowRight />
-                    )}
+                        <KeyboardArrowRight />
+                      )}
                   </Button>
                 </Link>
               ) : (
-                <Button size="large" onClick={() => handleNext()}>
-                  Dalej
-                  {theme.direction === 'rtl?' ? (
-                    <KeyboardArrowLeft />
-                  ) : (
-                    <KeyboardArrowRight />
-                  )}
-                </Button>
-              )
+                  <Button size="large" onClick={() => {
+                    handleNext();
+                    alert('Pamiętaj aby zapisać zmiany klikając w przycisk "Zapisz zmiany')
+                  }}>
+                    Dalej
+                    {theme.direction === 'rtl?' ? (
+                      <KeyboardArrowLeft />
+                    ) : (
+                        <KeyboardArrowRight />
+                      )}
+                  </Button>
+                )
             }
             backButton={
               <Button
@@ -86,8 +89,8 @@ const StepsPage = () => {
                 {theme.direction === 'rtl?' ? (
                   <KeyboardArrowRight />
                 ) : (
-                  <KeyboardArrowLeft />
-                )}
+                    <KeyboardArrowLeft />
+                  )}
                 Cofnij
               </Button>
             }

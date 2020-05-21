@@ -8,8 +8,9 @@ import userData from '../../data/userData'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper } from '@material-ui/core'
+import Index from './StepsPage/index'
 
-import { getUsers } from "../../redux/actions/usersAction"
+import { getUsers, getUser } from "../../redux/actions/usersAction"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,9 +34,11 @@ const MeetPage = (props) => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getUsers())
-  }, [getUsers])
+    dispatch(getUser())
+  }, [getUsers, getUser])
   const classes = useStyles()
 
+  const user = useSelector(state => state.users.user)
   const users = useSelector(state => state.users.users)
 
   const getMatchClass = () => {
@@ -49,21 +52,24 @@ const MeetPage = (props) => {
 
   return (
     <Paper className={classes.paper}>
-      <ProfileGallery
-        tileBar
-        title={`${users.first_name}, ${users.age}`}
-        // subtitle={
-        // <span
-        //   className={getMatchClass()}
-        // >{`Dopasowanie ${users.match}%`}</span>
-        // }
-        mapSource={users}
-        tileClick={(event) => alert('go to profile')}
-        iconClick={(event) => {
-          event.stopPropagation()
-          alert('like profile')
-        }}
-      />
+      {user.age ?
+
+        <ProfileGallery
+          tileBar
+          title={`${users.first_name}, ${users.age}`}
+          // subtitle={
+          // <span
+          //   className={getMatchClass()}
+          // >{`Dopasowanie ${users.match}%`}</span>
+          // }
+          mapSource={users}
+          tileClick={(event) => alert('go to profile')}
+          iconClick={(event) => {
+            event.stopPropagation()
+            alert('like profile')
+          }}
+        />
+        : <Index />}
     </Paper>
   )
 }

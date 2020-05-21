@@ -17,6 +17,8 @@ import StepsPage from './components/LandingPage/StepsPage'
 import ToLogIn from './components/Navbar/toLogIn'
 import SignUp from './components/LandingPage/SignUp'
 import Privacy from './components/LandingPage/Privacy'
+import index from './components/LandingPage/StepsPage/index'
+
 
 function App() {
   const login = useSelector((state) => state.log.tokenLogin)
@@ -40,11 +42,11 @@ function App() {
           </Box>
         </>
       ) : (
-        <>
-          <Route path="/" exact component={ToLogIn} />
-          <Route path="/register" exact component={SignUp} />
-        </>
-      )}
+          <>
+            <Route path="/" exact component={ToLogIn} />
+            <Route path="/register" exact component={SignUp} />
+          </>
+        )}
       <Route path="/prywatnosc" component={Privacy} />
     </Router>
   )

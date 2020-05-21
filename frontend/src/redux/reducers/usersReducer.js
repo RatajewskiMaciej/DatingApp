@@ -1,4 +1,4 @@
-import { GET_USERS, GET_USERDATA, GET_PROFILE, DELETE_USER, UPDATE_USERDATA, ADD_PHOTO, USER_CHAT, GET_CHAT, ADD_MESSAGE } from '../types';
+import { GET_USERS, GET_USERDATA, GET_PROFILE, DELETE_USER, UPDATE_USERDATA, ADD_PHOTO, USER_CHAT, GET_CHAT, ADD_MESSAGE, DATA_UPLOAD } from '../types';
 
 
 const initialState = {
@@ -7,7 +7,8 @@ const initialState = {
   profile: {},
   response: "",
   userChat: {},
-  chat: {}
+  chat: {},
+  dataUpload: {}
 };
 
 export default (state = initialState, action) => {
@@ -46,6 +47,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         chat: action.chat
+      };
+    case DATA_UPLOAD:
+      return {
+        ...state,
+        dataUpload: action.data
       };
     case ADD_MESSAGE:
       return {

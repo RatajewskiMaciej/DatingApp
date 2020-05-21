@@ -100,7 +100,6 @@ const MessageList = ({ messages }) => {
 
   }, [userChat]);
 
-  console.log(chatMessages.messages)
   // Scroll to bottom
   const endRef = useRef(null);
   useEffect(() => {

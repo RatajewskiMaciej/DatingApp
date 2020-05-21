@@ -1,4 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { getUser, addPhoto } from '../../../redux/actions/usersAction'
+import axios from "axios"
+
 import {
   Avatar,
   Box,
@@ -50,18 +54,36 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateProfile = () => {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(getUser())
+  }, [getUser])
   // States
-  const [locationPreference, setLocationPreference] = useState(null)
   const [ageRangePreference, setAgeRangePreference] = useState(
     userData.preferences.ageRange
   )
   const [age, setAge] = useState(userData.age)
   const [gender, setGender] = useState(null)
-  const [location, setLocation] = useState(null)
-  const [preferenceMale, setPreferenceMale] = useState(false)
-  const [preferenceFemale, setPreferenceFemale] = useState(false)
+  const [genderPreferenceMale, setGenderPreferenceMale] = useState(false)
+  const [genderPreferenceFemale, setGenderPreferenceFemale] = useState(false)
+  const [locationPreference, setLocationPreference] = useState(null)
+
   const [photoAdd, setPhotoAdd] = useState(false)
+  const payload = {
+    age,
+    locationPreference,
+    genderPreferenceFemale,
+    genderPreferenceMale,
+    ageRangePreference,
+  }
+
+  const onClick = async () => {
+    const res = await axios.put('http://localhost:5000/user/profile', payload)
+  }
+
+  const inputRef = useRef()
+  const user = useSelector(state => state.users.user)
 
   // Handlers
   const handleAgeRangeSlider = (event, newAgeRange) => {
@@ -74,13 +96,13 @@ const CreateProfile = () => {
     setGender(newGender)
   }
   const handleLocation = (newLocation) => {
-    setLocation(newLocation)
+    setLocationPreference(locationPreference)
   }
   const handlePreferenceMale = () => {
-    setPreferenceMale(!preferenceMale)
+    setGenderPreferenceMale(!genderPreferenceMale)
   }
   const handlePreferenceFemale = () => {
-    setPreferenceFemale(!preferenceFemale)
+    setGenderPreferenceFemale(!genderPreferenceFemale)
   }
   const handlePhotoAdd = () => {
     setPhotoAdd(true)
@@ -91,7 +113,7 @@ const CreateProfile = () => {
       <Box className={classes.imageBox}>
         <Avatar
           alt="Profile picture"
-          src={photoAdd ? profileImage : null}
+          src={user.avatar ? `http://localhost:5000/${user.avatar}` : null}
           className={classes.avatar}
           onClick={() => {
             alert('Add photo popup')
@@ -109,14 +131,26 @@ const CreateProfile = () => {
           <Button
             className={classes.button}
             onClick={() => {
-              alert('Add photo popup')
-              handlePhotoAdd()
+              inputRef.current.click()
             }}
             variant={photoAdd ? 'outlined' : 'contained'}
             size="large"
             color="primary"
             fullWidth
           >
+            <input
+              type="file"
+              name="avatar"
+              ref={inputRef}
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                const image = e.target.files[0]
+                let formData = new FormData()
+                formData.append('avatar', image, image.name)
+                dispatch(addPhoto(formData))
+                window.location.reload()
+              }}
+            />
             {photoAdd ? 'Zmień zdjęcie' : 'Dodaj zdjęcie'}
           </Button>
         </Grid>
@@ -143,13 +177,13 @@ const CreateProfile = () => {
         </Grid>
         <Grid item>
           <Typography variant="h6" align="center">
-            Z miejscowości
+            Jestem z miejscowości
           </Typography>
           <Select
             native
             value={null}
             onChange={handleLocation}
-            name="location"
+            name="locationPreference"
             displayEmpty
             variant="outlined"
             fullWidth
@@ -165,11 +199,12 @@ const CreateProfile = () => {
         </Grid>
         <Grid item>
           <Typography variant="h6" align="center">
-            W wieku
+            Mam lat
           </Typography>
           <Slider
             className={classes.slider}
             value={age}
+            name="age"
             onChange={handleAge}
             valueLabelDisplay="on"
             aria-labelledby="range-slider"
@@ -185,41 +220,21 @@ const CreateProfile = () => {
           <ButtonGroup fullWidth className={classes.buttonGroup}>
             <Button
               onClick={() => handlePreferenceFemale()}
-              color={preferenceFemale ? 'secondary' : null}
-              variant={preferenceFemale ? 'contained' : null}
+              color={genderPreferenceFemale ? 'secondary' : null}
+              variant={genderPreferenceFemale ? 'contained' : null}
+              name="genderPreferenceFemale"
             >
               Kobiety
             </Button>
             <Button
               onClick={() => handlePreferenceMale()}
-              color={preferenceMale ? 'primary' : null}
-              variant={preferenceMale ? 'contained' : null}
+              color={genderPreferenceMale ? 'primary' : null}
+              variant={genderPreferenceMale ? 'contained' : null}
+              name="genderPreferenceMale"
             >
               Mężczyzn
             </Button>
           </ButtonGroup>
-        </Grid>
-        <Grid item>
-          <Typography variant="h6" align="center">
-            Z miejscowości
-          </Typography>
-          <Select
-            native
-            value={null}
-            onChange={handleLocation}
-            name="location"
-            displayEmpty
-            variant="outlined"
-            fullWidth
-          >
-            <option value="Poznan">Poznan</option>
-            <option value="Wroclaw">Wroclaw</option>
-            <option value="Krakow">Krakow</option>
-            <option value="Warszawa">Warszawa</option>
-            <option value="Gdansk">Gdansk</option>
-            <option value="Lodz">Lodz</option>
-            <option value="Szczecin">Szczecin</option>
-          </Select>
         </Grid>
         <Grid item>
           <Typography variant="h6" align="center">
@@ -230,12 +245,22 @@ const CreateProfile = () => {
             value={ageRangePreference}
             onChange={handleAgeRangeSlider}
             valueLabelDisplay="on"
+            name="ageRangePreference"
             aria-labelledby="range-slider"
             min={18}
             max={70}
           />
         </Grid>
       </Grid>
+      <Button
+        className={classes.button}
+        onClick={onClick}
+        variant="contained"
+        color="primary"
+        size="large"
+      >
+        Zapisz zmiany
+      </Button>
     </Box>
   )
 }
