@@ -9,5 +9,6 @@ export const DELETE_USER = "DELETE_USER";
 export const UPDATE_USERDATA = "UPDATE_USERDATA";
 export const USER_CHAT = "USER_CHAT"
 export const GET_CHAT = "GET_CHAT"
+export const ADD_MESSAGE = "ADD_MESSAGE"
 
 export const ADD_PHOTO = "ADD_PHOTO"

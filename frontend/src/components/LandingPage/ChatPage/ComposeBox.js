@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import io from 'socket.io-client';
 import { useSelector, useDispatch } from "react-redux"
-import { getUser } from "../../../redux/actions/usersAction"
+import { getUser, getChat, addMessage } from "../../../redux/actions/usersAction"
 
 
 import {
@@ -46,7 +46,9 @@ const ComposeBox = () => {
     socket.on('news', (data) => {
       console.log(data);
     })
-  }, []);
+    dispatch(getChat(userChat._id))
+
+  }, [getChat, getUser]);
 
   const userChat = useSelector(state => state.users.userChat)
   const user = useSelector(state => state.users.user)
@@ -63,7 +65,13 @@ const ComposeBox = () => {
           message: message,
           login: user.first_name
         }
-      }, () => setMessage(''));
+      });
+      dispatch(addMessage({
+        message: message,
+        login: user.first_name
+      }))
+      dispatch(getChat(userChat._id))
+      setMessage('')
     }
   }
 

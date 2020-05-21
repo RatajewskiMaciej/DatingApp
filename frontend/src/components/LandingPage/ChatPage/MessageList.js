@@ -88,6 +88,7 @@ const MessageList = ({ messages }) => {
   const userChat = useSelector(state => state.users.userChat)
   const user = useSelector(state => state.users.user)
 
+  let chatMessages = useSelector(state => state.users.chat)
 
   const dispatch = useDispatch()
   useEffect(() => {
@@ -96,11 +97,10 @@ const MessageList = ({ messages }) => {
     socket.on('Output Chat Messages', (data) => {
       console.log(data);
     })
+
   }, [userChat]);
 
-  let chatMessages = useSelector(state => state.users.chat)
-
-
+  console.log(chatMessages.messages)
   // Scroll to bottom
   const endRef = useRef(null);
   useEffect(() => {
@@ -119,28 +119,21 @@ const MessageList = ({ messages }) => {
 
   return (
     <Box className={classes.messageList}>
-      {userChat.first_name ? chatMessages.messages.map(message => (
-        <Box key={Math.random()} className={classes.bubbleContainer}>
-          <Box className={bubblePicker(message.login)}>
-            <Typography variant="body1">{message.message}</Typography>
-            <Typography
-              variant="body2"
-              className={sidePicker(message.login)}
-            >
-              {message.login}
-            </Typography>
+      {
+        chatMessages.messages && Array.from(chatMessages.messages).map((message, i) => (
+          <Box key={i} className={classes.bubbleContainer}>
+            <Box className={bubblePicker(message.login)}>
+              <Typography variant="body1">{message.message}</Typography>
+              <Typography
+                variant="body2"
+                className={sidePicker(message.login)}
+              >
+                {message.login}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-      )) : <Box key={Math.random()} >
-          <Box >
-            <Typography variant="body1"></Typography>
-            <Typography
-              variant="body2"
-
-            >
-            </Typography>
-          </Box>
-        </Box>}
+        ))
+      }
       <div ref={endRef} style={{ clear: 'both' }} />
     </Box>
   )

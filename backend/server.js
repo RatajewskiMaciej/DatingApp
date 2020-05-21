@@ -58,7 +58,7 @@ io.on("connection", socket => {
             const payload = {
               sendersID: [mainUser, selectedUser],
               messages: {
-                idAuthor: mainUser,
+                login: login,
                 message: message
               }
             }
