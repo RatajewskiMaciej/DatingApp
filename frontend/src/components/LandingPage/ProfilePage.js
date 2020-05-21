@@ -113,28 +113,45 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
 }))
-let user
 const ProfilePage = (props) => {
+  const dispatch = useDispatch()
   const classes = useStyles()
   const theme = useTheme()
   const inputRef = useRef()
-  const dispatch = useDispatch()
-
-  const [newAvatar, setNewAvatar] = useState('')
-
   useEffect(() => {
     dispatch(getUser())
-    setProfileImage(user.avatar)
-  }, [getUser, user, newAvatar])
-  user = useSelector((state) => state.users.user)
+  }, [getUser])
+
+  const user = useSelector((state) => state.users.user)
 
   // User profile data
-  const name = user.first_name
-  const age = user.age
-  const city = user.city
-  const userImages = user.avatars? user.avatars: []
-  const [about, setAbout] = useState(user.description)
-  const [profileImage, setProfileImage] = useState(user.avatar)
+  const avatars = user.avatars ? user.avatars : []
+  const [name, setName] = useState(null)
+  const [age, setAge] = useState(null)
+  const [city, setCity] = useState(null)
+  const [description, setDescription] = useState(null)
+  const [avatar, setAvatar] = useState(null)
+
+  useEffect(() => {
+    setName(user.first_name)
+    setAge(user.age)
+    setCity(user.city)
+    setDescription(user.description)
+    setAvatar(user.avatar)
+  }, [user])
+
+  const updateDescription = async () => {
+    await axios.put('http://localhost:5000/user/profile', {
+      description,
+    })
+  }
+
+  const updateAvatar = async (source) => {
+    setAvatar(source)
+    await axios.put('http://localhost:5000/user/profile', {
+      avatar: source
+    })
+  }
 
   // Modal sections
   const [editAbout, setEditAbout] = useState(false)
@@ -148,8 +165,8 @@ const ProfilePage = (props) => {
   }
 
   // Image gallery
-  const [activeStep, setActiveStep] = useState(0)
-  const maxSteps = userImages.length
+  const [activeStep, setActiveStep] = useState(null)
+  const maxSteps = avatars ? avatars.length : 1
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
   }
@@ -157,6 +174,7 @@ const ProfilePage = (props) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1)
   }
 
+  
   const headerSection = (
     <Box className={classes.headerSection}>
       <IconButton
@@ -175,7 +193,7 @@ const ProfilePage = (props) => {
         >
           <Avatar
             alt="Profile picture"
-            src={`${profileImage}`}
+            src={`http://localhost:5000/${avatar}`}
             className={classes.avatar}
           />
         </Badge>
@@ -203,10 +221,7 @@ const ProfilePage = (props) => {
           <IconButton
             style={{ margin: '10px 10px 0 0' }}
             onClick={() => {
-              axios.put('http://localhost:5000/user/profile', {
-                description: about,
-              })
-              dispatch(getUser())
+              updateDescription()
             }}
           >
             <CheckCircleIcon fontSize="large" style={{ color: 'green' }} />
@@ -224,7 +239,12 @@ const ProfilePage = (props) => {
         )}
       </Box>
       {editAbout ? (
-        <ClickAwayListener onClickAway={(event) => toggleEditAbout()}>
+        <ClickAwayListener
+          onClickAway={(event) => {
+            toggleEditAbout()
+            updateDescription()
+          }}
+        >
           <Box className={classes.aboutField}>
             <form>
               <TextField
@@ -234,10 +254,10 @@ const ProfilePage = (props) => {
                 multiline
                 id="firstName"
                 autoFocus
-                value={about}
+                value={description}
                 placeholder="Napisz coś o sobie..."
                 onChange={(event) => {
-                  setAbout(event.target.value)
+                  setDescription(event.target.value)
                 }}
               />
             </form>
@@ -250,7 +270,7 @@ const ProfilePage = (props) => {
           paragraph
           style={{ margin: '0px 20px 35px 20px' }}
         >
-          {about ? about : 'Napisz coś o sobie...'}
+          {description ? description : 'Napisz coś o sobie...'}
         </Typography>
       )}
     </Box>
@@ -258,7 +278,7 @@ const ProfilePage = (props) => {
 
   const photoSection = (
     <ImageGrid
-      mapSource={userImages}
+      mapSource={avatars}
       addTile
       alt="Zdjęcie"
       tileClick={(event) => {
@@ -279,17 +299,11 @@ const ProfilePage = (props) => {
         <>
           <ImageGrid
             colNumLg={4}
-            mapSource={userImages}
+            mapSource={avatars}
             alt={'Image Gallery'}
             tileClick={(event) => {
-              let adres = event.target.src
-              let split = adres.split('http://localhost:3000/')
-              adres = split[1]
-              console.log(adres)
-              setProfileImage(adres)
-              axios.put('http://localhost:5000/user/profile', { avatar: adres })
+              updateAvatar(user.avatars[event.target.getAttribute('index')])
               toggleEditImage()
-              dispatch(getUser())
             }}
           />
 
@@ -313,7 +327,7 @@ const ProfilePage = (props) => {
                 let formData = new FormData()
                 formData.append('avatar', image, image.name)
                 dispatch(addPhoto(formData))
-                setNewAvatar(formData)
+                // setNewAvatar(formData)
               }}
             />
             Dodaj zdjęcie
@@ -342,7 +356,7 @@ const ProfilePage = (props) => {
           <Button
             className={classes.galleryUi}
             onClick={() => {
-              setProfileImage(user.avatars[activeStep])
+              updateAvatar(user.avatars[activeStep])
               setGallery(false)
             }}
           >
@@ -351,12 +365,7 @@ const ProfilePage = (props) => {
           <IconButton
             style={{ float: 'right' }}
             onClick={(event) => {
-              // let adres = userImages[activeStep]
-              // console.log(adres)
-              // setProfileImage(adres)
-              // axios.put('http://localhost:5000/user/profile', { avatar: adres })
               setGallery(false)
-              dispatch(getUser())
             }}
           >
             <CancelIcon fontSize="large" className={classes.galleryUi} />
@@ -364,7 +373,7 @@ const ProfilePage = (props) => {
         </Box>
         <img
           className={classes.img}
-          src={`http://localhost:5000/${userImages[activeStep]}`}
+          src={`http://localhost:5000/${avatars[activeStep]}`}
           alt={`zdjęcie`}
         />
         <MobileStepper
