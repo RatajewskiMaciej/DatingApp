@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
-import { getUser, addPhoto } from '../../redux/actions/usersAction'
+import { getUser, addPhoto, updateDataUser } from '../../redux/actions/usersAction'
 
 import ImageGrid from './_Parts/ImageGrid'
 import Popup from './_Parts/Popup'
@@ -142,14 +142,7 @@ const ProfilePage = (props) => {
 
   const updateDescription = async () => {
     await axios.put('http://localhost:5000/user/profile', {
-      description,
-    })
-  }
-
-  const updateAvatar = async (source) => {
-    setAvatar(source)
-    await axios.put('http://localhost:5000/user/profile', {
-      avatar,
+      description: description,
     })
   }
 
@@ -208,7 +201,7 @@ const ProfilePage = (props) => {
         </Typography>
         <Typography className={classes.headerTextDown} variant="h5">{`${
           city ? city : ''
-        } ${age ? age : ''}`}</Typography>
+          } ${age ? age : ''}`}</Typography>
       </Box>
     </Box>
   )
@@ -230,16 +223,16 @@ const ProfilePage = (props) => {
             <CheckCircleIcon fontSize="large" style={{ color: 'green' }} />
           </IconButton>
         ) : (
-          <IconButton
-            style={{ margin: '10px 10px 0 0' }}
-            color="primary"
-            onClick={(event) => {
-              toggleEditAbout()
-            }}
-          >
-            <EditIcon fontSize="large" />
-          </IconButton>
-        )}
+            <IconButton
+              style={{ margin: '10px 10px 0 0' }}
+              color="primary"
+              onClick={(event) => {
+                toggleEditAbout()
+              }}
+            >
+              <EditIcon fontSize="large" />
+            </IconButton>
+          )}
       </Box>
       {editAbout ? (
         <ClickAwayListener
@@ -267,15 +260,15 @@ const ProfilePage = (props) => {
           </Box>
         </ClickAwayListener>
       ) : (
-        <Typography
-          onClick={() => toggleEditAbout()}
-          variant="body1"
-          paragraph
-          style={{ margin: '0px 20px 35px 20px' }}
-        >
-          {description ? description : 'Napisz coś o sobie...'}
-        </Typography>
-      )}
+          <Typography
+            onClick={() => toggleEditAbout()}
+            variant="body1"
+            paragraph
+            style={{ margin: '0px 20px 35px 20px' }}
+          >
+            {description ? description : 'Napisz coś o sobie...'}
+          </Typography>
+        )}
     </Box>
   )
 
@@ -305,7 +298,8 @@ const ProfilePage = (props) => {
             mapSource={avatars}
             alt={'Image Gallery'}
             tileClick={(event) => {
-              updateAvatar(user.avatars[event.target.getAttribute('index')])
+              dispatch(updateDataUser({ avatar: user.avatars[event.target.getAttribute('index')] }))
+              setAvatar(user.avatars[event.target.getAttribute('index')])
               toggleEditImage()
             }}
           />
@@ -359,7 +353,8 @@ const ProfilePage = (props) => {
           <Button
             className={classes.galleryUi}
             onClick={() => {
-              updateAvatar(avatars[activeStep])
+              dispatch(updateDataUser({ avatar: avatars[activeStep] }))
+              setAvatar(avatars[activeStep])
               setGallery(false)
             }}
           >
@@ -396,8 +391,8 @@ const ProfilePage = (props) => {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowLeft />
               ) : (
-                <KeyboardArrowRight />
-              )}
+                  <KeyboardArrowRight />
+                )}
             </Button>
           }
           backButton={
@@ -411,8 +406,8 @@ const ProfilePage = (props) => {
               {theme.direction === 'rtl' ? (
                 <KeyboardArrowRight />
               ) : (
-                <KeyboardArrowLeft />
-              )}
+                  <KeyboardArrowLeft />
+                )}
               Back
             </Button>
           }
@@ -431,23 +426,23 @@ const ProfilePage = (props) => {
           {photoSection}
         </Paper>
       ) : (
-        <Grid container>
-          <Grid item md={6}>
-            <Paper className={classes.paper} style={{ paddingBottom: 5 }}>
-              {headerSection}
-              <Divider />
-              {aboutSection}
-            </Paper>
+          <Grid container>
+            <Grid item md={6}>
+              <Paper className={classes.paper} style={{ paddingBottom: 5 }}>
+                {headerSection}
+                <Divider />
+                {aboutSection}
+              </Paper>
+            </Grid>
+            <Grid item md={6}>
+              {user.avatars ? (
+                <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
+              ) : (
+                  <CircularProgress />
+                )}
+            </Grid>
           </Grid>
-          <Grid item md={6}>
-            {user.avatars ? (
-              <Paper style={{ padding: 10, margin: 10 }}>{photoSection}</Paper>
-            ) : (
-              <CircularProgress />
-            )}
-          </Grid>
-        </Grid>
-      )}
+        )}
 
       {galleryModal}
       {editPhotoModal}

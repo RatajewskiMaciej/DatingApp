@@ -47,6 +47,7 @@ router.put("/profile", [auth, upload], async (req, res) => {
 
   const user = await User.findById(req.user.id)
 
+  console.log(req.body)
   try {
     const { description, name, age, email, locationPreference, ageRangePreference, genderPreferenceMale, genderPreferenceFemale, avatar } = req.body
 
@@ -61,7 +62,7 @@ router.put("/profile", [auth, upload], async (req, res) => {
     genderPreferenceFemale ? user.genderPreferenceFemale = true : user.genderPreferenceFemale = false;
     genderPreferenceMale ? user.genderPreferenceMale = true : user.genderPreferenceMale = false;
     req.file ? user.avatars.push(req.file.path) : null
-    avatar ? user.avatar : null
+    avatar ? user.avatar = avatar : null
 
     user.save()
 
