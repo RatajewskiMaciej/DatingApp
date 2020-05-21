@@ -1,11 +1,13 @@
-import { GET_USERS, GET_USERDATA, GET_PROFILE, DELETE_USER, UPDATE_USERDATA, ADD_PHOTO } from '../types';
+import { GET_USERS, GET_USERDATA, GET_PROFILE, DELETE_USER, UPDATE_USERDATA, ADD_PHOTO, USER_CHAT, GET_CHAT, ADD_MESSAGE } from '../types';
 
 
 const initialState = {
   users: [],
   user: [],
   profile: {},
-  response: ""
+  response: "",
+  userChat: {},
+  chat: {}
 };
 
 export default (state = initialState, action) => {
@@ -34,6 +36,24 @@ export default (state = initialState, action) => {
       return {
         ...state,
         user: action.user
+      };
+    case USER_CHAT:
+      return {
+        ...state,
+        userChat: action.user
+      };
+    case GET_CHAT:
+      return {
+        ...state,
+        chat: action.chat
+      };
+    case ADD_MESSAGE:
+      return {
+        ...state,
+        chat: {
+          sendersID: state.chat.sendersID,
+          messages: state.chat.messages.push(action.message)
+        }
       };
     default:
       return state;

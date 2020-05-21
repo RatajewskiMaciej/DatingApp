@@ -138,12 +138,73 @@ router.put("/password", [auth], async (req, res) => {
 
 router.post("/send", [auth], (req, res) => {
 
-  console.log(JSON.parse(JSON.stringify(req.body)))
-
   sendEmail(req.body.email, req.user.id)
 
   return res.json({ msg: "Email wysłany" })
 
+})
+
+
+//send questions
+
+router.post("/questions", [auth], async (req, res) => {
+  const user = await User.findById(req.user.id)
+
+  try {
+    user.res1 = req.body.res1
+    user.res2 = req.body.res2
+    user.res3 = req.body.res3
+    user.res4 = req.body.res4
+    user.res5 = req.body.res5
+    user.res6 = req.body.res6
+    user.res7 = req.body.res7
+    user.res8 = req.body.res8
+    user.res9 = req.body.res9
+    user.res10 = req.body.res10
+    user.res11 = req.body.res11
+    user.res12 = req.body.res21
+
+    user.save()
+
+  } catch (error) {
+    console.log(err.message)
+  }
+})
+
+//blocked User
+
+router.post("/blocked", [auth], async (req, res) => {
+  const user = await User.findById(req.user.id)
+
+  try {
+    if (req.body.user.first_name) user.blockedUser.push(req.body.user)
+
+    user.save()
+
+  } catch (error) {
+    console.log(err.message)
+  }
+})
+
+//unblock User
+
+router.put("/unblock", [auth], async (req, res) => {
+
+  const user = await User.findById(req.user.id)
+
+  try {
+    user.blockedUser = user.blockedUser.filter((blockUser) => {
+      return blockUser.email !== req.body.user.email
+    })
+
+    user.save()
+
+    return res.json(user.blockedUser)
+
+  } catch (error) {
+    console.log(err.message)
+
+  }
 })
 
 

@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import chatData from '../../../data/chatData'
+import io from 'socket.io-client';
+import { getUser, getChat } from "../../../redux/actions/usersAction"
+import { useSelector, useDispatch } from "react-redux"
 
 const useStyles = makeStyles((theme) => ({
   messageList: {
@@ -78,9 +80,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+let socket;
+
 const MessageList = ({ messages }) => {
   const classes = useStyles()
+  socket = io('http://localhost:5000');
+  const userChat = useSelector(state => state.users.userChat)
+  const user = useSelector(state => state.users.user)
 
+  let chatMessages = useSelector(state => state.users.chat)
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getUser())
+    dispatch(getChat(userChat._id))
+    socket.on('Output Chat Messages', (data) => {
+      console.log(data);
+    })
+
+  }, [userChat]);
+
+  console.log(chatMessages.messages)
   // Scroll to bottom
   const endRef = useRef(null);
   useEffect(() => {
@@ -89,29 +109,31 @@ const MessageList = ({ messages }) => {
 
   // Create chat bubbles
   const bubblePicker = (senderId) => {
-    if (senderId === 'Ja') return classes.bubbleRight
+    if (senderId === user.first_name) return classes.bubbleRight
     return classes.bubbleLeft
   }
   const sidePicker = (senderId) => {
-    if (senderId === 'Ja') return classes.textIdRight
+    if (senderId === user.first_name) return classes.textIdRight
     return classes.textIdLeft
   }
 
   return (
     <Box className={classes.messageList}>
-      {chatData.map((message, index) => (
-        <Box key={index} className={classes.bubbleContainer}>
-          <Box className={bubblePicker(message.senderId)}>
-            <Typography variant="body1">{message.text}</Typography>
-            <Typography
-              variant="body2"
-              className={sidePicker(message.senderId)}
-            >
-              {message.senderId}
-            </Typography>
+      {
+        chatMessages.messages && Array.from(chatMessages.messages).map((message, i) => (
+          <Box key={i} className={classes.bubbleContainer}>
+            <Box className={bubblePicker(message.login)}>
+              <Typography variant="body1">{message.message}</Typography>
+              <Typography
+                variant="body2"
+                className={sidePicker(message.login)}
+              >
+                {message.login}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-      ))}
+        ))
+      }
       <div ref={endRef} style={{ clear: 'both' }} />
     </Box>
   )
