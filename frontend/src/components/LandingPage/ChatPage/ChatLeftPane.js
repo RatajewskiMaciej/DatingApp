@@ -83,25 +83,27 @@ const ChatLeftPane = (props) => {
   const users = useSelector(state => state.users.users)
   const { blockedUser } = userAuth
 
-  const r = users.filter((elem) => !blockedUser.find(({ email }) => elem.email === email));
+
+  const r = blockedUser && users ? users.filter((elem) => !blockedUser.find(({ email }) => elem.email === email)) ? users.filter((elem) => !blockedUser.find(({ email }) => elem.email === email)) : users : null;
 
   const button = (
     <>
-      {r.filter(user => (user._id !== userAuth._id) && (search ? user.first_name.includes(search) : true))
-        .map(profile => (
-          <div div key={Math.random()} onClick={() => { dispatch(userChat(profile)) }}>
-            <Button className={classes.button} >
-              <Avatar src={`http://localhost:5000/${profile.avatar}`} className={classes.avatar} />
-              <Box className={classes.textWrapper}>
-                <Typography noWrap className={classes.buttonText}>
-                  <b>{profile.first_name}</b>, {profile.age}
-                </Typography>
-              </Box>
-            </Button>
-            <Divider />
-          </div>
-        ))
-      }
+      {
+        r ? r.filter(user => (user._id !== userAuth._id) && (search ? user.first_name.includes(search) : true))
+          .map(profile => (
+            <div div key={Math.random()} onClick={() => { dispatch(userChat(profile)) }}>
+              <Button className={classes.button} >
+                <Avatar src={`http://localhost:5000/${profile.avatar}`} className={classes.avatar} />
+                <Box className={classes.textWrapper}>
+                  <Typography noWrap className={classes.buttonText}>
+                    <b>{profile.first_name}</b>, {profile.age}
+                  </Typography>
+                </Box>
+              </Button>
+              <Divider />
+            </div>
+          ))
+          : null}
     </>
   )
 

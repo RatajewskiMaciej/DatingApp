@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_USERS, GET_USERDATA, GET_PROFILE, UPDATE_USERDATA, DELETE_USER, ADD_PHOTO, USER_CHAT } from '../types';
+import { GET_USERS, GET_USERDATA, GET_PROFILE, UPDATE_USERDATA, DELETE_USER, ADD_PHOTO, USER_CHAT, GET_CHAT } from '../types';
 
 
 export const getUser = () => async dispatch => {
@@ -72,7 +72,7 @@ export const updateDataUser = payload => async dispatch => {
 
 export const addPhoto = formData => async dispatch => {
   try {
-    const res = await axios.post(`http://localhost:5000/user//profile/uploads`, formData);
+    const res = await axios.post(`http://localhost:5000/user/profile/uploads`, formData);
     dispatch({
       type: ADD_PHOTO,
       user: res.data,
@@ -88,6 +88,20 @@ export const userChat = user => async dispatch => {
     dispatch({
       type: USER_CHAT,
       user: user,
+    })
+  } catch (error) {
+    console.log(error.message);
+
+  }
+}
+
+export const getChat = (id) => async dispatch => {
+  try {
+    const res = await axios.get(`http://localhost:5000/chat/${id}`);
+
+    dispatch({
+      type: GET_CHAT,
+      chat: res.data,
     })
   } catch (error) {
     console.log(error.message);

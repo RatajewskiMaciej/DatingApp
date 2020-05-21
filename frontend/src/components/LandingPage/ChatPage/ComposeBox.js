@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import io from 'socket.io-client';
+import { useSelector, useDispatch } from "react-redux"
+import { getUser } from "../../../redux/actions/usersAction"
+
 
 import {
   Divider,
@@ -31,25 +34,36 @@ const useStyles = makeStyles((theme) => ({
 let socket;
 
 const ComposeBox = () => {
+  const dispatch = useDispatch()
   const classes = useStyles()
   const theme = useTheme()
   socket = io('http://localhost:5000');
 
+
+
   useEffect(() => {
+    dispatch(getUser())
     socket.on('news', (data) => {
       console.log(data);
     })
   }, []);
 
-  const [words, setWords] = useState("")
-  const [message, setMessage] = useState("")
+  const userChat = useSelector(state => state.users.userChat)
+  const user = useSelector(state => state.users.user)
 
+
+  const [message, setMessage] = useState("")
 
 
   const sendMessage = (event) => {
     if (message) {
-
-      socket.emit('sendMessage', message, () => setMessage(''));
+      socket.emit('sendMessage', {
+        sendersID: [user._id, userChat._id],
+        messages: {
+          message: message,
+          login: user.first_name
+        }
+      }, () => setMessage(''));
     }
   }
 
@@ -73,7 +87,7 @@ const ComposeBox = () => {
           <Tooltip title="Wyślij">
             <IconButton
               className={classes.sendIcon}
-              onClick={() => sendMessage()}
+              onClick={() => { sendMessage(); setMessage("") }}
             >
               <SendIcon
                 fontSize="large"
@@ -83,7 +97,7 @@ const ComposeBox = () => {
           </Tooltip>
         </Grid>
       </Grid>
-    </Paper>
+    </Paper >
   )
 }
 
