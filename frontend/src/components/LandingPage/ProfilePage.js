@@ -149,8 +149,12 @@ const ProfilePage = (props) => {
   const updateAvatar = async (source) => {
     setAvatar(source)
     await axios.put('http://localhost:5000/user/profile', {
-      avatar: source
+      avatar,
     })
+  }
+
+  const deleteAvatar = (source) => {
+    console.log('Delete image ' + source)
   }
 
   // Modal sections
@@ -174,7 +178,6 @@ const ProfilePage = (props) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1)
   }
 
-  
   const headerSection = (
     <Box className={classes.headerSection}>
       <IconButton
@@ -347,7 +350,7 @@ const ProfilePage = (props) => {
         <Box>
           <IconButton
             onClick={() => {
-              alert('delete forever')
+              deleteAvatar(user.avatars[activeStep])
               setGallery(false)
             }}
           >
@@ -356,7 +359,7 @@ const ProfilePage = (props) => {
           <Button
             className={classes.galleryUi}
             onClick={() => {
-              updateAvatar(user.avatars[activeStep])
+              updateAvatar(avatars[activeStep])
               setGallery(false)
             }}
           >
