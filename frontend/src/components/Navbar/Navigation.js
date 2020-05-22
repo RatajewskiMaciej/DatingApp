@@ -96,7 +96,6 @@ export default function Navigation() {
                 className={location === '/czat' ? classes.active : null}
               >
                 <Badge
-                  badgeContent={4}
                   color="secondary"
                   anchorOrigin={{
                     vertical: 'bottom',

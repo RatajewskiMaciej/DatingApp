@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import ProfileGallery from './_Parts/ProfileGallery'
+import { useHistory } from 'react-router-dom';
 
 //DUMMY USER DATA
 import userData from '../../data/userData'
@@ -9,8 +10,9 @@ import userData from '../../data/userData'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper } from '@material-ui/core'
 import Index from './StepsPage/index'
+import UserPage from "./UserPage"
 
-import { getUsers, getUser } from "../../redux/actions/usersAction"
+import { getUsers, getUser, getProfile } from "../../redux/actions/usersAction"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const MeetPage = (props) => {
+  const history = useHistory();
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getUsers())
@@ -53,7 +56,6 @@ const MeetPage = (props) => {
   return (
     <Paper className={classes.paper}>
       {user.age ?
-
         <ProfileGallery
           tileBar
           title={`${users.first_name}, ${users.age}`}
@@ -63,7 +65,7 @@ const MeetPage = (props) => {
           // >{`Dopasowanie ${users.match}%`}</span>
           // }
           mapSource={users}
-          tileClick={(event) => alert('go to profile')}
+          tileClick={(event) => { dispatch(getProfile(event)); history.push("/userprofile") }}
           iconClick={(event) => {
             event.stopPropagation()
             alert('like profile')

@@ -17,7 +17,7 @@ import StepsPage from './components/LandingPage/StepsPage'
 import ToLogIn from './components/Navbar/toLogIn'
 import SignUp from './components/LandingPage/SignUp'
 import Privacy from './components/LandingPage/Privacy'
-import index from './components/LandingPage/StepsPage/index'
+import UserPage from './components/LandingPage/UserPage'
 
 
 function App() {
@@ -37,6 +37,7 @@ function App() {
                 <Route path="/czat" component={ChatPage} />
                 <Route path="/ustawienia" component={SettingsPage} />
                 <Route path="/prywatnosc" component={Privacy} />
+                <Route path="/userprofile" component={UserPage} />
               </Switch>
             </Box>
           </Box>

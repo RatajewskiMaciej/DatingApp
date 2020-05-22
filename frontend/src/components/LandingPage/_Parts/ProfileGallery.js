@@ -98,7 +98,7 @@ const ProfileGallery = (props) => {
       ) : null}
 
       {props.mapSource.map((image) => (
-        <GridListTile key={Math.random()} onClick={props.tileClick}>
+        <GridListTile key={Math.random()} onClick={() => props.tileClick(image._id)}>
           <img
             src={image.avatar ? `http://localhost:5000/${image.avatar}` : "https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-person-512.png"}
             className={classes.gridListTile}
