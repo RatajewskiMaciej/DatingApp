@@ -349,7 +349,10 @@ const ProfilePage = (props) => {
               setGallery(false)
             }}
           >
-            <DeleteForeverIcon fontSize="large" className={classes.galleryUi} />
+            <DeleteForeverIcon fontSize="large" className={classes.galleryUi} onClick={() => {
+              axios.put(`http://localhost:5000/user/picture/`, { picture: user.avatars[activeStep] })
+              window.location.reload()
+            }} />
           </IconButton>
           <Button
             className={classes.galleryUi}

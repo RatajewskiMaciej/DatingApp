@@ -11,7 +11,7 @@ const { sendEmail } = require("./mail")
 
 //get user who login
 
-router.get('/', auth, async (req, res) => {
+router.get('/', [auth], async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     return res.json(user);
@@ -209,7 +209,7 @@ router.put("/unblock", [auth], async (req, res) => {
 })
 
 //get user followers who`s login
-router.get('/followers', auth, async (req, res) => {
+router.get('/followers', [auth], async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     return res.json(user.follows)
@@ -220,7 +220,7 @@ router.get('/followers', auth, async (req, res) => {
 
 
 //update followers
-router.put('/follows/:id', auth, async (req, res) => {
+router.put('/follows/:id', [auth], async (req, res) => {
 
   const userToFollow = await User.findById(req.params.id).select('-password').select('-follows');
   const user = await User.findById(req.user.id)
@@ -237,6 +237,29 @@ router.put('/follows/:id', auth, async (req, res) => {
     return res.json(user.follows)
   } catch (error) {
     console.log(error.message)
+  }
+})
+
+router.put('/picture/', [auth], async (req, res) => {
+  const user = await User.findById(req.user.id)
+  const { picture } = req.body
+  try {
+
+    // console.log(picture)
+
+    // console.log(user.avatars)
+
+
+    user.avatars = user.avatars.filter(avatar => { return avatar !== picture })
+    await user.save()
+
+    // console.log(user.avatars)
+
+    res.json({ msg: "Usunieto" })
+
+  } catch (error) {
+    console.log(error.message)
+
   }
 })
 

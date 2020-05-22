@@ -67,22 +67,7 @@ io.on("connection", socket => {
           }
 
         }
-        // let chat = Chat.find({ sendersID: msg.sendersID[0], sendersID: msg.sendersID[1] })
-        // if (!chat.sendersID[1]) { chat = new Chat(msg) }
-        // chat.messages.unshift({ message: message, login: login })
 
-        // console.log(chat)
-        // // let chat = new Chat(msg)
-
-        // chat.save((err, doc) => {
-        //   if (err) return res.json({ success: false, err })
-        // })
-        // Chat.findOne({ sendersID: doc.sendersID })
-        //   .populate("sendersID")
-        //   .exec((err, doc) => {
-        //     console.log(doc)
-        //     return io.emit("Output Chat Messages", doc);
-        //   })
 
       } catch (error) {
         console.error(error);
