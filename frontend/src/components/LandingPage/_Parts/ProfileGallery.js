@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import axios from "axios"
 import { useDispatch, useSelector } from "react-redux"
 
@@ -53,11 +53,27 @@ const ProfileGallery = (props) => {
   useEffect(() => {
     dispatch(getUser())
   }, [])
-  const user = useSelector(state => state.users.user)
+  let user = useSelector(state => state.users.user)
   const classes = useStyles()
   const theme = useTheme()
 
+  const [fit, setFit] = useState(0)
   const inputRef = useRef();
+
+  const fitUser = (res1, res2, res3, res4, res5, res6, res7, res8, res9, res10, res11, res12) => {
+    if (user.res1 == res1) setFit(fit++)
+    if (user.res2 == res2) setFit(fit++)
+    if (user.res3 == res3) setFit(fit++)
+    if (user.res4 == res4) setFit(fit++)
+    if (user.res5 == res5) setFit(fit++)
+    if (user.res6 == res6) setFit(fit++)
+    if (user.res7 == res7) setFit(fit++)
+    if (user.res8 == res8) setFit(fit++)
+    if (user.res9 == res9) setFit(fit++)
+    if (user.res10 == res10) setFit(fit++)
+    if (user.res11 == res11) setFit(fit++)
+    if (user.res12 == res12) setFit(fit++)
+  }
 
 
   const xs = useMediaQuery(theme.breakpoints.down('xs'))
@@ -111,6 +127,7 @@ const ProfileGallery = (props) => {
             src={image.avatar ? `http://localhost:5000/${image.avatar}` : "https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-person-512.png"}
             className={classes.gridListTile}
             alt={image}
+            onLoad={fitUser(image.res1, image.res2, image.res3, image.res4, image.res5, image.res6, image.res7, image.res8, image.res9, image.res10, image.res11, image.res12)}
           />
 
           {props.tileBar ? (
@@ -121,8 +138,9 @@ const ProfileGallery = (props) => {
               actionIcon={
                 <IconButton
                   className={classes.favIcon}
-                  onClick={() => { props.iconClick() }}
+                  onClick={() => { }}
                 >
+                  dopasowanie {fit}
                 </IconButton>
               }
             />
