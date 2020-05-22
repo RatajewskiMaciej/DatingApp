@@ -12,7 +12,7 @@ import { Paper } from '@material-ui/core'
 import Index from './StepsPage/index'
 import UserPage from "./UserPage"
 
-import { getUsers, getUser, getProfile } from "../../redux/actions/usersAction"
+import { getUsers, getUser, getProfile, addFollower } from "../../redux/actions/usersAction"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -68,7 +68,6 @@ const MeetPage = (props) => {
           tileClick={(event) => { dispatch(getProfile(event)); history.push("/userprofile") }}
           iconClick={(event) => {
             event.stopPropagation()
-            alert('like profile')
           }}
         />
         : <Index />}

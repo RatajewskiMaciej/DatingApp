@@ -208,5 +208,37 @@ router.put("/unblock", [auth], async (req, res) => {
   }
 })
 
+//get user followers who`s login
+router.get('/followers', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    return res.json(user.follows)
+  } catch (err) {
+    console.log(err.message)
+  }
+})
+
+
+//update followers
+router.put('/follows/:id', auth, async (req, res) => {
+
+  const userToFollow = await User.findById(req.params.id).select('-password').select('-follows');
+  const user = await User.findById(req.user.id)
+
+  try {
+
+    if (user.follows.some(follower => follower._id.equals(userToFollow._id))) {
+      user.follows = user.follows.filter(follower => !follower._id.equals(userToFollow._id))
+    } else {
+      user.follows.push(userToFollow);
+    }
+
+    user.save()
+    return res.json(user.follows)
+  } catch (error) {
+    console.log(error.message)
+  }
+})
+
 
 module.exports = router

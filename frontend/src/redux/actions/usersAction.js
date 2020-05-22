@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_USERS, GET_USERDATA, GET_PROFILE, UPDATE_USERDATA, DELETE_USER, ADD_PHOTO, USER_CHAT, GET_CHAT, ADD_MESSAGE, DATA_UPLOAD } from '../types';
+import { GET_USERS, GET_USERDATA, GET_PROFILE, UPDATE_USERDATA, DELETE_USER, ADD_PHOTO, USER_CHAT, GET_CHAT, ADD_MESSAGE, DATA_UPLOAD, ADD_FOLLOWER, GET_FOLLOWERS } from '../types';
 
 
 export const getUser = () => async dispatch => {
@@ -134,3 +134,32 @@ export const dataUpdate = (data) => async dispatch => {
 
   }
 }
+
+export const addFollower = id => async dispatch => {
+  try {
+    const res = await axios.put(`http://localhost:5000/user/follows/${id}`);
+
+
+    dispatch({
+      type: ADD_FOLLOWER,
+      follower: res.data
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const getFollowers = () => async dispatch => {
+  try {
+    const res = await axios.get(`http://localhost:5000/user/followers`);
+
+    dispatch({
+      type: GET_FOLLOWERS,
+      followers: res.data
+    });
+
+  } catch (error) {
+    console.log(error.message);
+
+  }
+};

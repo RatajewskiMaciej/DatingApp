@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import ImageGridUser from './_Parts/ImageGridUser'
@@ -264,17 +264,8 @@ const ProfilePage = (props) => {
               setGallery(false)
             }}
           >
-            <DeleteForeverIcon fontSize="large" className={classes.galleryUi} />
           </IconButton>
-          <Button
-            className={classes.galleryUi}
-            onClick={() => {
-              setAvatar(avatars[activeStep])
-              setGallery(false)
-            }}
-          >
-            Ustaw jako profilowe
-          </Button>
+
           <IconButton
             style={{ float: 'right' }}
             onClick={(event) => {

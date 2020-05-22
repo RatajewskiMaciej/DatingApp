@@ -13,3 +13,5 @@ export const ADD_MESSAGE = "ADD_MESSAGE"
 export const DATA_UPLOAD = "DATA_UPLOAD"
 
 export const ADD_PHOTO = "ADD_PHOTO"
+export const ADD_FOLLOWER = "ADD_FOLLOWER"
+export const GET_FOLLOWERS = "GET_FOLLOWERS"

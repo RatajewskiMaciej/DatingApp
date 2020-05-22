@@ -1,6 +1,6 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import axios from "axios"
-
+import { useDispatch, useSelector } from "react-redux"
 
 import {
   GridList,
@@ -11,6 +11,8 @@ import {
 } from '@material-ui/core'
 
 import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { getUser } from "../../../redux/actions/usersAction"
+
 
 import IconButton from '@material-ui/core/IconButton'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
@@ -47,6 +49,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ProfileGallery = (props) => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getUser())
+  }, [])
+  const user = useSelector(state => state.users.user)
   const classes = useStyles()
   const theme = useTheme()
 
@@ -97,7 +104,8 @@ const ProfileGallery = (props) => {
 
       ) : null}
 
-      {props.mapSource.map((image) => (
+      {props.mapSource.filter(image => image._id !== user._id).map((image) => (
+
         <GridListTile key={Math.random()} onClick={() => props.tileClick(image._id)}>
           <img
             src={image.avatar ? `http://localhost:5000/${image.avatar}` : "https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-person-512.png"}
@@ -115,7 +123,6 @@ const ProfileGallery = (props) => {
                   className={classes.favIcon}
                   onClick={() => { props.iconClick() }}
                 >
-                  <FavoriteIcon />
                 </IconButton>
               }
             />

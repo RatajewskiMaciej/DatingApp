@@ -53,7 +53,9 @@ const User = new Schema({
   res10: { type: String },
   res11: { type: String },
   res12: { type: String },
-  blockedUser: { type: Array }
+  blockedUser: { type: Array },
+  follows: { type: Array },
+
 });
 
 module.exports = mongoose.model("User", User)
